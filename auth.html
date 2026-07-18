@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة الحساب والولوج | Online Koshk</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth-premium.css">
+    <style>
+        .profile-layout-with-sidebar {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+        .orders-dashboard-sidebar-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.01);
+        }
+        .orders-sidebar-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a1e22;
+            border-bottom: 2px solid #ff9900;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .user-order-mini-pill {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+        .cancel-order-action-lux-btn {
+            background: #fee2e2;
+            color: #ef4444;
+            border: none;
+            padding: 4px 10px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 11px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: all 0.2s;
+        }
+        .cancel-order-action-lux-btn:hover {
+            background: #ef4444;
+            color: #ffffff;
+        }
+        @media(max-width: 768px) {
+            .profile-layout-with-sidebar {
+                grid-template-columns: 1fr;
+            }
+            .nav-actions-premium-responsive {
+                display: flex !important;
+                align-items: center;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="koshkToastNotificationWrapper"></div>
+
+    <!-- نافذة منبثقة شيك مكتوب فيها للتواصل مع ممثلي الدعم -->
+    <div id="koshkForgotPasswordPremiumModal" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 25000;">
+        <div class="auth-central-container" style="max-width: 440px; width: 90%; text-align: center;">
+            <div style="font-size: 50px; color: #ff9900; margin-bottom: 15px;"><i class="fas fa-user-shield"></i></div>
+            <h3 style="font-weight: 700; margin-bottom: 12px; color: #1a1e22;">استعادة كلمة المرور</h3>
+            <p style="color: #475569; font-size: 14px; line-height: 1.7; margin-bottom: 20px;">
+                سيقوم أحد ممثلي خدمة عملاء أونلاين كشك بالتواصل معك هاتفياً أو عبر الواتساب فوراً لمساعدتك في استرجاع وتعيين كلمة السر الخاصة بك.
+            </p>
+            <button class="form-submit-action-btn" style="background: #ff9900; color: #1a1e22;" onclick="window.confirmForgotPasswordRequestLive()">تأكيد وإرسال طلب الدعم</button>
+            <button class="form-submit-action-btn" style="background: #e2e8f0; color: #475569; margin-top: 8px;" onclick="document.getElementById('koshkForgotPasswordPremiumModal').style.display='none'">إلغاء</button>
+        </div>
+    </div>
+
+    <header>
+        <div class="top-nav">
+            <div class="nav-wrapper">
+                <div class="logo">
+                    <a href="index.html?view=feed"><img src="assets/images/logo.png" alt="Online Koshk"></a>
+                </div>
+                <div class="search-bar">
+                    <input type="text" id="authSearchInputField" placeholder="بتدور على إيه؟ (ملابس، تيشرت، إلكترونيات...)...">
+                    <button type="button" id="authSearchBtnTrigger"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="nav-actions nav-actions-premium-responsive">
+                    <a href="https://wa.me/201500812929" target="_blank" class="whatsapp-action-nav-capsule" style="margin-left: 15px;">
+                        <i class="fab fa-whatsapp" style="color: #ffffff; font-size: 16px;"></i>
+                        <span>اتصل واتساب</span>
+                    </a>
+                    <a href="#" onclick="event.preventDefault();" class="action-item">
+                        <i class="far fa-user"></i><span id="user-nav-text">حسابي</span>
+                    </a>
+                    <a href="index.html?view=basket" class="action-item">
+                        <i class="fas fa-shopping-basket"></i><span>عربة التسوق</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <nav class="categories-nav">
+            <div class="nav-wrapper">
+                <ul>
+                    <li><a href="index.html?category=electronics">إلكترونيات</a></li>
+                    <li><a href="index.html?category=men">ملابس رجالي</a></li>
+                    <li><a href="index.html?category=women">ملابس حريمي</a></li>
+                    <li><a href="index.html?category=kids">ملابس أطفال</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="auth-page-layout-grid" id="mainAuthLayoutGridWrapper">
+                
+                <!-- العروض الجانبية اليسرى -->
+                <div class="promo-side-column left-side" id="leftSidePromoColumnBlock">
+                    <div class="koshk-promo-card" onclick="window.location.href='index.html?category=electronics'">
+                        <span class="promo-badge">قسم الإلكترونيات</span>
+                        <h4 style="font-weight:700;">سماعة Airpods Pro 2</h4>
+                        <div class="promo-price" style="color:#ff9900;">1,250 ج.م</div>
+                        <p style="font-size:12px; color:#64748b;">اضغط لتصفح كل عروض الأجهزة</p>
+                    </div>
+                </div>
+
+                <!-- سكشن التبديل المركزي الديناميكي -->
+                <div class="auth-central-container" id="centralAuthLayoutContainerBlock" style="grid-column: span 1;">
+                    
+                    <!-- أزرار التبديل العلوية -->
+                    <div class="auth-tabs-navigation" id="authTabsNavBlock">
+                        <button class="auth-tab-btn active" id="btnTabLogin" onclick="toggleAuthForm('login')">تسجيل الدخول</button>
+                        <button class="auth-tab-btn" id="btnTabRegister" onclick="toggleAuthForm('register')">إنشاء حساب جديد</button>
+                    </div>
+
+                    <!-- 1. استمارة تسجيل الدخول -->
+                    <form id="storeLoginForm" onsubmit="event.preventDefault();">
+                        <div class="form-field-group">
+                            <label>البريد الإلكتروني</label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="fieldLoginEmail" placeholder="example@domain.com" required>
+                            </div>
+                        </div>
+                        <div class="form-field-group">
+                            <label>كلمة المرور</label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="fieldLoginPassword" placeholder="أدخل كلمة المرور" required>
+                            </div>
+                        </div>
+                        <div style="text-align: left; margin-bottom: 15px;">
+                            <a href="#" onclick="event.preventDefault(); document.getElementById('koshkForgotPasswordPremiumModal').style.display='flex';" style="font-size: 13px; color:#ff9900; font-weight: 700;">نسيت كلمة السر؟</a>
+                        </div>
+                        <button type="submit" class="form-submit-action-btn" id="btnLoginSubmit">
+                            <i class="fas fa-sign-in-alt"></i> دخول لحسابي
+                        </button>
+                    </form>
+
+                    <!-- 2. استمارة إنشاء حساب جديد -->
+                    <form id="storeRegisterForm" onsubmit="event.preventDefault();" style="display: none;">
+                        <div class="form-field-group">
+                            <label>الاسم بالكامل</label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-user"></i>
+                                <input type="text" id="fieldRegName" placeholder="أدخل اسمك الثلاثي" required>
+                            </div>
+                        </div>
+                        <div class="form-field-group">
+                            <label>رقم الواتس آب (إجباري للتحقق)</label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-phone"></i>
+                                <input type="tel" id="fieldRegPhone" placeholder="مثال: 01500812929" required>
+                            </div>
+                        </div>
+                        <div class="form-field-group">
+                            <label>البريد الإلكتروني</label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-envelope"></i>
+                                <input type="email" id="fieldRegEmail" placeholder="example@domain.com" required>
+                            </div>
+                        </div>
+                        <div class="form-field-group">
+                            <label>المدينة / المحافظة</label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <select id="fieldRegCity" required>
+                                    <option value="" disabled selected>اختر المحافظة للتوصيل</option>
+                                    <option value="القاهرة">القاهرة</option>
+                                    <option value="الجيزة">الجيزة</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-field-group">
+                            <label>كلمة المرور</label>
+                            <div class="form-input-wrapper">
+                                <i class="fas fa-lock"></i>
+                                <input type="password" id="fieldRegPassword" placeholder="كلمة مرور قوية ومؤمنة" required>
+                            </div>
+                        </div>
+
+                        <button type="button" class="form-submit-action-btn whatsapp-verification-btn" id="btnRegSendOtp" onclick="window.sendKoshkWhatsAppOtpLive()">
+                            <i class="fab fa-whatsapp"></i> الحصول على كود التفعيل عبر WhatsApp مجاناً
+                        </button>
+
+                        <div class="otp-verify-inline-section" id="inlineOtpSectionBlock">
+                            <div class="form-field-group">
+                                <label class="otp-alert-label">أدخل رمز الـ OTP الذي قمت بإرساله إلى رقم الواتساب بالمتجر:</label>
+                                <div class="form-input-wrapper">
+                                    <i class="fas fa-key"></i>
+                                    <input type="text" id="fieldRegOtpCode" placeholder="رمز التحقق المتكون من 6 أرقام">
+                                </div>
+                            </div>
+                            <button type="button" class="form-submit-action-btn" style="background-color:#ff9900; color:#1a1e22;" onclick="window.verifyRegisterOtpAndCreateUserLive()">
+                                <i class="fas fa-check-circle"></i> تفعيل الحساب والولوج للمتجر فوراً
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- 3. سكشن بيدج تفاصيل حسابي المطور المشترك مع هيكل الطلبات الجانبية -->
+                    <div id="koshkCustomerProfileDashboardBlock" style="display: none; text-align: right;">
+                        <div class="profile-layout-with-sidebar">
+                            
+                            <!-- واجهة لوحة الطلبات الجانبية للمستخدم -->
+                            <div class="orders-dashboard-sidebar-card">
+                                <h3 class="orders-sidebar-title"><i class="fas fa-box-open"></i> سجل طلباتك الكامله</h3>
+                                <div id="koshkClientOrdersSidebarListArea">
+                                    <!-- تُحقن طلبات المستخدم الحالية هنا لايف -->
+                                </div>
+                            </div>
+                            
+                            <!-- استمارة تعديل البيانات الأساسية -->
+                            <div>
+                                <h2 class="profile-block-title"><i class="fas fa-user-circle"></i> إعدادات وبيدج حسابك الشخصي</h2>
+                                <div class="profile-avatar-premium-card">
+                                    <div class="premium-avatar-box-view" id="koshkProfileAvatarBoxView">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div class="avatar-actions-buttons-area" id="profileAvatarActionsButtonsArea">
+                                        <button class="profile-img-action-btn-lux" onclick="document.getElementById('koshkHiddenProfileImageFileInput').click()"><i class="fas fa-image"></i> إضافة صورة شخصية</button>
+                                    </div>
+                                    <input type="file" id="koshkHiddenProfileImageFileInput" accept="image/*" style="display:none;">
+                                </div>
+
+                                <form id="koshkClientProfileUpdateForm" class="premium-profile-form">
+                                    <div class="form-field-group">
+                                        <label>الاسم بالكامل (المعتمد)</label>
+                                        <div class="form-input-wrapper">
+                                            <i class="fas fa-user"></i>
+                                            <input type="text" id="profName" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-field-group">
+                                        <label>رقم الهاتف المفعل</label>
+                                        <div class="form-input-wrapper">
+                                            <i class="fas fa-phone"></i>
+                                            <input type="tel" id="profPhone" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-field-group">
+                                        <label>البريد الإلكتروني الحالي (لا يمكن تغييره)</label>
+                                        <div class="form-input-wrapper">
+                                            <i class="fas fa-envelope"></i>
+                                            <input type="email" id="profEmail" required disabled style="background:#f1f5f9; cursor:not-allowed;">
+                                        </div>
+                                    </div>
+                                    <div class="form-grid-2-columns">
+                                        <div class="form-field-group">
+                                            <label>المدينة المعتمدة للتوصيل</label>
+                                            <div class="form-input-wrapper">
+                                                <i class="fas fa-map-marker-alt"></i>
+                                                <input type="text" id="profCity" required>
+                                            </div>
+                                        </div>
+                                        <div class="form-field-group">
+                                            <label>المنطقة الفرعية / الحي</label>
+                                            <div class="form-input-wrapper">
+                                                <i class="fas fa-street-view"></i>
+                                                <input type="text" id="profProvince">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-field-group">
+                                        <label>العنوان السكني التفصيلي</label>
+                                        <div class="form-input-wrapper">
+                                            <i class="fas fa-home"></i>
+                                            <input type="text" id="profAddress">
+                                        </div>
+                                    </div>
+                                    <button type="submit" class="form-submit-action-btn" style="background:#1a1e22; color:#fff;"><i class="fas fa-save"></i> حفظ وتحديث بيانات حسابي لايف</button>
+                                </form>
+                                <button onclick="window.executeClientSignOutLive()" class="lux-logout-btn"><i class="fas fa-sign-out-alt"></i> تسجيل خروج من المتجر</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- عناصر الدخول السريع -->
+                    <div id="socialAuthDividerBlock">
+                        <div class="social-auth-divider">أو سجل دخول سريع عبر</div>
+                        <button type="button" class="social-login-btn" onclick="window.handleKoshkGoogleAuthLive()">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" style="width:16px;">
+                            <span>التسجيل الذكي عبر Google</span>
+                        </button>
+                    </div>
+
+                </div>
+
+                <!-- العروض الجانبية اليمنى -->
+                <div class="promo-side-column right-side" id="rightSidePromoColumnBlock">
+                    <div class="koshk-promo-card" onclick="window.location.href='index.html?category=men'">
+                        <span class="promo-badge" style="background:#ef4444; color:#fff;">قسم الملابس</span>
+                        <h4 style="font-weight:700;">هودي شتوي أسود كاجوال</h4>
+                        <div class="promo-price" style="color:#ef4444;">450 ج.م</div>
+                        <p style="font-size:12px; color:#64748b;">قطن مصري 100% ثقيل</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="mobile-bottom-nav">
+        <div class="mobile-nav-item" onclick="window.location.href='index.html';"><i class="fas fa-bars"></i><span>الفئات</span></div>
+        <div class="mobile-nav-item active-bottom-item" onclick="window.switchToMyAccountTabDirectly();"><i class="fas fa-user"></i><span>حسابي</span></div>
+        <div class="mobile-nav-item" onclick="window.location.href='index.html?view=feed';"><i class="fas fa-home"></i><span>الرئيسية</span></div>
+        <div class="mobile-nav-item" onclick="window.location.href='index.html?view=basket';"><i class="fas fa-shopping-basket"></i><span>العربة</span></div>
+    </div>
+
+    <script type="module">
+        import { db, auth } from './js/firebase-config.js';
+        import { collection, addDoc, getDocs, query, where, doc, setDoc, onSnapshot, deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { 
+            createUserWithEmailAndPassword, 
+            signInWithEmailAndPassword,
+            setPersistence,
+            browserLocalPersistence,
+            GoogleAuthProvider,
+            signInWithPopup,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        let generatedOtpCodeLive = "";
+        let pendingAccountDataLive = null;
+        let currentCustomerId = null;
+        let globalCustomerProfileDocumentId = null;
+
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('keydown', event => {
+            if (event.key === 'F12' || (event.ctrlKey && event.shiftKey && event.key === 'I')) {
+                event.preventDefault();
+            }
+        });
+
+        // تشغيل مستمع حدث الضغط على زر Enter داخل شريط بحث صفحة الولوج
+        document.getElementById('authSearchInputField').addEventListener('keydown', (e) => {
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                window.location.href = `index.html?search=${encodeURIComponent(e.target.value)}`;
+            }
+        });
+        document.getElementById('authSearchBtnTrigger').onclick = () => {
+            const val = document.getElementById('authSearchInputField').value;
+            window.location.href = `index.html?search=${encodeURIComponent(val)}`;
+        };
+
+        window.showKoshkPremiumToast = function(message, isSuccess = true) {
+            const wrapper = document.getElementById('koshkToastNotificationWrapper');
+            const toast = document.createElement('div');
+            toast.className = 'koshk-premium-toast';
+            if(!isSuccess) {
+                toast.style.background = '#ef4444';
+                toast.style.color = '#ffffff';
+            }
+            toast.innerHTML = `<i class="${isSuccess ? 'fas fa-check-circle' : 'fas fa-exclamation-circle'}"></i> <span>${message}</span>`;
+            wrapper.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateX(0)';
+            }, 50);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 4000);
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            const loginForm = document.getElementById('storeLoginForm');
+            const registerForm = document.getElementById('storeRegisterForm');
+            const profileBlock = document.getElementById('koshkCustomerProfileDashboardBlock');
+            const tabsNav = document.getElementById('authTabsNavBlock');
+            const socialBlock = document.getElementById('socialAuthDividerBlock');
+            const mainGrid = document.getElementById('mainAuthLayoutGridWrapper');
+            const leftPromo = document.getElementById('leftSidePromoColumnBlock');
+            const rightPromo = document.getElementById('rightSidePromoColumnBlock');
+            const centralBlock = document.getElementById('centralAuthLayoutContainerBlock');
+
+            if(user) {
+                currentCustomerId = user.uid;
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'none';
+                tabsNav.style.display = 'none';
+                socialBlock.style.display = 'none';
+                profileBlock.style.display = 'block';
+                
+                // تعديل تخطيط الصفحة لإخفاء الإعلانات وعرض سكتش الحساب والطلبات بكامل العرض الفاخر
+                if(leftPromo) leftPromo.style.display = 'none';
+                if(rightPromo) rightPromo.style.display = 'none';
+                if(mainGrid) mainGrid.style.gridTemplateColumns = '1fr';
+                if(centralBlock) centralBlock.style.gridColumn = 'span 1';
+
+                try {
+                    const q = query(collection(db, "users"), where("uid", "==", user.uid));
+                    const s = await getDocs(q);
+                    if(!s.empty) {
+                        globalCustomerProfileDocumentId = s.docs[0].id;
+                        const u = s.docs[0].data();
+                        const _navT = document.getElementById('user-nav-text');
+                        if(_navT) _navT.innerText = (u.name && u.name.trim()) ? u.name : 'حسابي';
+                        document.getElementById('profName').value = u.name || '';
+                        document.getElementById('profPhone').value = u.phone || '';
+                        document.getElementById('profEmail').value = u.email || '';
+                        document.getElementById('profCity').value = u.city === "N/A" ? "" : (u.city || "");
+                        document.getElementById('profProvince').value = u.province === "N/A" ? "" : (u.province || "");
+                        document.getElementById('profAddress').value = u.address === "N/A" ? "" : (u.address || "");
+                        
+                        // سحب سجل طلبات المستخدم الكامله وعرض حالتها لايف
+                        listenToCustomerOrdersLive(user.uid, u.phone);
+
+                        const avatarArea = document.getElementById('profileAvatarActionsButtonsArea');
+                        const avatarBox = document.getElementById('koshkProfileAvatarBoxView');
+                        if (u.avatar && u.avatar.trim() !== "") {
+                            avatarBox.innerHTML = `<img src="${u.avatar}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+                            avatarArea.innerHTML = `
+                                <button type="button" class="profile-img-action-btn-lux" style="background:#ff9900; color:#1a1e22;" onclick="document.getElementById('koshkHiddenProfileImageFileInput').click()"><i class="fas fa-sync"></i> تغيير الصورة</button>
+                                <button type="button" class="profile-img-action-btn-lux" style="background:#fee2e2; color:#ef4444;" onclick="window.deleteProfileImageLive()"><i class="fas fa-trash"></i> حذفها</button>
+                            `;
+                        } else {
+                            avatarBox.innerHTML = `<i class="fas fa-user" style="font-size:40px; color:#94a3b8;"></i>`;
+                            avatarArea.innerHTML = `
+                                <button type="button" class="profile-img-action-btn-lux" onclick="document.getElementById('koshkHiddenProfileImageFileInput').click()"><i class="fas fa-image"></i> إضافة صورة شخصية</button>
+                            `;
+                        }
+                        document.getElementById('koshkHiddenProfileImageFileInput').onchange = window.triggerProfileImageUploadLive;
+                    }
+                } catch(e) { console.error(e); }
+            } else {
+                currentCustomerId = null;
+                globalCustomerProfileDocumentId = null;
+                const _navT2 = document.getElementById('user-nav-text');
+                if(_navT2) _navT2.innerText = 'حسابي';
+                profileBlock.style.display = 'none';
+                tabsNav.style.display = 'flex';
+                socialBlock.style.display = 'block';
+                if(leftPromo) leftPromo.style.display = 'flex';
+                if(rightPromo) rightPromo.style.display = 'flex';
+                if(mainGrid) mainGrid.style.gridTemplateColumns = '280px 1fr 280px';
+                window.toggleAuthForm('login');
+            }
+        });
+
+        function listenToCustomerOrdersLive(uid, userPhone) {
+            const listArea = document.getElementById('koshkClientOrdersSidebarListArea');
+            if(!listArea) return;
+            
+            const q = query(collection(db, "orders"), where("userId", "==", uid));
+            onSnapshot(q, (snapshot) => {
+                listArea.innerHTML = '';
+                if(snapshot.empty) {
+                    listArea.innerHTML = '<p style="color:#64748b; font-size:12px; text-align:center;">لا توجد لديك أي أوردرات سابقة في المتجر حالياً.</p>';
+                    return;
+                }
+                snapshot.forEach(docSnap => {
+                    const order = docSnap.data();
+                    const orderId = docSnap.id;
+                    let statusTextTranslated = order.status === 'pending' ? 'معلق / قيد المراجعة' : order.status === 'shipping' ? 'شُحن / مع المندوب' : order.status === 'delivered' ? 'تم الاستلام بنجاح' : 'ملغي';
+                    let badgeColor = order.status === 'pending' ? '#f59e0b' : order.status === 'shipping' ? '#3b82f6' : order.status === 'delivered' ? '#10b981' : '#ef4444';
+                    
+                    // زر الإلغاء يظهر فقط للأوردرات المعلقة ولم يتم تسليمها أو شحنها
+                    let cancelBtnHtml = (order.status === 'pending' || order.status === 'معلق') ? 
+                        `<button class="cancel-order-action-lux-btn" onclick="window.cancelCustomerOrderLive('${orderId}')"><i class="fas fa-window-close"></i> إلغاء هذا الطلب</button>` : '';
+
+                    listArea.insertAdjacentHTML('beforeend', `
+                        <div class="user-order-mini-pill">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                                <strong>كود: ${order.orderNumber || orderId.substring(0,6)}</strong>
+                                <span style="font-weight:700; color:${badgeColor};">${statusTextTranslated}</span>
+                            </div>
+                            <div style="color:#64748b; font-size:12px;">الإجمالي: ${order.total} ج.م</div>
+                            ${cancelBtnHtml}
+                        </div>
+                    `);
+                });
+            });
+        }
+
+        window.cancelCustomerOrderLive = async function(orderId) {
+            if(confirm("هل أنت متأكد تماماً من رغبتك في إلغاء هذا الأوردر نهائياً من السيستم؟")) {
+                try {
+                    await updateDoc(doc(db, "orders", orderId), { status: 'cancelled' });
+                    window.showKoshkPremiumToast("تم إلغاء الطلب بنجاح وتحديث حالته بالسيرفر.", true);
+                } catch(err) {
+                    window.showKoshkPremiumToast("فشل إلغاء الطلب: " + err.message, false);
+                }
+            }
+        };
+
+        window.confirmForgotPasswordRequestLive = async function() {
+            const emailField = document.getElementById('fieldLoginEmail').value.trim();
+            if(!emailField) {
+                window.showKoshkPremiumToast("من فضلك اكتب البريد الإلكتروني أولاً بالخانات لنعلم من طالب الدعم.", false);
+                document.getElementById('koshkForgotPasswordPremiumModal').style.display='none';
+                return;
+            }
+            try {
+                // جلب اسم طالب الدعم ورقم هاتفه من الداتا بيز
+                const q = query(collection(db, "users"), where("email", "==", emailField));
+                const snap = await getDocs(q);
+                let clientName = "عميل مجهول";
+                let clientPhone = "بدون رقم هاتف";
+                if(!snap.empty) {
+                    clientName = snap.docs[0].data().name || clientName;
+                    clientPhone = snap.docs[0].data().phone || clientPhone;
+                }
+                
+                await addDoc(collection(db, "forgot_passwords"), {
+                    clientEmail: emailField,
+                    clientName: clientName,
+                    clientPhone: clientPhone,
+                    requestedAt: new Date()
+                });
+                window.showKoshkPremiumToast("تم إرسال إشارة طلب الاستعادة بنجاح! سينتظر تواصل الدعم.", true);
+            } catch(e) {
+                window.showKoshkPremiumToast("فشل إرسال الإشارة للسيرفر.", false);
+            } finally {
+                document.getElementById('koshkForgotPasswordPremiumModal').style.display='none';
+            }
+        };
+
+        window.switchToMyAccountTabDirectly = function() {
+            window.showKoshkPremiumToast("أنت بالفعل داخل بوابة حسابك الشخصي والطلبات.", true);
+        };
+
+        window.toggleAuthForm = function(formType) {
+            const loginForm = document.getElementById('storeLoginForm');
+            const registerForm = document.getElementById('storeRegisterForm');
+            const tabLogin = document.getElementById('btnTabLogin');
+            const tabRegister = document.getElementById('btnTabRegister');
+
+            if(formType === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                tabLogin.classList.remove('active');
+                tabRegister.classList.add('active');
+            }
+        };
+
+        document.getElementById('storeLoginForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('fieldLoginEmail').value.trim();
+            const password = document.getElementById('fieldLoginPassword').value;
+            const btn = document.getElementById('btnLoginSubmit');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحقق والدخول...';
+
+            try {
+                await setPersistence(auth, browserLocalPersistence);
+                await signInWithEmailAndPassword(auth, email, password);
+                window.showKoshkPremiumToast("أهلاً بك مجدداً! تم الولوج لحسابك بنجاح.", true);
+            } catch (error) {
+                window.showKoshkPremiumToast("خطأ في تسجيل الدخول: يرجى مراجعة البيانات الباسورد.", false);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> دخول لحسابي';
+            }
+        };
+
+        window.sendKoshkWhatsAppOtpLive = function() {
+            const name = document.getElementById('fieldRegName').value.trim();
+            const email = document.getElementById('fieldRegEmail').value.trim();
+            const password = document.getElementById('fieldRegPassword').value;
+            const phone = document.getElementById('fieldRegPhone').value.trim();
+            const city = document.getElementById('fieldRegCity').value;
+            const btn = document.getElementById('btnRegSendOtp');
+
+            if(!name || !email || !password || !phone || !city) {
+                window.showKoshkPremiumToast("من فضلك املأ جميع حقول التسجيل أولاً لإنشاء كود التحقق.", false);
+                return;
+            }
+
+            generatedOtpCodeLive = String(Math.floor(100000 + Math.random() * 900000));
+            pendingAccountDataLive = { name, email, password, phone, city };
+
+            window.showKoshkPremiumToast("جاري توجيه رسالة التفعيل والتحقق إلى رقم واتساب المتجر...", true);
+            
+            const targetWhatsAppNumber = "201500812929";
+            const messagePayload = `أنا العميل الجديد: ${name}، ورقم هاتفي هو: ${phone}. أود تفعيل حسابي في متجر أونلاين كشك؛ وهذا هو رمز التحقق الفريد الخاص بي لتأكيده بالسيرفر: (${generatedOtpCodeLive})`;
+            const whatsAppUrl = `https://wa.me/${targetWhatsAppNumber}?text=${encodeURIComponent(messagePayload)}`;
+            
+            window.open(whatsAppUrl, '_blank');
+
+            document.getElementById('inlineOtpSectionBlock').style.display = 'block';
+            btn.innerHTML = '<i class="fab fa-whatsapp"></i> إعادة فتح محادثة كود تفعيل الواتس آب';
+        };
+
+        window.verifyRegisterOtpAndCreateUserLive = async function() {
+            const inputCode = document.getElementById('fieldRegOtpCode').value.trim();
+            if(!inputCode) { window.showKoshkPremiumToast("من فضلك أدخل كود التحقق أولاً.", false); return; }
+            if(inputCode !== generatedOtpCodeLive) { window.showKoshkPremiumToast("كود التحقق المدخل غير صحيح بالمرة! برجاء مراجعته.", false); return; }
+
+            const { name, email, password, phone, city } = pendingAccountDataLive;
+
+            try {
+                await setPersistence(auth, browserLocalPersistence);
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                
+                await addDoc(collection(db, "users"), {
+                    uid: userCredential.user.uid,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    city: city,
+                    address: "N/A",
+                    province: "N/A",
+                    role: "customer",
+                    avatar: "",
+                    createdAt: new Date()
+                });
+
+                window.showKoshkPremiumToast("✨ تم تفعيل حسابك بنجاح! مبروك الولوج المباشر للمتجر 🎉", true);
+            } catch (error) {
+                window.showKoshkPremiumToast("حدث خطأ أثناء التفعيل في السيرفر: " + error.message, false);
+            }
+        };
+
+        document.getElementById('koshkClientProfileUpdateForm').onsubmit = async (e) => {
+            e.preventDefault();
+            if(!currentCustomerId || !globalCustomerProfileDocumentId) return;
+
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري حفظ التعديلات لايف...';
+
+            try {
+                const name = document.getElementById('profName').value.trim();
+                const phone = document.getElementById('profPhone').value.trim();
+                const city = document.getElementById('profCity').value.trim();
+                const province = document.getElementById('profProvince').value.trim();
+                const address = document.getElementById('profAddress').value.trim();
+
+                await setDoc(doc(db, "users", globalCustomerProfileDocumentId), {
+                    name: name,
+                    phone: phone,
+                    city: city || "N/A",
+                    province: province || "N/A",
+                    address: address || "N/A",
+                    updatedAt: new Date()
+                }, { merge: true });
+
+                window.showKoshkPremiumToast("تم تحديث وحفظ بيانات ملفك الشخصي بنجاح بالداتا بيز!", true);
+            } catch(err) {
+                window.showKoshkPremiumToast("فشل تحديث البيانات: " + err.message, false);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-save"></i> حفظ وتحديث بيانات حسابي لايف';
+            }
+        };
+
+        window.triggerProfileImageUploadLive = function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    const base64String = e.target.result;
+                    try {
+                        if (globalCustomerProfileDocumentId) {
+                            await setDoc(doc(db, "users", globalCustomerProfileDocumentId), { avatar: base64String }, { merge: true });
+                            window.showKoshkPremiumToast("تم حفظ وتحديث صورتك الشخصية الجديدة بالسيرفر بنجاح!", true);
+                            document.getElementById('koshkProfileAvatarBoxView').innerHTML = `<img src="${base64String}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+                        }
+                    } catch(err) { window.showKoshkPremiumToast("فشل حفظ الصورة الشخصية", false); }
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
+        window.deleteProfileImageLive = async function() {
+            if(confirm("هل أنت متأكد تماماً من إزالة وصورتك الشخصية من سيرفر الداتا بيز للمتجر؟")) {
+                try {
+                    if (globalCustomerProfileDocumentId) {
+                        await setDoc(doc(db, "users", globalCustomerProfileDocumentId), { avatar: "" }, { merge: true });
+                        window.showKoshkPremiumToast("تم حذف الصورة الشخصية بنجاح.", true);
+                        document.getElementById('koshkProfileAvatarBoxView').innerHTML = `<i class="fas fa-user"></i>`;
+                    }
+                } catch(err) { window.showKoshkPremiumToast("فشل حذف الصورة", false); }
+            }
+        };
+
+        async function saveSocialUserToDatabaseLive(user) {
+            const q = query(collection(db, "users"), where("uid", "==", user.uid));
+            const snap = await getDocs(q);
+            if(snap.empty) {
+                await addDoc(collection(db, "users"), {
+                    uid: user.uid,
+                    name: user.displayName || "عميل متجر",
+                    email: user.email,
+                    phone: user.phoneNumber || "N/A",
+                    city: "N/A",
+                    province: "N/A",
+                    address: "N/A",
+                    role: "customer",
+                    avatar: user.photoURL || "",
+                    createdAt: new Date()
+                });
+            }
+        }
+
+        window.handleKoshkGoogleAuthLive = async function() {
+            const provider = new GoogleAuthProvider();
+            try {
+                await setPersistence(auth, browserLocalPersistence);
+                const result = await signInWithPopup(auth, provider);
+                await saveSocialUserToDatabaseLive(result.user);
+                window.showKoshkPremiumToast(`أهلاً بك يا ${result.user.displayName}، تم الولوج بنجاح!`, true);
+            } catch (error) { window.showKoshkPremiumToast("فشل الدخول الذكي عبر جوجل.", false); }
+        };
+
+        window.executeClientSignOutLive = function() {
+            signOut(auth).then(() => {
+                window.showKoshkPremiumToast("تم تسجيل خروجك من الكشك بنجاح وبأمان.", true);
+            });
+        };
+    </script>
+</body>
+</html>
