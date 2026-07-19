@@ -8,219 +8,6 @@
     <link rel="stylesheet" href="css/style.css">
     <!-- مكتبة EmailJS الرسمية والمحدثة -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>
-        /* التعديل: تثبيت الهيدر والناف بار بشكل دائم وعام ومقاوم للإخفاء */
-        header {
-            position: fixed !important;
-            top: 0;
-            left: 0;
-            z-index: 10000;
-            width: 100%;
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
-            background: #ffffff;
-        }
-        main {
-            margin-top: 160px !important; /* مسافة أمان لمنع تداخل المحتوى تحت الهيدر الثابت */
-        }
-        .order-tracking-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            padding: 25px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.01);
-            text-align: right;
-        }
-        .profile-img-action-btn {
-            font-family: 'Cairo', sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            border: none;
-            transition: all 0.2s;
-        }
-        .koshk-modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(4px);
-            display: flex; align-items: center; justify-content: center;
-            z-index: 20000; opacity: 0; transition: opacity 0.3s ease;
-        }
-        .koshk-modal-box {
-            background: #ffffff; border-radius: 12px; width: 90%; max-width: 450px;
-            padding: 30px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
-            transform: scale(0.9); transition: transform 0.3s ease; font-family: 'Cairo', sans-serif;
-        }
-        .remember-me-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-            text-align: right;
-        }
-        .remember-me-container input {
-            width: auto !important;
-            cursor: pointer;
-        }
-        .remember-me-container label {
-            margin-bottom: 0 !important;
-            cursor: pointer;
-            font-size: 13px;
-            color: #475569;
-        }
-        .otp-verification-section {
-            background: #f8fafc;
-            border: 1px dashed #ff9900;
-            padding: 15px;
-            border-radius: 8px;
-            margin-top: 15px;
-            display: none;
-        }
-        .cart-options-select-block {
-            display: flex;
-            gap: 10px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-        .cart-custom-select {
-            padding: 4px 8px;
-            font-family: 'Cairo', sans-serif;
-            font-size: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            background: #ffffff;
-            outline: none;
-        }
-
-        /* التصميم الجديد الفاخر لصفحة تفاصيل المنتج والـ Layout المطور للمقاومة الكاملة على الموبايل */
-        .premium-product-container {
-            background: #ffffff;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
-            margin-bottom: 40px;
-        }
-        .premium-gallery-box {
-            background: #fafafa;
-            border: 1px solid #f1f5f9;
-            border-radius: 16px;
-            height: 420px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-        .premium-gallery-box img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            transition: transform 0.3s ease;
-        }
-        .premium-gallery-box:hover img {
-            transform: scale(1.03);
-        }
-        .premium-meta-card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        .premium-action-bar-fixed {
-            display: flex;
-            gap: 12px;
-            width: 100%;
-        }
-
-        /* تحسينات وتجاوب فائق للهيدر والناف بار الجديد كلياً على أجهزة الموبايل */
-        @media (max-width: 991px) {
-            main {
-                margin-top: 210px !important; /* تعديل الارتفاع للموبايل لاستيعاب شريط البحث السفلي في الهيدر */
-            }
-            .top-nav {
-                padding: 12px 0 !important;
-            }
-            .nav-wrapper {
-                justify-content: space-between !important;
-                padding: 0 16px !important;
-                flex-wrap: wrap;
-            }
-            .location-container, .nav-actions .action-item:not(.cart-btn), .whatsapp-action-nav-capsule {
-                display: none !important;
-            }
-            .search-bar {
-                order: 3;
-                flex: 0 0 100% !important;
-                margin-left: 0 !important;
-                margin-top: 10px !important;
-            }
-            .nav-actions {
-                flex: 0 0 auto !important;
-            }
-            .cart-btn {
-                border-right: none !important;
-                padding-right: 0 !important;
-            }
-            .cart-btn span:not(.cart-count) {
-                display: none !important;
-            }
-            .categories-nav {
-                display: block !important; /* ضمان بقاء شريط الأقسام معروضاً */
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-            .categories-nav .nav-wrapper ul {
-                display: flex;
-                gap: 15px;
-                padding: 5px 10px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .page-card {
-                padding: 20px !important;
-                margin: 12px !important;
-            }
-            .premium-product-container {
-                padding: 15px !important;
-                border-radius: 14px !important;
-            }
-            .product-detail-grid-layout {
-                grid-template-columns: 1fr !important; /* قلب الديزاين لعمود واحد متجاوب في تفاصيل المنتج */
-                gap: 20px !important;
-            }
-            .premium-gallery-box {
-                height: 280px !important;
-                border-radius: 12px !important;
-            }
-            /* شريط أزرار ثابت أسفل الشاشة للموبايل لضمان سهولة الشراء للمستخدم وعصرية التصميم */
-            .premium-action-bar-fixed {
-                position: fixed;
-                bottom: 60px;
-                left: 0;
-                right: 0;
-                background: rgba(255, 255, 255, 0.95);
-                backdrop-filter: blur(12px);
-                padding: 12px 16px;
-                box-shadow: 0 -8px 20px rgba(0,0,0,0.06);
-                z-index: 9999;
-                gap: 10px;
-                width: 100%;
-            }
-            .payment-methods-grid {
-                grid-template-columns: repeat(2, 1fr) !important;
-            }
-            .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important; /* تحسين عرض كروت المنتجات على الموبايل الأصغر */
-                gap: 12px !important;
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -233,13 +20,13 @@
             <p style="color: #475569; font-size: 15px; line-height: 1.8; margin-bottom: 25px;">
                 مبروك! لقد حصلت على **خصم 100% على مصاريف الشحن** لأول أوردر تقوم بطلبه من المتجر الآن.
             </p>
-            <button onclick="window.closeKoshkWelcomeGiftModalLive()" style="background: #1a1e22; color: #ffffff; border: none; padding: 12px 35px; border-radius: 8px; font-family: 'Cairo'; font-weight: 700; cursor: pointer; font-size: 14px; transition: background 0.2s;">تسوق واستمتع بالهدية الآن</button>
+            <button onclick="window.closeKoshkWelcomeGiftModalLive()" style="background: #1a1e22; color: #ffffff; border: none; padding: 12px 35px; border-radius: 8px; font-family: 'Cairo'; font-weight: 700; pointer-events: auto; cursor: pointer; font-size: 14px; transition: background 0.2s;">تسوق واستمتع بالهدية الآن</button>
         </div>
     </div>
 
     <div id="koshkCustomConfirmModalWrapper" class="koshk-modal-overlay" style="display: none;">
         <div class="koshk-modal-box">
-            <div style="font-size: 45px; color: #ef4444; margin-bottom: 15px;"><i class="fas fa-trash-alt"></i></div>
+            <div style="font-size: 45px; color: #ef4444; margin-bottom: 15px;"><i class="fas fa-exclamation-triangle"></i></div>
             <h3 style="color: #0f172a; font-weight: 700; margin-bottom: 12px; font-size: 18px;" id="koshkConfirmModalTitle">تأكيد الإجراء</h3>
             <p style="color: #64748b; font-size: 14px; line-height: 1.6; margin-bottom: 25px;" id="koshkConfirmModalMessage">هل أنت متأكد من رغبتك في الاستمرار?</p>
             <div style="display: flex; gap: 12px; justify-content: center;">
@@ -266,25 +53,25 @@
                 <i class="fas fa-chevron-down"></i>
             </div>
             <div class="mobile-location-list" id="mobileLocationList">
-                <a href="?page=home" onclick="event.preventDefault(); updateLocationMobile('القاهرة')">القاهرة</a>
-                <a href="?page=home" onclick="event.preventDefault(); updateLocationMobile('القاهرة الجديدة')">القاهرة الجديدة</a>
-                <a href="?page=home" onclick="event.preventDefault(); updateLocationMobile('اسكندرية')">اسكندرية</a>
+                <a href="#" onclick="event.preventDefault(); updateLocationMobile('القاهرة')">القاهرة</a>
+                <a href="#" onclick="event.preventDefault(); updateLocationMobile('القاهرة الجديدة')">القاهرة الجديدة</a>
+                <a href="#" onclick="event.preventDefault(); updateLocationMobile('اسكندرية')">اسكندرية</a>
             </div>
         </div>
         <div class="sidebar-menu-title">كل الفئات</div>
         <ul class="sidebar-links">
-            <li><a href="?category=electronics" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')"><i class="fas fa-laptop"></i> إلكترونيات</a></li>
-            <li><a href="?category=men" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')"><i class="fas fa-tshirt"></i> ملابس رجالي</a></li>
-            <li><a href="?category=women" onclick="event.preventDefault(); filterByCategoryLive('ملابس حريمي')"><i class="fas fa-female"></i> ملابس حريمي</a></li>
-            <li><a href="?category=kids" onclick="event.preventDefault(); filterByCategoryLive('ملابس أطفال')"><i class="fas fa-child"></i> ملابس أطفال</a></li>
-            <li><a href="?category=makeup" onclick="event.preventDefault(); filterByCategoryLive('ميكب وبيرفيوم')"><i class="fas fa-magic"></i> ميكب وبيرفيوم</a></li>
-            <li><a href="?category=skincare" onclick="event.preventDefault(); filterByCategoryLive('منتجات العناية بالبشرة')"><i class="fas fa-spa"></i> منتجات العناية بالبشرة</a></li>
-            <li><a href="?category=baby" onclick="event.preventDefault(); filterByCategoryLive('منتجات للبيبي')"><i class="fas fa-baby"></i> منتجات للبيبي</a></li>
-            <li><a href="?category=supermarket" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')"><i class="fas fa-shopping-basket"></i> السوبر ماركت</a></li>
-            <li><a href="?category=stationery" onclick="event.preventDefault(); filterByCategoryLive('ادوات مكتبية')"><i class="fas fa-pen-nib"></i> ادوات مكتبية</a></li>
-            <li><a href="?category=cars" onclick="event.preventDefault(); filterByCategoryLive('اكسسوارات سيارات')"><i class="fas fa-car"></i> اكسسوارات سيارات</a></li>
-            <li><a href="?category=pets" onclick="event.preventDefault(); filterByCategoryLive('مستلزمات حيوانات')"><i class="fas fa-paw"></i> مستلزمات حيوانات</a></li>
-            <li><a href="?category=toys" onclick="event.preventDefault(); filterByCategoryLive('العاب اطفال')"><i class="fas fa-gamepad"></i> العاب اطفال</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')"><i class="fas fa-laptop"></i> إلكترونيات</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')"><i class="fas fa-tshirt"></i> ملابس رجالي</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس حريمي')"><i class="fas fa-female"></i> ملابس حريمي</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس أطفال')"><i class="fas fa-child"></i> ملابس أطفال</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ميكب وبيرفيوم')"><i class="fas fa-magic"></i> ميكب وبيرفيوم</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('منتجات العناية بالبشرة')"><i class="fas fa-spa"></i> منتجات العناية بالبشرة</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('منتجات للبيبي')"><i class="fas fa-baby"></i> منتجات للبيبي</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')"><i class="fas fa-shopping-basket"></i> السوبر ماركت</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ادوات مكتبية')"><i class="fas fa-pen-nib"></i> ادوات مكتبية</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('اكسسوارات سيارات')"><i class="fas fa-car"></i> اكسسوارات سيارات</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('مستلزمات حيوانات')"><i class="fas fa-paw"></i> مستلزمات حيوانات</a></li>
+            <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('العاب اطفال')"><i class="fas fa-gamepad"></i> العاب اطفال</a></li>
         </ul>
     </div>
 
@@ -296,7 +83,7 @@
                 </button>
 
                 <div class="logo">
-                    <a href="?page=home" onclick="event.preventDefault(); showPage('home')">
+                    <a href="index.html">
                         <img src="assets/images/logo.png" alt="Online Koshk">
                     </a>
                 </div>
@@ -312,9 +99,9 @@
                     </div>
                     <div class="location-dropdown">
                         <ul>
-                            <li><a href="?page=home" onclick="event.preventDefault(); updateLocation('القاهرة')">القاهرة</a></li>
-                            <li><a href="?page=home" onclick="event.preventDefault(); updateLocation('القاهرة الجديدة')">القاهرة الجديدة</a></li>
-                            <li><a href="?page=home" onclick="event.preventDefault(); updateLocation('اسكندرية')">اسكندرية</a></li>
+                            <li><a href="#" onclick="event.preventDefault(); updateLocation('القاهرة')">القاهرة</a></li>
+                            <li><a href="#" onclick="event.preventDefault(); updateLocation('القاهرة الجديدة')">القاهرة الجديدة</a></li>
+                            <li><a href="#" onclick="event.preventDefault(); updateLocation('اسكندرية')">اسكندرية</a></li>
                         </ul>
                     </div>
                 </div>
@@ -329,19 +116,19 @@
                         <i class="fab fa-whatsapp" style="color: #ffffff; font-size: 16px;"></i>
                         <span>اتصل واتساب</span>
                     </a>
-                    <a href="?page=auth" onclick="event.preventDefault(); showPage('auth')" class="action-item" id="user-profile">
+                    <a href="#" onclick="event.preventDefault(); showPage('auth')" class="action-item" id="user-profile">
                         <i class="far fa-user"></i>
                         <span id="user-nav-text">حسابي</span>
                     </a>
-                    <a href="?page=track" onclick="event.preventDefault(); showPage('track')" class="action-item">
+                    <a href="#" onclick="event.preventDefault(); showPage('track')" class="action-item">
                         <i class="fas fa-truck"></i>
                         <span>تتبع الطلبات</span>
                     </a>
-                    <a href="?page=wishlist" onclick="event.preventDefault(); showPage('wishlist')" class="action-item">
+                    <a href="#" onclick="event.preventDefault(); showPage('wishlist')" class="action-item">
                         <i class="far fa-heart"></i>
                         <span>المفضلة</span>
                     </a>
-                    <a href="?page=cart" onclick="event.preventDefault(); showPage('cart')" class="action-item cart-btn">
+                    <a href="#" onclick="event.preventDefault(); showPage('cart')" class="action-item cart-btn">
                         <i class="fas fa-shopping-basket"></i>
                         <span class="cart-count" id="global-cart-count">0</span>
                         <span>عربة التسوق</span>
@@ -353,27 +140,91 @@
         <nav class="categories-nav">
             <div class="nav-wrapper">
                 <ul>
-                    <li><a href="?category=electronics" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')">إلكترونيات</a></li>
-                    <li><a href="?category=men" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')">ملابس رجالي</a></li>
-                    <li><a href="?category=women" onclick="event.preventDefault(); filterByCategoryLive('ملابس حريمي')">ملابس حريمي</a></li>
-                    <li><a href="?category=kids" onclick="event.preventDefault(); filterByCategoryLive('ملابس أطفال')">ملابس أطفال</a></li>
-                    <li><a href="?category=makeup" onclick="event.preventDefault(); filterByCategoryLive('ميكب وبيرفيوم')">ميكب وبيرفيوم</a></li>
-                    <li><a href="?category=skincare" onclick="event.preventDefault(); filterByCategoryLive('منتجات العناية بالبشرة')">منتجات العناية بالبشرة</a></li>
-                    <li><a href="?category=baby" onclick="event.preventDefault(); filterByCategoryLive('منتجات للبيبي')">منتجات للبيبي</a></li>
-                    <li><a href="?category=supermarket" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')">السوبر ماركت</a></li>
-                    <li><a href="?category=stationery" onclick="event.preventDefault(); filterByCategoryLive('ادوات مكتبية')">ادوات مكتبية</a></li>
-                    <li><a href="?category=cars" onclick="event.preventDefault(); filterByCategoryLive('اكسسوارات سيارات')">اكسسوارات سيارات</a></li>
-                    <li><a href="?category=pets" onclick="event.preventDefault(); filterByCategoryLive('مستلزمات حيوانات')">مستلزمات حيوانات</a></li>
-                    <li><a href="?category=toys" onclick="event.preventDefault(); filterByCategoryLive('العاب اطفال')">العاب اطفال</a></li>
+                    <li><a href="index.html"><i class="fas fa-home"></i> الصفحة الرئيسية</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')">إلكترونيات</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')">ملابس رجالي</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس حريمي')">ملابس حريمي</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس أطفال')">ملابس أطفال</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ميكب وبيرفيوم')">ميكب وبيرفيوم</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('منتجات العناية بالبشرة')">منتجات العناية بالبشرة</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('منتجات للبيبي')">منتجات للبيبي</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')">السوبر ماركت</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('ادوات مكتبية')">ادوات مكتبية</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('اكسسوارات سيارات')">اكسسوارات سيارات</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('مستلزمات حيوانات')"><i class="fas fa-paw"></i> مستلزمات حيوانات</a></li>
+                    <li><a href="#" onclick="event.preventDefault(); filterByCategoryLive('العاب اطفال')">العاب اطفال</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
+    <section class="hero-image-carousel" style="display: none;">
+        <button class="hero-carousel-arrow prev" onclick="window.scrollCarousel(-1)">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="hero-carousel-track" id="heroCarouselTrack">
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')">
+                <img src="assets/images/cart.png" alt="إلكترونيات">
+                <div class="hero-card-label">إلكترونيات</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')">
+                <img src="assets/images/cart.png" alt="ملابس رجالي">
+                <div class="hero-card-label">ملابس رجالي</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('ملابس حريمي')">
+                <img src="assets/images/cart.png" alt="ملابس حريمي">
+                <div class="hero-card-label">ملابس حريمي</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')">
+                <img src="assets/images/cart.png" alt="السوبر ماركت">
+                <div class="hero-card-label">السوبر ماركت</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('ميكب وبيرفيوم')">
+                <img src="assets/images/cart.png" alt="ميكب وبيرفيوم">
+                <div class="hero-card-label">ميكب وبيرفيوم</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('اكسسوارات سيارات')">
+                <img src="assets/images/cart.png" alt="اكسسوارات سيارات">
+                <div class="hero-card-label">اكسسوارات سيارات</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('ملابس أطفال')">
+                <img src="assets/images/cart.png" alt="ملابس أطفال">
+                <div class="hero-card-label">ملابس أطفال</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('الأجهزة المنزلية')">
+                <img src="assets/images/cart.png" alt="الأجهزة المنزلية">
+                <div class="hero-card-label">الأجهزة المنزلية</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('منتجات العناية بالبشرة')">
+                <img src="assets/images/cart.png" alt="منتجات العناية بالبشرة">
+                <div class="hero-card-label">منتجات العناية بالبشرة</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('منتجات للبيبي')">
+                <img src="assets/images/cart.png" alt="منتجات للبيبي">
+                <div class="hero-card-label">منتجات للبيبي</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('ادوات مكتبية')">
+                <img src="assets/images/cart.png" alt="ادوات مكتبية">
+                <div class="hero-card-label">ادوات مكتبية</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('مستلزمات حيوانات')">
+                <img src="assets/images/cart.png" alt="مستلزمات حيوانات">
+                <div class="hero-card-label">مستلزمات حيوانات</div>
+            </a>
+            <a href="#" class="hero-carousel-card" onclick="event.preventDefault(); filterByCategoryLive('العاب اطفال')">
+                <img src="assets/images/cart.png" alt="العاب اطفال">
+                <div class="hero-card-label">العاب اطفال</div>
+            </a>
+        </div>
+        <button class="hero-carousel-arrow next" onclick="window.scrollCarousel(1)">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+    </section>
+
     <main>
         <div class="full-width-container">
-            
-            <section class="hero-slider-container">
+
+            <section class="hero-slider-container" id="koshkMainHeroSliderContainerBlock">
                 <div class="slider-wrapper" id="slider-wrapper">
                     
                     <div class="slide active-slide slide-one">
@@ -393,7 +244,7 @@
                             <span class="banner-badge">خصومات الصيف الكبرى</span>
                             <h1>عروض مشاوير الصيف بدأت! 🚴‍♂️</h1>
                             <p>خصومات تصل إلى 50% على كل الإلكترونيات ومستلزمات الرياضة</p>
-                            <a href="?category=electronics" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')" class="slider-btn">اشتري دلوقتي</a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')" class="slider-btn">اشتري دلوقتي</a>
                         </div>
                     </div>
 
@@ -414,7 +265,7 @@
                             <span class="banner-badge">أزياء وموضة</span>
                             <h1>أحدث صيحات الموضة العالمية 👕</h1>
                             <p>تشكيلة مميزة من الملابس الرجالي والحريمي بأسعار لا تقبل المنافسة</p>
-                            <a href="?category=men" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')" class="slider-btn">تصفح الأزياء</a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')" class="slider-btn">تصفح الأزياء</a>
                         </div>
                     </div>
 
@@ -435,7 +286,7 @@
                             <span class="banner-badge">توصيل سوبر ماركت</span>
                             <h1>كل ما يحتاجه بيتك في مكان واحد 🏠</h1>
                             <p>تسوق منتجات السوبر ماركت والأجهزة المنزلية بتوصيل سريع وآمن</p>
-                            <a href="?category=supermarket" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')" class="slider-btn">تسوق الآن</a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')" class="slider-btn">تسوق الآن</a>
                         </div>
                     </div>
 
@@ -451,38 +302,7 @@
                 </div>
             </section>
 
-            <div class="container">
-                <section class="quick-cats">
-                    <div class="cat-circle-item" onclick="filterByCategoryLive('موبايلات')" style="cursor:pointer;">
-                        <div class="cat-circle-img"><i class="fas fa-mobile-alt"></i></div>
-                        <span>موبايلات</span>
-                    </div>
-                    <div class="cat-circle-item" onclick="filterByCategoryLive('إلكترونيات')" style="cursor:pointer;">
-                        <div class="cat-circle-img"><i class="fas fa-tv"></i></div>
-                        <span>إلكترونيات</span>
-                    </div>
-                    <div class="cat-circle-item" onclick="filterByCategoryLive('ملابس رجالي')" style="cursor:pointer;">
-                        <div class="cat-circle-img"><i class="fas fa-tshirt"></i></div>
-                        <span>أزياء الرجال</span>
-                    </div>
-                    <div class="cat-circle-item" onclick="filterByCategoryLive('السوبر ماركت')" style="cursor:pointer;">
-                        <div class="cat-circle-img"><i class="fas fa-shopping-basket"></i></div>
-                        <span>السوبر ماركت</span>
-                    </div>
-                    <div class="cat-circle-item" onclick="filterByCategoryLive('اكسسوارات سيارات')" style="cursor:pointer;">
-                        <div class="cat-circle-img"><i class="fas fa-car"></i></div>
-                        <span>اكسسوارات سيارات</span>
-                    </div>
-                    <div class="cat-circle-item" onclick="filterByCategoryLive('ميكب وبيرفيوم')" style="cursor:pointer;">
-                        <div class="cat-circle-img"><i class="fas fa-pump-soap"></i></div>
-                        <span>الجمال والعطور</span>
-                    </div>
-                    <div class="cat-circle-item" onclick="showPage('home')" style="cursor:pointer;">
-                        <div class="cat-circle-img"><i class="fas fa-percentage"></i></div>
-                        <span>تخفيضات مميزة</span>
-                    </div>
-                </section>
-
+            <div class="container" id="koshkMainHomepageFeedContentGridArea">
                 <section class="products-section">
                     <div class="section-title">
                         <h2>أحدث المنتجات والمقترحات لك</h2>
@@ -491,7 +311,7 @@
                                 <button class="prod-nav-btn" onclick="scrollProducts('productsSliderContainer', 'right')"><i class="fas fa-chevron-right"></i></button>
                                 <button class="prod-nav-btn" onclick="scrollProducts('productsSliderContainer', 'left')"><i class="fas fa-chevron-left"></i></button>
                             </div>
-                            <a href="?page=home" onclick="event.preventDefault(); showPage('home')" class="view-all-btn">عرض الكل</a>
+                            <a href="#" onclick="event.preventDefault(); showPage('home')" class="view-all-btn">عرض الكل</a>
                         </div>
                     </div>
                     <div class="products-slider-container" id="productsSliderContainer">
@@ -507,11 +327,66 @@
                                 <button class="prod-nav-btn" onclick="scrollProducts('clothingSliderContainer', 'right')"><i class="fas fa-chevron-right"></i></button>
                                 <button class="prod-nav-btn" onclick="scrollProducts('clothingSliderContainer', 'left')"><i class="fas fa-chevron-left"></i></button>
                             </div>
-                            <a href="?category=men" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')" class="view-all-btn">عرض الكل</a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')" class="view-all-btn">عرض الكل</a>
                         </div>
                     </div>
                     <div class="products-slider-container" id="clothingSliderContainer">
                         <div class="products-grid" id="clothing-products-dyn-grid"></div>
+                    </div>
+                </section>
+
+                <!-- نقل الحاوية الأساسية لتسويق الأقسام على طراز أمازون Amazon Style الفاخرة لتصبح أسفل قسم الملابس مباشرة وبنفس الستايل -->
+                <div class="container" id="amazonStyleCategoriesWrapper" style="padding: 0; margin-bottom: 40px;">
+                    <div class="amazon-style-cats-container">
+                        <div class="amazon-cat-card" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')">
+                            <div class="img-box"><i class="fas fa-laptop"></i></div>
+                            <span>الإلكترونيات الذكية</span>
+                        </div>
+                        <div class="amazon-cat-card" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')">
+                            <div class="img-box"><i class="fas fa-tshirt"></i></div>
+                            <span>أزياء وموضة الرجال</span>
+                        </div>
+                        <div class="amazon-cat-card" onclick="event.preventDefault(); filterByCategoryLive('ملابس حريمي')">
+                            <div class="img-box"><i class="fas fa-female"></i></div>
+                            <span>ملابس وأناقة المرأة</span>
+                        </div>
+                        <div class="amazon-cat-card" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')">
+                            <div class="img-box"><i class="fas fa-shopping-basket"></i></div>
+                            <span>منتجات السوبرماركت</span>
+                        </div>
+                        <div class="amazon-cat-card" onclick="event.preventDefault(); filterByCategoryLive('اكسسوارات سيارات')">
+                            <div class="img-box"><i class="fas fa-car"></i></div>
+                            <span>كماليات السيارات</span>
+                        </div>
+                        <div class="amazon-cat-card" onclick="event.preventDefault(); filterByCategoryLive('ميكب وبيرفيوم')">
+                            <div class="img-box"><i class="fas fa-pump-soap"></i></div>
+                            <span>مستحضرات وعطور</span>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="category-marquee-section" aria-label="أقسام المتجر" style="display: none;">
+                    <div class="category-marquee-viewport">
+                        <div class="category-marquee-track">
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')">
+                                <img src="https://images.unsplash.com/photo-1498049794561-7780e7231661?w=640&amp;q=80" alt="إلكترونيات">
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس رجالي')">
+                                <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?w=640&amp;q=80" alt="ملابس رجالي">
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('ملابس حريمي')">
+                                <img src="https://images.unsplash.com/photo-1483985988355-763728319177?w=640&amp;q=80" alt="ملابس حريمي">
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('السوبر ماركت')">
+                                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=640&amp;q=80" alt="السوبر ماركت">
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('ميكب وبيرفيوم')">
+                                <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=640&amp;q=80" alt="ميكب وبيرفيوم">
+                            </a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('اكسسوارات سيارات')">
+                                <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=640&amp;q=80" alt="اكسسوارات سيارات">
+                            </a>
+                        </div>
                     </div>
                 </section>
 
@@ -523,7 +398,7 @@
                                 <button class="prod-nav-btn" onclick="scrollProducts('electronicsSliderContainer', 'right')"><i class="fas fa-chevron-right"></i></button>
                                 <button class="prod-nav-btn" onclick="scrollProducts('electronicsSliderContainer', 'left')"><i class="fas fa-chevron-left"></i></button>
                             </div>
-                            <a href="?category=electronics" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')" class="view-all-btn">عرض الكل</a>
+                            <a href="#" onclick="event.preventDefault(); filterByCategoryLive('إلكترونيات')" class="view-all-btn">عرض الكل</a>
                         </div>
                     </div>
                     <div class="products-slider-container" id="electronicsSliderContainer">
@@ -533,13 +408,13 @@
 
                 <section class="products-section">
                     <div class="section-title">
-                        <h2>خصومات & كاش باك</h2>
+                        <h2>خصومات &amp; كاش باك</h2>
                         <div class="section-title-left">
                             <div class="products-nav-btns">
                                 <button class="prod-nav-btn" onclick="scrollProducts('cashbackSliderContainer', 'right')"><i class="fas fa-chevron-right"></i></button>
                                 <button class="prod-nav-btn" onclick="scrollProducts('cashbackSliderContainer', 'left')"><i class="fas fa-chevron-left"></i></button>
                             </div>
-                            <a href="?page=home" onclick="event.preventDefault(); showPage('home')" class="view-all-btn">عرض الكل</a>
+                            <a href="#" onclick="event.preventDefault(); showPage('home')" class="view-all-btn">عرض الكل</a>
                         </div>
                     </div>
                     <div class="products-slider-container" id="cashbackSliderContainer">
@@ -558,29 +433,29 @@
                     <h3>Online Koshk</h3>
                     <p>أونلاين كشك هو وجهتك العربية الأولى لتسوق أحدث المنتجات العالمية والمحلية بأعلى جودة وأفضل الأسعار.</p>
                     <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#" onclick="event.preventDefault();"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" onclick="event.preventDefault();"><i class="fab fa-instagram"></i></a>
+                        <a href="#" onclick="event.preventDefault();"><i class="fab fa-twitter"></i></a>
+                        <a href="#" onclick="event.preventDefault();"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
                 <div class="footer-col">
                     <h3>روابط سريعة</h3>
                     <ul>
-                        <li><a href="?page=about" onclick="event.preventDefault(); showPage('about')">من نحن</a></li>
-                        <li><a href="?page=shipping-policy" onclick="event.preventDefault(); showPage('shipping-policy')">سياسة الشحن والاسترجاع</a></li>
-                        <li><a href="?page=privacy" onclick="event.preventDefault(); showPage('privacy')">سياسة الخصوصية</a></li>
-                        <li><a href="?page=terms" onclick="event.preventDefault(); showPage('terms')">الشروط والأحكام</a></li>
-                        <li><a href="?page=contact" onclick="event.preventDefault(); showPage('contact')">إتصل بنا</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.showPage('about')">من نحن</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.showPage('shipping-policy')">سياسة الشحن والاسترجاع</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.showPage('privacy')">سياسة الخصوصية</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.showPage('terms')">الشروط والأحكام</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); window.showPage('contact')">إتصل بنا</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h3>حسابي</h3>
                     <ul>
-                        <li><a href="?page=auth" onclick="event.preventDefault(); showPage('auth')">تسجيل الدخول / التسجيل</a></li>
-                        <li><a href="?page=cart" onclick="event.preventDefault(); showPage('cart')">عربة التسوق</a></li>
-                        <li><a href="?page=wishlist" onclick="event.preventDefault(); showPage('wishlist')">قائمة المفضلة</a></li>
-                        <li><a href="?page=track" onclick="event.preventDefault(); showPage('track')">تتبع طلباتك</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); showPage('auth')">تسجيل الدخول / التسجيل</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); showPage('cart')">عربة التسوق</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); showPage('wishlist')">قائمة المفضلة</a></li>
+                        <li><a href="#" onclick="event.preventDefault(); showPage('track')">تتبع طلباتك</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -593,7 +468,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Online Koshk. جميع الحقوق محفوظة.</p>
+                <p>© 2026 Online Koshk. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
@@ -603,28 +478,39 @@
             <i class="fas fa-bars"></i>
             <span>الفئات</span>
         </div>
-        <div class="mobile-nav-item" onclick="showPage('wishlist')">
-            <i class="far fa-heart"></i>
-            <span>المفضلة</span>
+        <div class="mobile-nav-item">
+            <a href="#" onclick="event.preventDefault(); showPage('wishlist')" style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: inherit; text-decoration: none;">
+                <i class="far fa-heart"></i>
+                <span>المفضلة</span>
+            </a>
         </div>
-        <div class="mobile-nav-item active-bottom-item" onclick="showPage('home')">
-            <i class="fas fa-home"></i>
-            <span>الرئيسية</span>
+        <div class="mobile-nav-item active-bottom-item">
+            <a href="index.html" style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: inherit; text-decoration: none;">
+                <i class="fas fa-home"></i>
+                <span>الرئيسية</span>
+            </a>
         </div>
-        <div class="mobile-nav-item" onclick="showPage('track')">
-            <i class="fas fa-truck"></i>
-            <span>طلباتي</span>
+        <div class="mobile-nav-item">
+            <a href="#" onclick="event.preventDefault(); showPage('track')" style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: inherit; text-decoration: none;">
+                <i class="fas fa-truck"></i>
+                <span>طلباتي</span>
+            </a>
         </div>
-        <div class="mobile-nav-item" onclick="showPage('cart')">
-            <div class="mobile-cart-wrapper">
-                <i class="fas fa-shopping-basket"></i>
-                <span class="mobile-cart-count" id="mobile-cart-count-badge">0</span>
-            </div>
-            <span>العربة</span>
+        <div class="mobile-nav-item">
+            <a href="#" onclick="event.preventDefault(); showPage('cart')" style="display: flex; flex-direction: column; align-items: center; gap: 6px; color: inherit; text-decoration: none;">
+                <div class="mobile-cart-wrapper">
+                    <i class="fas fa-shopping-basket"></i>
+                    <span class="mobile-cart-count" id="mobile-cart-count-badge">0</span>
+                </div>
+                <span>العربة</span>
+            </a>
         </div>
     </div>
 
     <script src="js/main.js"></script>
+    <script src="js/url-slugs.js"></script>
+    <script src="js/toast.js"></script>
+    <script type="module" src="js/firebase-data.js"></script>
     
     <script type="module">
         import { db, auth } from './js/firebase-config.js';
@@ -651,7 +537,6 @@
             browserSessionPersistence
         } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // تهيئة خدمة الإيميل بشكل برمجي آمن ومتوافق
         emailjs.init("Sl_UEUFAgu4nyFX4Q"); 
 
         let currentCustomerId = null;
@@ -663,7 +548,6 @@
         let pendingSignUpData = null; 
         let currentVerificationCode = ""; 
 
-        // حماية الصيانة التلقائية الشاملة
         onSnapshot(doc(db, "system_settings", "maintenance"), (docSnap) => {
             if (docSnap.exists() && docSnap.data().value) {
                 window.location.href = 'maintenance.html';
@@ -774,20 +658,23 @@
             localStorage.setItem('koshkSavedClientCity', cityName);
         };
 
+        let userDocUnsubscribe = null;
+
         onAuthStateChanged(auth, async (user) => {
             const navText = document.getElementById('user-nav-text');
             const localSavedCity = localStorage.getItem('koshkSavedClientCity');
             if(localSavedCity) { window.updateLocationUIField(localSavedCity); }
 
+            if (userDocUnsubscribe) { userDocUnsubscribe(); userDocUnsubscribe = null; }
+
             if (user) {
                 currentCustomerId = user.uid;
                 listenToCartCount(user.uid);
 
-                try {
-                    const q = query(collection(db, "users"), where("uid", "==", user.uid));
-                    const s = await getDocs(q);
-                    if(!s.empty) {
-                        const userData = s.docs[0].data();
+                const q = query(collection(db, "users"), where("uid", "==", user.uid));
+                userDocUnsubscribe = onSnapshot(q, (snapshot) => {
+                    if (!snapshot.empty) {
+                        const userData = snapshot.docs[0].data();
                         globalClientActiveName = userData.name || "حسابي";
                         if(navText) navText.innerText = globalClientActiveName;
                         if(userData.city && userData.city !== "N/A") {
@@ -797,9 +684,9 @@
                         globalClientActiveName = "حسابي";
                         if(navText) navText.innerText = globalClientActiveName;
                     }
-                } catch(e) { console.error(e); globalClientActiveName = "حسابي"; if(navText) navText.innerText = globalClientActiveName; }
-
-                window.checkFirstOrderWelcomeGiftLive(user.uid);
+                }, (err) => {
+                    console.error("User doc snapshot error:", err);
+                });
 
             } else {
                 currentCustomerId = null;
@@ -825,7 +712,6 @@
             });
         }
 
-        // تحديث خيارات المنتج من سلة المشتريات لايف
         window.updateCartItemOptionsLive = async function(cartId, key, val) {
             try {
                 await updateDoc(doc(db, "carts", cartId), { [key]: val });
@@ -833,11 +719,9 @@
             } catch(e) { console.error(e); }
         };
 
-        // زر إضافة للعربة يضيف فوراً بدون نوافذ منبثقة أو تفاصيل اختيارية معقدة
         window.triggerAddToCartStepLive = function(productId, prodName, prodPrice, prodImg, category) {
-            // التعديل: تأمين وحماية العملية ضد غير المسجلين
             if (!currentCustomerId) {
-                window.showKoshkToast("عفواً، يجب عليك تسجيل الدخول أو إنشاء حساب أولاً لتفعيل سلتك!", "error");
+                window.showKoshkToast("عفواً، يجب تسجيل الدخول أو إنشاء حساب أولاً لتفعيل سلتك!", "error");
                 window.showPage('auth');
                 return;
             }
@@ -845,12 +729,6 @@
         };
 
         window.pushToFirestoreCart = async function(productId, prodName, prodPrice, prodImg, category) {
-            // التعديل: حماية أمنية إضافية لمنع الإرسال المباشر للدوال
-            if (!currentCustomerId) {
-                window.showKoshkToast("خطأ غير مسموح به! يرجى تسجيل الدخول أولاً.", "error");
-                window.showPage('auth');
-                return;
-            }
             try {
                 const q = query(collection(db, "carts"), where("userId", "==", currentCustomerId), where("productId", "==", productId), where("color", "==", "N/A"), where("size", "==", "N/A"));
                 const snapshot = await getDocs(q);
@@ -880,7 +758,6 @@
 
         window.toggleProductWishlistLive = async function(e, productId, prodName, prodPrice, prodImg) {
             e.stopPropagation();
-            // التعديل: حماية المفضلة ضد المحاولات غير المصرح بها
             if (!currentCustomerId) {
                 window.showKoshkToast("يجب إنشاء حساب وتسجيل الدخول أولاً لحفظ المنتجات في المفضلة!", "error");
                 window.showPage('auth');
@@ -905,6 +782,7 @@
                     });
                     window.showKoshkToast(`تم حفظ "${prodName}" في مفضلتك الخاصة!`, "success");
                 }
+                if (localStorage.getItem('currentPage') === 'wishlist') { window.loadCustomerWishlistLive(); }
             } catch (error) {
                 window.showKoshkToast("خطأ في معالجة المفضلة: " + error.message, "error");
             }
@@ -921,10 +799,6 @@
 
         window.submitProductReviewLive = async function(e, productId) {
             e.preventDefault();
-            if (!currentCustomerId) {
-                window.showKoshkToast("إجراء غير مسموح به!", "error");
-                return;
-            }
             const commentText = document.getElementById('reviewCommentInputField').value.trim();
             if(!commentText) { window.showKoshkToast("برجاء كتابة تعليقك أولاً!", "error"); return; }
             
@@ -1001,18 +875,49 @@
             } catch(e) { console.error(e); }
         };
 
+        window.checkoutReceiptBase64 = "";
+        window.previewCheckoutReceiptImage = function(event) {
+            const gallery = document.getElementById('checkoutReceiptPreviewGallery');
+            if(gallery) gallery.innerHTML = '';
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    window.checkoutReceiptBase64 = e.target.result;
+                    const img = document.createElement('img');
+                    img.src = window.checkoutReceiptBase64;
+                    img.style.maxWidth = '120px';
+                    img.style.maxHeight = '120px';
+                    img.style.borderRadius = '6px';
+                    img.style.border = '1px solid #cbd5e1';
+                    img.style.objectFit = 'contain';
+                    if(gallery) gallery.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+
         window.selectKoshkPaymentMethodLive = async function(element, gatewayKey) {
             selectedPaymentGatewayLive = gatewayKey;
             document.querySelectorAll('.payment-selector-card').forEach(el => el.classList.remove('selected'));
             element.classList.add('selected');
             
             const detailBlock = document.getElementById('selectedPaymentMethodLiveInstructionsBlock');
+            const uploadContainer = document.getElementById('checkoutInstantPaymentUploadContainer');
+            
+            if (gatewayKey === 'cod') {
+                if (uploadContainer) uploadContainer.style.display = 'none';
+                window.checkoutReceiptBase64 = "";
+            } else {
+                if (uploadContainer) uploadContainer.style.display = 'block';
+            }
+
             if(!detailBlock) return;
             
             if(gatewayKey === 'cod') {
-                detailBlock.innerHTML = `<p style="font-size:13px; color:#475569;"><i class="fas fa-money-bill-wave" style="margin-left:5px; color:#ff9900;"></i> سيقوم المندوب بتحصيل قيمة الفاتورة نقداً بالكامل عند تسليم الشحنة لباب بيتك.</p>`;
+                detailBlock.innerHTML = `<p style="font-size:13px; color:#475569;"><i class="fas fa-money-bill-wave" style="color:#ff9900; margin-left:6px;"></i> سيقوم المندوب بتحصيل قيمة الفاتورة نقداً بالكامل عند تسليم الشحنة.</p>`;
             } else {
-                detailBlock.innerHTML = `<div style="text-align:center; padding:10px;"><i class="fas fa-spinner fa-spin" style="color:#1a1e22;"></i> جاري تحميل رقم المحفظة من السيرفر...</div>`;
+                detailBlock.innerHTML = `<div style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> جاري تحميل رقم المحفظة...</div>`;
                 try {
                     const docSnap = await getDoc(doc(db, "system_settings", "payment_accounts"));
                     let accountNumber = "201500812929"; 
@@ -1021,27 +926,32 @@
                     }
                     detailBlock.innerHTML = `
                         <div style="background:#fff; border:1px solid #ffedd5; padding:15px; border-radius:6px; font-size:13px; color:#1a1e22;">
-                            <p style="margin-bottom:8px;">يرجى تحويل القيمة الإجمالية للفاتورة إلى الحساب/المحفظة التالية:</p>
-                            <div style="background:#f1f5f9; padding:8px; border-radius:4px; font-weight:700; text-align:center; font-size:16px; letter-spacing:1px; color:#ff9900; margin-bottom:8px;">${accountNumber}</div>
-                            <small style="color:#64748b; display:block;">* بعد إتمام التحويل، سيقوم النظام بمراجعة المعاملة وتأكيد شحن طلبك تلقائياً.</small>
+                            <p style="margin-bottom:8px;">يرجى تحويل القيمة الإجمالية للفاتورة إلى الحساب التالية:</p>
+                            <div style="background:#f1f5f9; padding:8px; border-radius:4px; font-weight:700; text-align:center; font-size:16px; color:#ff9900; margin-bottom:8px;">${accountNumber}</div>
+                            <small style="color:#64748b; display:block;">* بعد إتمام التحويل، سيقوم النظام بمراجعة طلبك وتأكيد شحنها تلقائياً.</small>
                         </div>
                     `;
                 } catch(err) { detailBlock.innerHTML = `<p style="color:red; font-size:12px;">فشل تحميل بيانات الحساب.</p>`; }
             }
         };
 
-        // عرض صفحة تفاصيل المنتج بالديزاين الفاخر والجديد كلياً والمتجاوب مع الموبايل
         window.viewProductDetailsLive = async function(productId) {
             const prod = currentProductsListInMemory.find(p => p.id === productId);
             if(!prod) return;
 
-            const mainContainer = document.querySelector('main .full-width-container');
+            // [حماية آمنة للتبديل]: التأكد من الوجود الفعلي قبل تعديل الـ style لتجنب أخطاء الـ null تماماً
+            const wrap1 = document.getElementById('amazonStyleCategoriesWrapper');
+            const wrap2 = document.getElementById('koshkMainHeroSliderContainerBlock');
+            if (wrap1) wrap1.style.display = 'none';
+            if (wrap2) wrap2.style.display = 'none';
+
+            const mainContainer = document.getElementById('koshkMainHomepageFeedContentGridArea');
             window.scrollTo({ top: 0, behavior: 'smooth' });
             currentRatingSelection = 5;
 
             const mainImg = (prod.images && prod.images.length > 0) ? prod.images[0] : 'https://via.placeholder.com/300?text=Online+Koshk';
             let badgeHtml = '';
-            if (prod.badge) badgeHtml = `<span style="background:#ff9900; color:#1a1e22; padding:5px 16px; border-radius:20px; font-size:12px; font-weight:700; margin-bottom:12px; display:inline-block; box-shadow: 0 2px 8px rgba(255,153,0,0.3);">${prod.badge}</span>`;
+            if (prod.badge) badgeHtml = `<span style="background:#ff9900; color:#1a1e22; padding:5px 16px; border-radius:20px; font-size:12px; font-weight:700; margin-bottom:12px; display:inline-block;">${prod.badge}</span>`;
 
             let priceValue = prod.price;
             let priceHtml = `<h2 style="color:#1a1e22; font-weight:700; margin-bottom:15px; font-size:26px;">${prod.price} ج.م</h2>`;
@@ -1053,22 +963,14 @@
             let reviewFormHtml = `<div style="background:#f1f5f9; padding:20px; border-radius:8px; text-align:center; color:#475569; font-size:14px;"><i class="fas fa-lock" style="margin-left:8px;"></i> يجب تسجيل الدخول أولاً لتتمكن من تقييم هذا...</div>`;
             
             if(currentCustomerId) {
-                reviewFormHtml = `<div style="background:#fff7ed; border:1px solid #ffedd5; padding:20px; border-radius:8px; text-align:center; color:#c2410c; font-size:14px;"><i class="fas fa-exclamation-circle" style="margin-left:8px;"></i> التقييم متاح استحصالاً للعملاء الذين قاموا بحراء المنتج بالفعل وتم استلامه بنجاح.</div>`;
-                
+                reviewFormHtml = `<div style="background:#fff7ed; border:1px solid #ffedd5; padding:20px; border-radius:8px; text-align:center; color:#c2410c; font-size:14px;"><i class="fas fa-exclamation-circle" style="margin-left:8px;"></i> التقييم متاح فقط للعملاء المشترين بالفعل.</div>`;
                 try {
-                    const orderQuery = query(
-                        collection(db, "orders"), 
-                        where("userId", "==", currentCustomerId),
-                        where("status", "==", "delivered")
-                    );
+                    const orderQuery = query(collection(db, "orders"), where("userId", "==", currentCustomerId), where("status", "==", "delivered"));
                     const orderSnap = await getDocs(orderQuery);
                     let hasPurchased = false;
-
                     orderSnap.forEach(docDoc => {
                         const items = docDoc.data().products || [];
-                        if(items.some(p => p.productId === productId)) {
-                            hasPurchased = true;
-                        }
+                        if(items.some(p => p.productId === productId)) hasPurchased = true;
                     });
 
                     if(hasPurchased) {
@@ -1085,10 +987,10 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label>اكتب تعليقك وتجربتك للمنتج:</label>
+                                    <label>اكتب تعليقك وتجربتك:</label>
                                     <textarea id="reviewCommentInputField" placeholder="ما هي تجربتك الفركية والواقعية للمنتج؟..." style="width:100%; height:90px; padding:12px; border-radius:6px; border:1px solid #e2e8f0; font-family:'Cairo'; outline:none; resize:none;" required></textarea>
                                 </div>
-                                <button type="submit" class="auth-btn" style="background:#ff9900; color:#1a1e22; width:auto; padding:8px 25px;"><i class="fas fa-paper-plane" style="color:#1a1e22;"></i> إرسال التقييم للمراجعة</button>
+                                <button type="submit" class="auth-btn" style="background:#ff9900; color:#1a1e22; width:auto; padding:8px 25px;">إرسال التقييم</button>
                             </form>
                         `;
                     }
@@ -1096,54 +998,46 @@
             }
 
             mainContainer.innerHTML = `
-                <div class="container" style="padding:20px 15px;">
-                    <a href="?page=home" onclick="event.preventDefault(); showPage('home')" class="add-to-cart-btn" style="background:none; border:none; color:#1a1e22; font-family:'Cairo'; font-weight:700; font-size:15px; cursor:pointer; margin-bottom:20px; display:inline-flex; align-items:center; gap:8px; width:auto;">
+                <div style="direction:rtl; text-align:right; width:100%; padding-top: 30px;">
+                    <a href="?page=home" onclick="event.preventDefault(); window.showPage('home')" style="color:#1a1e22; font-weight:700; font-size:15px; margin-bottom:20px; display:inline-flex; align-items:center; gap:8px;">
                         <i class="fas fa-arrow-right"></i> العودة للرئيسية
                     </a>
-                    
                     <div class="premium-product-container premium-product-v2">
-                        <div class="product-detail-grid-layout" style="display:grid; grid-template-columns:minmax(300px, 45%) 1fr; gap:40px;">
+                        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:30px;">
                             <div class="premium-gallery-box">
-                                <span class="pdp-zoom-hint"><i class="fas fa-search-plus"></i></span>
                                 <img src="${mainImg}" alt="${prod.name}">
                             </div>
-                            <div style="text-align:right; display:flex; flex-direction:column; justify-content:flex-start;">
+                            <div>
                                 ${badgeHtml}
-                                <span style="color:#ff9900; font-weight:700; font-size:14px; display:block; margin-bottom:4px; letter-spacing:0.5px;">${prod.brand || 'عام'}</span>
-                                <h1 style="font-size:24px; font-weight:700; color:#0f172a; margin-bottom:8px; line-height:1.4;">${prod.name}</h1>
-                                <p style="font-size:12px; color:#64748b; margin-bottom:20px;">الباركود (SKU): <code style="background:#f1f5f9; padding:3px 8px; border-radius:4px; color:#334155; font-weight:600;">${prod.sku}</code></p>
-                                
-                                <div style="border-top:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9; padding:15px 0; margin-bottom:20px;">
+                                <span style="color:#ff9900; font-weight:700; font-size:14px; display:block; margin-bottom:4px;">${prod.brand || 'عام'}</span>
+                                <h1 style="font-size:24px; font-weight:700; color:#0f172a; margin-bottom:8px;">${prod.name}</h1>
+                                <p style="font-size:12px; color:#64748b; margin-bottom:15px;">بار كود المنتجات: <code>${prod.sku}</code></p>
+                                <div style="border-top:1px solid #f1f5f9; border-bottom:1px solid #f1f5f9; padding:12px 0; margin-bottom:15px;">
                                     ${priceHtml}
                                 </div>
-                                
-                                <h4 style="font-size:15px; font-weight:700; color:#1e293b; margin-bottom:8px;"><i class="fas fa-align-right" style="color:#ff9900; margin-left:6px;"></i> مواصفات المنتج:</h4>
-                                <p style="font-size:14px; color:#475569; line-height:1.8; margin-bottom:25px; white-space:pre-wrap; background:#f8fafc; padding:15px; border-radius:8px;">${prod.desc}</p>
-                                
-                                <div class="premium-meta-card" style="display:flex; flex-direction:column; gap:10px;">
-                                    <div style="font-size:13px; color:#334155;"><i class="fas fa-shield-alt" style="color:#ff9900; margin-left:10px; width:16px;"></i> الضمان الشامل: <strong style="color:#0f172a;">${prod.warranty || 'لا يوجد ضمان عابر'}</strong></div>
-                                    <div style="font-size:13px; color:#334155;"><i class="fas fa-box" style="color:#ff9900; margin-left:10px; width:16px;"></i> حالة توافر المخزون: <strong style="color:#2dd4bf;">متوفر شحن فوري (${prod.stock} قطعة)</strong></div>
+                                <h4 style="font-size:15px; font-weight:700; color:#1e293b; margin-bottom:8px;">الوصف والمواصفات:</h4>
+                                <p style="font-size:14px; color:#475569; line-height:1.7; white-space:pre-wrap; background:#f8fafc; padding:12px; border-radius:8px;">${prod.desc}</p>
+                                <div class="premium-meta-card" style="padding:12px; margin-top:15px;">
+                                    <div style="font-size:13px; margin-bottom:6px;"><i class="fas fa-shield-alt" style="color:#ff9900;"></i> الضمان المعتمد: <strong>${prod.warranty || 'لا يوجد ضمان'}</strong></div>
+                                    <div style="font-size:13px;"><i class="fas fa-box" style="color:#ff9900;"></i> التوفر بالمخزن: <strong style="color:#2dd4bf;">شحن فوري متوفر (${prod.stock} قطعة)</strong></div>
                                 </div>
-                                
-                                <div class="premium-action-bar-fixed">
-                                    <button class="add-to-cart-btn" onclick="window.triggerAddToCartStepLive('${productId}', '${prod.name}', ${priceValue}, '${mainImg}', '${prod.category}')" style="padding:14px; font-size:14px; background:#1a1e22; color:#fff; border-radius:8px; font-weight:700; flex:1; box-shadow:0 4px 12px rgba(26,30,34,0.25);"><i class="fas fa-shopping-cart"></i> أضف للعربة</button>
-                                    <button class="buy-now-btn" onclick="window.showCheckoutPageDirectly('${productId}')" style="padding:14px; font-size:14px; background:#ff9900; color:#1a1e22; border-radius:8px; font-weight:700; flex:1; box-shadow:0 4px 12px rgba(255,153,0,0.3);"><i class="fas fa-bolt"></i> شراء الآن</button>
+                                <div class="premium-action-bar-fixed" style="margin-top:20px;">
+                                    <button class="add-to-cart-btn" onclick="window.triggerAddToCartStepLive('${productId}', '${prod.name}', ${priceValue}, '${mainImg}', '${prod.category}')" style="background:#1a1e22; color:#fff; border-radius:6px; font-weight:700; padding:12px; flex:1;"><i class="fas fa-shopping-cart"></i> أضف للعربة</button>
+                                    <button class="buy-now-btn" onclick="window.showCheckoutPageDirectly('${productId}')" style="background:#ff9900; color:#1a1e22; border-radius:6px; font-weight:700; padding:12px; flex:1;"><i class="fas fa-bolt"></i> شراء الآن</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="reviews-section" style="text-align:right;">
-                        <h3 style="color:#1a1e22; font-size:18px; font-weight:700; margin-bottom:20px;">آراء وتقييمات العملاء</h3>
-                        <div id="approvedProductReviewsListBlock" style="margin-bottom:30px;"></div>
-                        <div style="background:#ffffff; border:1px solid #e2e8f0; padding:25px; border-radius:12px;">
-                            <h4 style="color:#1a1e22; font-size:15px; font-weight:700; margin-bottom:15px;">أضف تقييمك للمنتج</h4>
+                    <div class="reviews-section">
+                        <h3 style="color:#1a1e22; font-size:18px; font-weight:700; margin-bottom:15px;">تقييمات وآراء زوار المتجر</h3>
+                        <div id="approvedProductReviewsListBlock" style="margin-bottom:20px;"></div>
+                        <div style="background:#ffffff; border:1px solid #e2e8f0; padding:20px; border-radius:10px;">
+                            <h4 style="color:#1a1e22; font-size:15px; font-weight:700; margin-bottom:10px;">أضف تقييمك الخاص للمنتج</h4>
                             <div id="conditionalReviewFormWrapperContainer">${reviewFormHtml}</div>
                         </div>
                     </div>
-
-                    <div style="margin-top:50px; text-align:right;">
-                        <h3 style="color:#1a1e22; font-size:18px; font-weight:700; margin-bottom:20px; border-bottom:2px solid #ff9900; display:inline-block; padding-bottom:5px;">منتجات مشابهة قد تنال إعجابك</h3>
+                    <div style="margin-top:40px;">
+                        <h3 style="color:#1a1e22; font-size:17px; font-weight:700; margin-bottom:15px;">منتجات مشابهة مقترحة لك</h3>
                         <div class="products-grid" id="related-products-dyn-grid"></div>
                     </div>
                 </div>
@@ -1160,20 +1054,18 @@
                 let counter = 0;
                 currentProductsListInMemory.forEach((item) => {
                     if(item.category !== category || item.id === currentProdId || counter >= 4) return;
-                    
                     const mainImg = (item.images && item.images.length > 0) ? item.images[0] : 'https://via.placeholder.com/300?text=Online+Koshk';
                     let priceHtml = `<span class="current-price">${item.price} ج.م</span>`;
                     if (item.discountPrice) priceHtml = `<span class="current-price">${item.discountPrice} ج.م</span><span class="old-price">${item.price} ج.م</span>`;
                     
                     relatedGrid.insertAdjacentHTML('beforeend', `
-                        <div class="product-card" onclick="window.viewProductDetailsLive('${item.id}')" style="cursor:pointer;">
-                            <div class="product-img-wrapper" style="display:flex; align-items:center; justify-content:center; overflow:hidden;"><img src="${mainImg}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
+                        <div class="product-card" onclick="window.viewProductDetailsLive('${item.id}')" style="cursor:pointer; width:240px;">
+                            <div class="product-img-wrapper"><img src="${mainImg}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
                             <div class="product-info"><span class="product-brand">${item.brand || 'عام'}</span><h3 class="product-name">${item.name}</h3><div class="product-price-wrapper">${priceHtml}</div></div>
                         </div>
                     `);
                     counter++;
                 });
-                if(counter === 0) relatedGrid.innerHTML = '<p style="color:#64748b; font-size:13px;">لا توجد منتجات مشابهة حالياً</p>';
             } catch (err) { console.error(err); }
         }
 
@@ -1181,14 +1073,20 @@
             const keyword = document.getElementById('storeSearchInputField').value.trim().toLowerCase();
             if(!keyword) { window.showKoshkToast("من فضلك اكتب كلمة بحث صالحة أولاً!", "error"); return; }
 
-            const mainContainer = document.querySelector('main .full-width-container');
+            // [حقن آمن]: التحقق من وجود العناصر قبل تعديل الـ style لتجنب أخطاء الـ null تماماً
+            const wrap1 = document.getElementById('amazonStyleCategoriesWrapper');
+            const wrap2 = document.getElementById('koshkMainHeroSliderContainerBlock');
+            if (wrap1) wrap1.style.display = 'none';
+            if (wrap2) wrap2.style.display = 'none';
+
+            const mainContainer = document.getElementById('koshkMainHomepageFeedContentGridArea');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             mainContainer.innerHTML = `
-                <div class="container" style="padding:40px 15px; text-align:right;">
-                    <a href="?page=home" onclick="event.preventDefault(); showPage('home')" class="add-to-cart-btn" style="background:none; border:none; color:#1a1e22; font-family:'Cairo'; font-weight:700; font-size:15px; cursor:pointer; margin-bottom:25px; display:flex; align-items:center; gap:8px; width:auto;"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
-                    <h2 style="color:#1a1e22; font-size:20px; margin-bottom:20px;">نتائج البحث عن: "<span style="color:#ff9900;">${keyword}</span>"</h2>
-                    <div class="products-grid" id="search-results-output-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; width: 100%;"></div>
+                <div style="width:100%; text-align:right; padding-top: 30px;">
+                    <a href="?page=home" onclick="event.preventDefault(); window.showPage('home')" style="color:#1a1e22; font-weight:700; font-size:15px; margin-bottom:20px; display:inline-block;"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+                    <h2 style="color:#1a1e22; font-size:20px; margin-bottom:20px;">نتائج فحص المخزن عن: "<span style="color:#ff9900;">${keyword}</span>"</h2>
+                    <div class="products-grid" id="search-results-output-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:20px; width:100%;"></div>
                 </div>
             `;
 
@@ -1201,87 +1099,71 @@
                 const brand = (item.brand || "").toLowerCase();
                 const category = (item.category || "").toLowerCase();
 
-                if(name.includes(keyword) || desc.includes(keyword) || brand.includes(keyword) || category.includes(keyword) || 
-                   (keyword === "ملابس" && category.includes("ملابس"))) {
+                if(name.includes(keyword) || desc.includes(keyword) || brand.includes(keyword) || category.includes(keyword)) {
                     matchedCounter++;
                     const mainImg = (item.images && item.images.length > 0) ? item.images[0] : 'https://via.placeholder.com/300?text=Online+Koshk';
                     let priceHtml = `<span class="current-price">${item.price} ج.م</span>`;
-                    if (item.discountPrice) priceHtml = `<span class="current-price">${item.discountPrice} ج.م</span><span class="old-price">${item.price} ج.م</span>`;
+                    if (item.discountPrice) priceHtml = `<span class="current-price">${item.discountPrice} ج.м</span>`;
 
                     resultsGrid.insertAdjacentHTML('beforeend', `
-                        <div class="product-card" onclick="window.viewProductDetailsLive('${item.id}')" style="cursor:pointer; width:100%;">
-                            <div class="product-img-wrapper" style="display:flex; align-items:center; justify-content:center; overflow:hidden;"><img src="${mainImg}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
+                        <div class="product-card" onclick="window.viewProductDetailsLive('${item.id}')" style="cursor:pointer;">
+                            <div class="product-img-wrapper"><img src="${mainImg}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
                             <div class="product-info">
                                 <span class="product-brand">${item.brand || 'عام'}</span>
                                 <h3 class="product-name">${item.name}</h3>
                                 <div class="product-price-wrapper">${priceHtml}</div>
-                                <div class="card-actions-wrapper">
-                                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); window.triggerAddToCartStepLive('${item.id}', '${item.name}', '${item.discountPrice || item.price}', '${mainImg}', '${item.category}')">العربة</button>
-                                    <button class="buy-now-btn" onclick="event.stopPropagation(); window.showCheckoutPageDirectly('${item.id}')">شراء</button>
-                                </div>
                             </div>
                         </div>
                     `);
                 }
             });
-
-            if(matchedCounter === 0 && resultsGrid) {
-                resultsGrid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#64748b; padding:40px; font-weight:600;">عذراً، لم نجد أي منتجات تطابق بحثك في الكشك حالياً.</div>';
-            }
         };
 
         window.filterByCategoryLive = function(categoryName) {
-            const mainContainer = document.querySelector('main .full-width-container');
+            // [حقن آمن]: التحقق من وجود العناصر قبل تعديل الـ style لتجنب أخطاء الـ null تماماً
+            const wrap1 = document.getElementById('amazonStyleCategoriesWrapper');
+            const wrap2 = document.getElementById('koshkMainHeroSliderContainerBlock');
+            if (wrap1) wrap1.style.display = 'none';
+            if (wrap2) wrap2.style.display = 'none';
+
+            const mainContainer = document.getElementById('koshkMainHomepageFeedContentGridArea');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             mainContainer.innerHTML = `
-                <div class="container" style="padding:40px 15px; text-align:right;">
-                    <a href="?page=home" onclick="event.preventDefault(); showPage('home')" class="add-to-cart-btn" style="background:none; border:none; color:#1a1e22; font-family:'Cairo'; font-weight:700; font-size:15px; cursor:pointer; margin-bottom:25px; display:flex; align-items:center; gap:8px; width:auto;"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
-                    <h2 style="color:#1a1e22; font-size:20px; margin-bottom:20px;">قسم: <span style="color:#ff9900;">${categoryName}</span></h2>
-                    <div class="products-grid" id="category-filter-output-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; width: 100%;"></div>
+                <div style="width:100%; text-align:right; padding-top: 30px;">
+                    <a href="?page=home" onclick="event.preventDefault(); window.showPage('home')" style="color:#1a1e22; font-weight:700; font-size:15px; margin-bottom:20px; display:inline-block;"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+                    <h2 style="color:#1a1e22; font-size:20px; margin-bottom:20px;">قسم السلع: <span style="color:#ff9900;">${categoryName}</span></h2>
+                    <div class="products-grid" id="category-filter-output-grid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(240px,1fr)); gap:20px; width:100%;"></div>
                 </div>
             `;
 
             const catGrid = document.getElementById('category-filter-output-grid');
-            let count = 0;
-
             currentProductsListInMemory.forEach((item) => {
                 if(item.category === categoryName) {
-                    count++;
                     const mainImg = (item.images && item.images.length > 0) ? item.images[0] : 'https://via.placeholder.com/300?text=Online+Koshk';
                     let priceHtml = `<span class="current-price">${item.price} ج.م</span>`;
-                    if (item.discountPrice) priceHtml = `<span class="current-price">${item.discountPrice} ج.م</span><span class="old-price">${item.price} ج.م</span>`;
+                    if (item.discountPrice) priceHtml = `<span class="current-price">${item.discountPrice} ج.م</span>`;
 
                     catGrid.insertAdjacentHTML('beforeend', `
-                        <div class="product-card" onclick="window.viewProductDetailsLive('${item.id}')" style="cursor:pointer; width:100%;">
-                            <div class="product-img-wrapper" style="display:flex; align-items:center; justify-content:center; overflow:hidden;"><img src="${mainImg}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
+                        <div class="product-card" onclick="window.viewProductDetailsLive('${item.id}')" style="cursor:pointer;">
+                            <div class="product-img-wrapper"><img src="${mainImg}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
                             <div class="product-info">
                                 <span class="product-brand">${item.brand || 'عام'}</span>
                                 <h3 class="product-name">${item.name}</h3>
                                 <div class="product-price-wrapper">${priceHtml}</div>
-                                <div class="card-actions-wrapper">
-                                    <button class="add-to-cart-btn" onclick="event.stopPropagation(); window.triggerAddToCartStepLive('${item.id}', '${item.name}', '${item.discountPrice || item.price}', '${mainImg}', '${item.category}')">العربة</button>
-                                    <button class="buy-now-btn" onclick="event.stopPropagation(); window.showCheckoutPageDirectly('${item.id}')">شراء</button>
-                                </div>
                             </div>
                         </div>
                     `);
                 }
             });
-
-            if(count === 0 && catGrid) {
-                catGrid.innerHTML = '<div style="grid-column:1/-1; text-align:center; color:#64748b; padding:40px;">لا توجد سلع متوفرة في هذا قسم حالياً.</div>';
-            }
         };
 
         window.executeKoshkOrderTrackingByPhoneLive = async function() {
             const inputPhone = document.getElementById('storeTrackingPhoneInputField').value.trim();
-            if(!inputPhone) { window.showKoshkToast("من فضلك اكتب رقم الهاتف بشكل صحيح لغرفة الاستعلام لايف!", "error"); return; }
+            if(!inputPhone) { window.showKoshkToast("من فضلك اكتب رقم الهاتف بشكل صحيح!", "error"); return; }
             
             const resultsContainer = document.getElementById('tracking-live-output-payload-block');
-            if(!resultsContainer) return;
-            
-            resultsContainer.innerHTML = '<div style="text-align:center; padding:20px;"><i class="fas fa-spinner fa-spin" style="font-size:24px; color:#1a1e22;"></i> جاري فحص كافة السجلات في السيرفر...</div>';
+            resultsContainer.innerHTML = '<div style="text-align:center;"><i class="fas fa-spinner fa-spin"></i> جاري استرجاع سجلات السيرفر...</div>';
             
             try {
                 const q = query(collection(db, "orders"), where("clientPhone", "==", inputPhone));
@@ -1289,88 +1171,163 @@
                 resultsContainer.innerHTML = '';
                 
                 if(snap.empty) {
-                    resultsContainer.innerHTML = '<div style="background:#fee2e2; border:1px solid #fca5a5; padding:15px; border-radius:6px; color:#b91c1c; font-weight:600; text-align:center;">عذراً، لم نجد أي طلبات جارية مسجلة برقم الهاتف هذا بالسيرفر حالياً!</div>';
+                    resultsContainer.innerHTML = '<p style="color:red; text-align:center;">لا توجد أي أوردرات جارية مسجلة برقم الهاتف هذا!</p>';
                     return;
                 }
                 
-                let undeliveredCount = 0;
-                const sortedDocs = snap.docs.sort((a,b) => b.data().orderedAt.seconds - a.data().orderedAt.seconds);
-                
-                sortedDocs.forEach((orderDoc) => {
+                snap.forEach((orderDoc) => {
                     const orderData = orderDoc.data();
-                    if (orderData.status === 'delivered') return;
-                    
-                    undeliveredCount++;
                     let step1 = 'completed', step2 = '', step3 = '';
                     if(orderData.status === 'shipping') { step1 = 'completed'; step2 = 'active'; }
+                    else if(orderData.status === 'delivered') { step1 = 'completed'; step2 = 'completed'; step3 = 'completed'; }
                     else { step1 = 'active'; }
-                    
-                    let statusText = "قيد المراجعة والتحضير الإداري";
-                    if(orderData.status === 'shipping') statusText = "جاري الشحن والتوصيل مع المندوب";
 
                     resultsContainer.insertAdjacentHTML('beforeend', `
-                        <div class="order-tracking-card">
-                            <div style="border-bottom: 2px dashed #e2e8f0; padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+                        <div class="order-tracking-card" style="margin-bottom: 20px;">
+                            <div style="border-bottom: 1px dashed #e2e8f0; padding-bottom: 10px; margin-bottom: 15px; display: flex; justify-content: space-between;">
                                 <div>
-                                    <h4 style="color:#0f172a; margin:0 0 4px 0; font-size:15px;">رقم الطلب: <span style="color:#ff9900;">${orderData.orderNumber}</span></h4>
-                                    <small style="color: #64748b;">التاريخ: ${new Date(orderData.orderedAt.seconds * 1000).toLocaleDateString('ar-EG')}</small>
+                                    <h4>كود الأوردر: <span style="color:#ff9900;">${orderData.orderNumber}</span></h4>
+                                    <small>حالة المعاملة المزامنة: <b>${orderData.status}</b></small>
                                 </div>
-                                <div style="text-align: left;">
-                                    <span style="background: rgba(255, 153, 0, 0.1); color: #ff9900; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">${statusText}</span>
-                                    <div style="font-weight: 700; color: #1a1e22; margin-top: 4px; font-size: 15px;">${orderData.total} ج.م</div>
+                                <div style="text-align:left;">
+                                    <strong style="color:#ff9900; font-size:16px;">${orderData.total} ج.م</strong>
                                 </div>
-                            </div>
-                            <div style="margin-bottom: 15px; font-size: 13px; color: #475569;">
-                                <strong>المنتجات:</strong> 
-                                ${orderData.products.map(p => `<span style="display:inline-block; background:#f1f5f9; padding:2px 8px; border-radius:4px; margin-left:6px; margin-top:4px; cursor:pointer;" onclick="window.viewProductDetailsLive('${p.productId}')">${p.name} (x${p.quantity || 1})</span>`).join('')}
                             </div>
                             <div class="tracking-timeline">
                                 <div class="timeline-step ${step1}">
                                     <div class="step-icon"><i class="fas fa-check"></i></div>
-                                    <div class="step-info"><h4>تم تأكيد الطلب</h4><p>تم استلام طلبك ومراجعته وتغليفه في كشكنا</p></div>
+                                    <div class="step-info"><h4>تم تأكيد الفاتورة</h4><p>تم استلام طلبك وتغليفه في الكشك</p></div>
                                 </div>
                                 <div class="timeline-step ${step2}">
                                     <div class="step-icon"><i class="fas fa-box"></i></div>
-                                    <div class="step-info"><h4>جاري التوصيل لايف</h4><p>الشحنة حالياً مع المندوب وفي الطريق لعنوانك</p></div>
+                                    <div class="step-info"><h4>خارج للتوصيل لايف</h4><p>الشحنة جارية مع مندوب الشحن الآن</p></div>
                                 </div>
                                 <div class="timeline-step ${step3}">
                                     <div class="step-icon"><i class="fas fa-home"></i></div>
-                                    <div class="step-info"><h4>تم تسليم السلعة</h4><p>تم استلام الشحنة وإغلاق الطلب</p></div>
+                                    <div class="step-info"><h4>مكتمل / تم التسليم</h4><p>تم الاستلام وقفل المعاملة</p></div>
                                 </div>
                             </div>
                         </div>
                     `);
                 });
-                
-                if(undeliveredCount === 0) {
-                    resultsContainer.innerHTML = '<div style="background:#fff9f0; border:1px solid #ff9900; padding:15px; border-radius:6px; color:#c2410c; font-weight:600; text-align:center;">كل طلباتك السابقة تم توصيلها واستلامها بنجاح! لا توجد طلبات جارية حالياً.</div>';
+            } catch(err) { resultsContainer.innerHTML = `<div style="color:red;">خطأ السيرفر: ${err.message}</div>`; }
+        };
+
+        window.cancelCustomerOrderLive = async function(orderDocId) {
+            const confirmed = await window.showKoshkCustomConfirmModal("إلغاء الطلب", "هل أنت متأكد تماماً من رغبتك في إلغاء هذا الطلب نهائياً؟");
+            if(confirmed) {
+                try {
+                    await updateDoc(doc(db, "orders", orderDocId), { status: "cancelled" });
+                    window.showKoshkToast("تم إلغاء طلبك بنجاح وتحديثه بالسيرفر.", "success");
+                    window.loadCustomerActiveOrdersLive(); 
+                } catch(err) {
+                    window.showKoshkToast("فشل إلغاء الطلب: " + err.message, "error");
                 }
-            } catch(err) { resultsContainer.innerHTML = `<div style="color:red;">حدث خطأ أثناء فحص البيانات: ${err.message}</div>`; }
+            }
+        };
+
+        window.loadCustomerActiveOrdersLive = async function(filterType = 'all') {
+            const container = document.getElementById('customer-orders-live-injection-area');
+            if(!container || !currentCustomerId) return;
+            
+            document.querySelectorAll('.orders-tab-trigger').forEach(btn => btn.classList.remove('active'));
+            const activeTabBtn = document.querySelector(`[data-order-tab="${filterType}"]`);
+            if(activeTabBtn) activeTabBtn.classList.add('active');
+
+            container.innerHTML = '<div style="text-align:center; padding:30px;"><i class="fas fa-spinner fa-spin" style="color:#ff9900; font-size:24px;"></i> جاري مزامنة وسحب طلباتك من السيرفر...</div>';
+            
+            try {
+                const q = query(collection(db, "orders"), where("userId", "==", currentCustomerId));
+                const snap = await getDocs(q);
+                container.innerHTML = '';
+                
+                let counter = 0;
+                snap.forEach((docSnap) => {
+                    const orderData = docSnap.data();
+                    const docId = docSnap.id;
+                    
+                    if(filterType === 'pending' && orderData.status !== 'pending' && orderData.status !== 'shipping') return;
+                    if(filterType === 'delivered' && orderData.status !== 'delivered') return;
+                    if(filterType === 'cancelled' && orderData.status !== 'cancelled') return;
+
+                    counter++;
+                    
+                    let badgeClass = 'status-payload-pending';
+                    let arabicStatus = 'قيد المراجعة والمعالجة';
+                    let canCancel = orderData.status === 'pending';
+
+                    if(orderData.status === 'shipping') {
+                        badgeClass = 'status-payload-shipping';
+                        arabicStatus = 'جاري الشحن مع المندوب';
+                    } else if(orderData.status === 'delivered') {
+                        badgeClass = 'status-payload-delivered';
+                        arabicStatus = 'مكتمل / تم التسليم بنجاح';
+                    } else if(orderData.status === 'cancelled') {
+                        badgeClass = 'status-payload-cancelled';
+                        arabicStatus = 'ملغي / مرتجع الشحنة';
+                    }
+
+                    let productsHtml = (orderData.products || []).map(p => `
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px; background:#f8fafc; padding:8px; border-radius:6px;">
+                            <img src="${p.image}" style="width:40px; height:40px; object-fit:contain; border-radius:4px; border:1px solid #e2e8f0;">
+                            <div style="flex:1;"><h5 style="margin:0; font-size:13px; color:#1e293b;">${p.name} (x${p.quantity || 1})</h5></div>
+                            <strong style="color:#0f172a; font-size:13px;">${p.price} ج.م</strong>
+                        </div>
+                    `).join('');
+
+                    container.insertAdjacentHTML('beforeend', `
+                        <div class="order-tracking-card" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:20px; margin-bottom:15px;">
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #f1f5f9; padding-bottom:10px; margin-bottom:12px;">
+                                <div>
+                                    <span style="font-size:12px; color:#64748b; display:block;">رقم معاملة الأوردر لايف</span>
+                                    <strong style="font-size:14px; color:#0f172a; letter-spacing:0.5px;">${orderData.orderNumber}</strong>
+                                </div>
+                                <span class="order-status-badge ${badgeClass}">${arabicStatus}</span>
+                            </div>
+                            <div style="margin-bottom:12px;">${productsHtml}</div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px dashed #e2e8f0; padding-top:10px;">
+                                <div><span style="font-size:13px; color:#475569;">المبلغ الإجمالي المستحق:</span> <strong style="color:#ff9900; font-size:16px; margin-right:4px;">${orderData.total} ج.م</strong></div>
+                                ${canCancel ? `<button class="client-cancel-order-btn" onclick="window.cancelCustomerOrderLive('${docId}')"><i class="fas fa-times-circle"></i> إلغاء هذا الطلب</button>` : ''}
+                            </div>
+                        </div>
+                    `);
+                });
+
+                if(counter === 0) {
+                    container.innerHTML = '<p style="color:#64748b; text-align:center; padding:30px; font-weight:600;"><i class="fas fa-folder-open" style="display:block; font-size:32px; margin-bottom:8px; color:#cbd5e1;"></i> لا توجد أي سجلات طلبات متطابقة مع هذا الفرز حالياً.</p>';
+                }
+            } catch(e) { 
+                console.error(e); 
+                container.innerHTML = '<p style="color:#ef4444; text-align:center; padding:20px;">عفواً، فشل سحب البيانات من السيرفر المزامَن.</p>';
+            }
         };
 
         window.loadCustomerWishlistLive = async function() {
             const container = document.getElementById('wishlist-dynamic-injection-area');
-            if(!container) return;
-            // التعديل: حماية أمنية لمنع جلب البيانات الحساسة بدون حساب
-            if(!currentCustomerId) {
-                container.innerHTML = '<p style="color:#ef4444; text-align:center; padding:40px 0; width:100%; font-weight:700;"><i class="fas fa-lock"></i> يرجى تسجيل الدخول لعرض المفضلة الخاصة بك.</p>';
-                return;
-            }
+            if(!container || !currentCustomerId) return;
             try {
                 const q = query(collection(db, "wishlists"), where("userId", "==", currentCustomerId));
                 const snap = await getDocs(q);
                 container.innerHTML = '';
                 if(snap.empty) {
-                    container.innerHTML = '<p style="color:#64748b; text-align:center; padding:40px 0; width:100%;">قائمة المفضلة فارغة حالياً. اضغط على علامة القلب في أي منتج لحفظه هنا.</p>';
+                    container.innerHTML = '<div style="grid-column:1/-1; text-align:center; padding:40px 0; color:#64748b;"><i class="far fa-heart" style="display:block; font-size:40px; color:#cbd5e1; margin-bottom:10px;"></i> قائمة المفضلة فارغة حالياً. تصفح الموقع وأضف سلعك!</div>';
                     return;
                 }
                 snap.forEach((docSnap) => {
                     const wish = docSnap.data();
                     container.insertAdjacentHTML('beforeend', `
-                        <div class="product-card" onclick="window.viewProductDetailsLive('${wish.productId}')" style="cursor:pointer;">
-                            <div class="wishlist-icon" onclick="window.toggleProductWishlistLive(event, '${wish.productId}')" style="color:#ef4444;"><i class="fas fa-heart"></i></div>
-                            <div class="product-img-wrapper" style="display:flex; align-items:center; justify-content:center; overflow:hidden;"><img src="${wish.image}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
-                            <div class="product-info"><h3 class="product-name">${wish.name}</h3><div class="product-price-wrapper"><span class="current-price">${wish.price} ج.م</span></div><button class="add-to-cart-btn" onclick="event.stopPropagation(); window.showCheckoutPageDirectly('${wish.productId}')"><i class="fas fa-bolt"></i> شراء الآن</button></div>
+                        <div class="product-card">
+                            <div class="wishlist-icon" style="background:#fee2e2; color:#ef4444;" onclick="window.toggleProductWishlistLive(event, '${wish.productId}', '${wish.name}', '${wish.price}', '${wish.image}')"><i class="fas fa-heart"></i></div>
+                            <a href="?product=${wish.productId}" onclick="event.preventDefault(); window.viewProductDetailsLive('${wish.productId}')" style="display:block;">
+                                <div class="product-img-wrapper"><img src="${wish.image}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
+                                <div class="product-info">
+                                    <h3 class="product-name" style="height:42px; overflow:hidden;">${wish.name}</h3>
+                                    <strong style="color:#ff9900; font-size:16px; display:block; margin-top:5px;">${wish.price} ج.م</strong>
+                                </div>
+                            </a>
+                            <div class="card-actions-wrapper" style="margin-top:10px;">
+                                <button class="add-to-cart-btn" style="background:#1a1e22; color:#fff;" onclick="event.stopPropagation(); window.triggerAddToCartStepLive('${wish.productId}', '${wish.name}', '${wish.price}', '${wish.image}', 'عام')">نقل للسلة</button>
+                            </div>
                         </div>
                     `);
                 });
@@ -1380,19 +1337,14 @@
         window.loadCustomerCartLive = async function() {
             const area = document.getElementById('cart-dynamic-items-area');
             const totalOut = document.getElementById('cart-calculated-total-price');
-            if(!area) return;
-            // التعديل: حماية العربة أمنياً
-            if(!currentCustomerId) {
-                area.innerHTML = '<p style="color:#ef4444; text-align:center; padding:40px 0; font-weight:700;"><i class="fas fa-lock"></i> يرجى تسجيل الدخول أولاً لتتمكن من استعراض عربتك.</p>';
-                return;
-            }
+            if(!area || !currentCustomerId) return;
             try {
                 const q = query(collection(db, "carts"), where("userId", "==", currentCustomerId));
                 const snap = await getDocs(q);
                 area.innerHTML = '';
                 let grandTotal = 0;
                 if(snap.empty) {
-                    area.innerHTML = '<p style="color:#64748b; text-align:center; padding:40px 0;">العربة فارغة حالياً.</p>';
+                    area.innerHTML = '<p style="color:#64748b; text-align:center; width:100%; padding:20px 0;"><i class="fas fa-shopping-basket" style="display:block; font-size:35px; color:#cbd5e1; margin-bottom:8px;"></i> سلة المشتريات فارغة تماماً.</p>';
                     if(totalOut) totalOut.innerText = "0 ج.م";
                     return;
                 }
@@ -1403,44 +1355,22 @@
                     const accumulatedPrice = item.price * itemQty;
                     grandTotal += accumulatedPrice;
 
-                    const pRef = currentProductsListInMemory.find(p => p.id === item.productId) || {};
-                    const isClothing = item.category && item.category.includes("ملابس");
-                    
-                    let optionsDropdownHtml = '';
-                    if(isClothing) {
-                        const colors = pRef.colors || ["أسود", "أبيض"];
-                        const sizes = pRef.sizes || ["S", "M", "L", "XL"];
-                        optionsDropdownHtml = `
-                            <div class="cart-options-select-block" onclick="event.stopPropagation();">
-                                <select class="cart-custom-select" onchange="window.updateCartItemOptionsLive('${cid}', 'color', this.value)">
-                                    <option value="N/A" ${item.color === 'N/A' ? 'selected' : ''}>اختر اللون</option>
-                                    ${colors.map(c => `<option value="${c}" ${item.color === c ? 'selected' : ''}>${c}</option>`).join('')}
-                                </select>
-                                <select class="cart-custom-select" onchange="window.updateCartItemOptionsLive('${cid}', 'size', this.value)">
-                                    <option value="N/A" ${item.size === 'N/A' ? 'selected' : ''}>اختر المقاس</option>
-                                    ${sizes.map(s => `<option value="${s}" ${item.size === s ? 'selected' : ''}>${s}</option>`).join('')}
-                                </select>
-                            </div>
-                        `;
-                    }
-
                     area.innerHTML += `
-                        <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e2e8f0; padding:15px 0; cursor:pointer;" onclick="window.viewProductDetailsLive('${item.productId}')">
-                            <div style="display:flex; align-items:center; gap:15px;">
-                                <img src="${item.image}" style="width:60px; height:60px; object-fit:contain; border-radius:6px;">
-                                <div style="text-align:right;">
-                                    <h4 style="color:#0f172a; margin-bottom:4px;">${item.name}</h4>
-                                    ${optionsDropdownHtml}
-                                    <div class="quantity-control-block" onclick="event.stopPropagation();" style="margin-top:8px;">
+                        <div class="cart-item-lux-row">
+                            <div style="display:flex; align-items:center; gap:15px; flex:1;">
+                                <div class="cart-item-image-wrapper"><img src="${item.image}"></div>
+                                <div class="cart-item-info-meta">
+                                    <h4>${item.name}</h4>
+                                    <div class="quantity-control-block">
                                         <button class="qty-btn" onclick="window.updateCartItemQuantityLive('${cid}', 'decrease')">-</button>
                                         <span style="font-weight:700; font-size:13px; color:#1a1e22;">${itemQty}</span>
                                         <button class="qty-btn" onclick="window.updateCartItemQuantityLive('${cid}', 'increase')">+</button>
                                     </div>
                                 </div>
                             </div>
-                            <div style="display:flex; align-items:center; gap:20px;">
-                                <span style="font-weight:700; color:#1a1e22;">${accumulatedPrice} ج.م</span>
-                                <button onclick="event.stopPropagation(); window.removeSingleCartItemLive(event, '${cid}')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:16px;"><i class="fas fa-trash"></i></button>
+                            <div style="display:flex; align-items:center; gap:20px; flex-shrink:0;">
+                                <strong class="cart-item-price-tag">${accumulatedPrice} ج.م</strong>
+                                <button onclick="window.removeSingleCartItemLive(event, '${cid}')" style="background:none; border:none; color:#ef4444; cursor:pointer; font-size:16px; transition:color 0.2s;"><i class="fas fa-trash-alt"></i></button>
                             </div>
                         </div>
                     `;
@@ -1458,13 +1388,62 @@
             } catch(err) { window.showKoshkToast(err.message, "error"); }
         };
 
+        window.renderKoshkSuccessReceiptViewLive = function(orderPayload) {
+            const mainContainer = document.getElementById('koshkMainHomepageFeedContentGridArea');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            mainContainer.innerHTML = `
+                <div style="max-width:650px; margin:20px auto; padding:40px 30px; background:#ffffff; border:2px solid #10b981; border-radius:16px; text-align:center; direction:rtl; box-shadow:0 15px 35px rgba(0,0,0,0.05);">
+                    <div style="font-size:60px; color:#10b981; margin-bottom:15px;"><i class="fas fa-check-circle"></i></div>
+                    <h2 style="font-weight:800; color:#0f172a; margin-bottom:6px; font-size:24px;">شكراً لك! تم إتمام وتسجيل طلبك بنجاح 🎉</h2>
+                    <p style="color:#64748b; font-size:14px; margin-bottom:25px;">لقد تم حقن فاتورتك في السيرفر بنجاح، وتحويلها لايف لغرفة تحكم المشرفين لمراجعتها وشحنها فوراً لباب بيتك.</p>
+                    
+                    <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:20px; border-radius:12px; text-align:right; margin-bottom:25px;">
+                        <h3 style="font-size:16px; font-weight:700; color:#1a1e22; border-bottom:1px dashed #cbd5e1; padding-bottom:8px; margin-bottom:15px;"><i class="fas fa-file-invoice-dollar" style="color:#ff9900; margin-left:6px;"></i> تفاصيل وملخص فاتورة الأوردر:</h3>
+                        <div style="margin-bottom:8px; font-size:14px;">رقم المعاملة الفريد: <b style="color:#ff9900; letter-spacing:0.5px;">${orderPayload.orderNumber}</b></div>
+                        <div style="margin-bottom:8px; font-size:14px;">اسم المستلم المعتمد: <b>${orderPayload.clientName}</b></div>
+                        <div style="margin-bottom:8px; font-size:14px;">رقم هاتف الاتصال: <b>${orderPayload.clientPhone}</b></div>
+                        <div style="margin-bottom:12px; font-size:14px;">عنوان التوصيل السكني: <b>${orderPayload.province} - ${orderPayload.city}، ${orderPayload.address}</b></div>
+                        <div style="border-top:1px solid #e2e8f0; padding-top:12px; font-size:14px;">طريقة السداد المحددة: <span style="background:rgba(255,153,0,0.1); color:#ff9900; padding:2px 8px; border-radius:4px; font-weight:700; font-size:12px;">${orderPayload.paymentGateway === 'cod' ? 'الدفع نقدياً عند الاستلام' : 'تحويل الكاش الإلكتروني'}</span></div>
+                        <div style="margin-top:12px; display:flex; justify-content:space-between; align-items:center; font-size:16px; font-weight:700; color:#0f172a; border-top:1px dashed #cbd5e1; padding-top:12px;">
+                            <span>القيمة الإجمالية المدفوعة:</span>
+                            <span style="color:#ff9900; font-size:20px;">${orderPayload.total} ج.م</span>
+                        </div>
+                    </div>
+
+                    <div style="background:#fff7ed; border:1px solid #ffedd5; padding:15px; border-radius:10px; text-align:center; margin-bottom:25px;">
+                        <h4 style="font-size:14px; font-weight:700; color:#c2410c; margin-bottom:6px;"><i class="fas fa-spinner fa-spin"></i> حالة الأوردر الحالية في السيرفر:</h4>
+                        <span style="background:#ff9900; color:#1a1e22; font-weight:700; font-size:12px; padding:4px 14px; border-radius:20px; display:inline-block;">جاري المراجعة والتحضير الإداري</span>
+                    </div>
+
+                    <h4 style="font-size:15px; font-weight:700; color:#1a1e22; margin-bottom:15px;">هل تحتاج للمساعدة أو التعديل الفوري على طلبك؟</h4>
+                    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+                        <a href="https://wa.me/201500812929" target="_blank" style="background:#25d366; color:#fff; text-decoration:none; padding:10px 20px; border-radius:6px; font-weight:700; font-size:13px; display:inline-flex; align-items:center; gap:8px;">
+                            <i class="fab fa-whatsapp"></i> تواصل عبر واتساب خدمة العملاء
+                        </a>
+                        <a href="tel:201500812929" style="background:#1a1e22; color:#fff; text-decoration:none; padding:10px 20px; border-radius:6px; font-weight:700; font-size:13px; display:inline-flex; align-items:center; gap:8px;">
+                            <i class="fas fa-phone-alt" style="color:#ff9900;"></i> اتصل بنا هاتفياً فوراً
+                        </a>
+                    </div>
+                    <button onclick="window.location.href='index.html'" class="auth-btn" style="background:#f1f5f9; color:#475569; margin-top:25px; width:auto; padding:8px 30px;"><i class="fas fa-shopping-bag"></i> العودة ومتابعة التسوق بالمتجر</button>
+                </div>
+            `;
+        };
+
         window.showCheckoutPageDirectly = function(optionalProductId = null) {
             if (!currentCustomerId) {
                 window.showKoshkToast("عفواً، يجب إنشاء حساب وتسجيل الدخول أولاً لكي تتمكن من شراء منتجاتنا!", "error");
                 window.showPage('auth');
                 return;
             }
-            const mainContainer = document.querySelector('main .full-width-container');
+            
+            // [حماية آمنة للتبديل]: فحص الوجود الفعلي للعناصر لتلافي أخطاء الـ null في الشاشات الفرعية
+            const wrap1 = document.getElementById('amazonStyleCategoriesWrapper');
+            const wrap2 = document.getElementById('koshkMainHeroSliderContainerBlock');
+            if (wrap1) wrap1.style.display = 'none';
+            if (wrap2) wrap2.style.display = 'none';
+
+            const mainContainer = document.getElementById('koshkMainHomepageFeedContentGridArea');
             window.scrollTo({ top: 0, behavior: 'smooth' });
 
             let summaryHtml = '';
@@ -1485,112 +1464,112 @@
                         image: (item.images && item.images.length > 0) ? item.images[0] : 'https://via.placeholder.com/300?text=Online+Koshk'
                     });
                     summaryHtml = `
-                        <div style="display:flex; align-items:center; gap:15px; border-bottom:1px solid #e2e8f0; padding-bottom:15px; cursor:pointer;" onclick="window.viewProductDetailsLive('${item.id}')">
-                            <img src="${targetOrderItems[0].image}" style="width:50px; height:50px; object-fit:contain; border-radius:6px;">
-                            <div style="text-align:right;">
-                                <h4 style="color:#0f172a; margin:0 0 4px 0;">${item.name}</h4>
-                                <span style="font-weight:700; color:#1a1e22; font-size:14px;">${price} ج.م</span>
+                        <div style="display:flex; align-items:center; gap:12px; border-bottom:1px solid #e2e8f0; padding-bottom:12px; padding-top:4px;">
+                            <img src="${targetOrderItems[0].image}" style="width:50px; height:50px; object-fit:contain; border-radius:6px; border:1px solid #f1f5f9;">
+                            <div style="flex:1;">
+                                <h4 style="margin:0; font-size:13px; color:#0f172a; font-weight:700; line-height:1.4;">${item.name}</h4>
+                                <small style="color:#64748b; font-weight:600;">الكمية: 1</small>
                             </div>
+                            <strong style="color:#1a1e22; font-size:14px;">${price} ج.م</strong>
                         </div>
                     `;
                 }
             }
 
             mainContainer.innerHTML = `
-                <div class="container" style="padding:40px 15px; text-align:right;">
-                    <div class="page-card" style="max-width:1000px; display:grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap:35px; padding:30px;">
-                        <div>
-                            <h3 style="color:#0f172a; font-size:18px; font-weight:700; margin-bottom:20px; border-bottom:2px solid #ff9900; padding-bottom:6px; display:inline-block;">بيانات الشحن والتوصيل الإجبارية</h3>
-                            <form id="koshkDirectCheckoutOrderForm" class="auth-form" style="box-shadow:none; padding:0; border:none;">
-                                <div class="form-group"><label>الاسم بالكامل (إجباري)</label><input type="text" id="chkName" placeholder="أدخل اسمك الثلاثي المعتمد" required></div>
-                                <div class="form-group"><label>رقم الموبايل (إجباري)</label><input type="tel" id="chkPhone" placeholder="01XXXXXXXXX" required></div>
-                                <div class="form-group"><label>البريد الإلكتروني (إجباري)</label><input type="email" id="chkEmail" placeholder="name@example.com" required></div>
-                                <div class="form-grid-2" style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                                    <div class="form-group"><label>المدينة / المحافظة الإجمالية (إجباري)</label><input type="text" id="chkProvince" placeholder="مثال: القاهرة" required></div>
-                                    <div class="form-group"><label>المنطقة / الحي الفرعي (إجباري)</label><input type="text" id="chkCity" placeholder="مثال: مدينة نصر" required></div>
+                <div style="width:100%; text-align:right; padding-top: 35px;">
+                    <div style="max-width:1100px; margin:0 auto; display:grid; grid-template-columns:1fr 400px; gap:30px;">
+                        <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:16px; padding:30px; box-shadow:0 10px 25px rgba(0,0,0,0.02);">
+                            <h3 style="color:#0f172a; font-size:18px; font-weight:700; margin-bottom:20px; padding-bottom:10px; border-bottom:2px solid #f1f5f9;"><i class="fas fa-map-marker-alt" style="color:#ff9900; margin-left:8px;"></i> معلومات الشحن والتسليم الإجبارية</h3>
+                            <form id="koshkDirectCheckoutOrderForm" class="auth-form" style="box-shadow:none; padding:0; border:none; background:none;">
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                                    <div class="form-group"><label>الاسم بالكامل *</label><input type="text" id="chkName" placeholder="أدخل اسمك الثلاثي لضمان شحن أسرع" required></div>
+                                    <div class="form-group"><label>رقم الموبايل للتواصل *</label><input type="tel" id="chkPhone" placeholder="01XXXXXXXXX" required></div>
                                 </div>
-                                <div class="form-group"><label>العنوان التفصيلي (إجباري)</label><input type="text" id="chkAddress" placeholder="اسم الشارع، رقم العقار، رقم الشقة" required></div>
+                                <div class="form-group"><label>البريد الإلكتروني المعتمد *</label><input type="email" id="chkEmail" placeholder="name@domain.com" required></div>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                                    <div class="form-group"><label>المحافظة / المدينة *</label><input type="text" id="chkProvince" placeholder="مثال: القاهرة" required></div>
+                                    <div class="form-group"><label>المنطقة الفرعية / الحي *</label><input type="text" id="chkCity" placeholder="مثال: مدينة نصر" required></div>
+                                </div>
+                                <div class="form-group"><label>العنوان السكني التفصيلي *</label><input type="text" id="chkAddress" placeholder="اسم الشارع، رقم العقار، الدور، الشقة" required></div>
                                 
-                                <h3 style="color:#0f172a; font-size:16px; font-weight:700; margin:25px 0 10px 0;">اختر طريقة الدفع المفضلة:</h3>
+                                <h3 style="color:#0f172a; font-size:16px; font-weight:700; margin-top:25px; margin-bottom:15px; padding-bottom:8px; border-bottom:2px solid #f1f5f9;"><i class="fas fa-credit-card" style="color:#ff9900; margin-left:8px;"></i> طريقة السداد والدفع المفضلة:</h3>
                                 <div class="payment-methods-grid">
                                     <div class="payment-selector-card selected" onclick="window.selectKoshkPaymentMethodLive(this, 'cod')">
-                                        <i class="fas fa-hand-holding-usd" style="font-size:18px; color:#ff9900; display:block; margin-bottom:4px;"></i>
-                                        <small style="font-weight:700;">الدفع عند الاستلام</small>
+                                        <i class="fas fa-hand-holding-usd" style="color:#ff9900; font-size:18px; margin-bottom:4px;"></i><br><small style="font-weight:700; font-size:12px;">الدفع عند الاستلام</small>
                                     </div>
                                     <div class="payment-selector-card" onclick="window.selectKoshkPaymentMethodLive(this, 'vodafone')">
-                                        <i class="fas fa-wallet" style="font-size:18px; color:#e60000; display:block; margin-bottom:4px;"></i>
-                                        <small style="font-weight:700;">فودافون كاش</small>
+                                        <i class="fas fa-wallet" style="color:#e60000; font-size:18px; margin-bottom:4px;"></i><br><small style="font-weight:700; font-size:12px;">فودافون كاش</small>
                                     </div>
                                     <div class="payment-selector-card" onclick="window.selectKoshkPaymentMethodLive(this, 'etisalat')">
-                                        <i class="fas fa-wallet" style="font-size:18px; color:#78b833; display:block; margin-bottom:4px;"></i>
-                                        <small style="font-weight:700;">اتصالات كاش</small>
-                                    </div>
-                                    <div class="payment-selector-card" onclick="window.selectKoshkPaymentMethodLive(this, 'we')">
-                                        <i class="fas fa-wallet" style="font-size:18px; color:#5c2d91; display:block; margin-bottom:4px;"></i>
-                                        <small style="font-weight:700;">وي باي (WE)</small>
-                                    </div>
-                                    <div class="payment-selector-card" onclick="window.selectKoshkPaymentMethodLive(this, 'fawry')">
-                                        <i class="fas fa-bolt" style="font-size:18px; color:#005ca9; display:block; margin-bottom:4px;"></i>
-                                        <small style="font-weight:700;">فوري باي</small>
+                                        <i class="fas fa-wallet" style="color:#78b833; font-size:18px; margin-bottom:4px;"></i><br><small style="font-weight:700; font-size:12px;">اتصالات كاش</small>
                                     </div>
                                 </div>
-                                <div id="selectedPaymentMethodLiveInstructionsBlock" style="margin-top:15px; margin-bottom:20px;">
-                                    <p style="font-size:13px; color:#475569;"><i class="fas fa-money-bill-wave" style="margin-left:5px; color:#ff9900;"></i> سيقوم المندوب بتحصيل قيمة الفاتورة نقداً بالكامل عند تسليم الشحنة لباب بيتك.</p>
+                                <div id="selectedPaymentMethodLiveInstructionsBlock" style="margin-top:15px; margin-bottom:15px;">
+                                    <p style="font-size:13px; color:#475569; background:#f8fafc; padding:12px; border-radius:8px; border:1px solid #cbd5e1;"><i class="fas fa-money-bill-wave" style="color:#ff9900; margin-left:6px;"></i> سيقوم المندوب بتحصيل قيمة الأوردر نقداً بالكامل عند تسليم الشحنة.</p>
+                                </div>
+                                
+                                <div id="checkoutInstantPaymentUploadContainer" style="display:none; background:#f8fafc; border:1px solid #cbd5e1; padding:15px; border-radius:10px; margin-bottom:15px;">
+                                    <div class="form-group">
+                                        <label>رقم المحفظة التي حولت منها (إجباري)</label>
+                                        <input type="text" id="chkTransferTxNumber" placeholder="أدخل رقم محفظتك للتحقق المعاملة">
+                                    </div>
+                                    <div class="form-group" style="margin-bottom:0;">
+                                        <label>ارفاق صورة إيصال التحويل الناجح *</label>
+                                        <input type="file" id="chkTransferReceiptFile" accept="image/*" onchange="window.previewCheckoutReceiptImage(event)">
+                                        <div id="checkoutReceiptPreviewGallery" style="margin-top:8px;"></div>
+                                    </div>
                                 </div>
 
-                                <h3 style="color:#0f172a; font-size:15px; font-weight:700; margin:15px 0 15px 0; border-bottom:1px dashed #cbd5e1; padding-bottom:4px;">بيانات إضافية (اختيارية)</h3>
-                                <div class="form-group"><label>ملاحظات إضافية للمندوب (اختياري)</label><input type="text" id="chkNotes" placeholder="مثال: الاتصال قبل التوصيل بـ ساعة"></div>
-                                <div class="form-group"><label>كود الخصم / الكوبون (اختياري)</label><input type="text" id="chkCoupon" placeholder="إذا كان لديك كوبون تخفيض ضعيف هنا"></div>
-                                <div class="remember-me-container">
-                                    <input type="checkbox" id="registerRememberMe" checked>
-                                    <label role="button" for="registerRememberMe">تذكرني فور إتمام تفعيل حسابي</label>
-                                </div>
-                                <button type="submit" class="auth-btn" style="background:#1a1e22; color:#ffffff; margin-top:20px;"><i class="fas fa-shipping-fast" style="color:#ff9900;"></i> تأكيد وشحن الطلب لايف الآن</button>
+                                <div class="form-group"><label>ملاحظات إضافية للمندوب (اختياري)</label><input type="text" id="chkNotes" placeholder="مثال: التوصيل بعد العصر"></div>
+                                <button type="submit" class="form-submit-action-btn" style="background:#1a1e22; color:#fff; margin-top:20px; font-size:16px; padding:14px;"><i class="fas fa-shipping-fast" style="color:#ff9900;"></i> تأكيد وشحن الطلب لايف الآن</button>
                             </form>
                         </div>
-                        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:20px; border-radius:8px; display:flex; flex-direction:column; justify-content:space-between;">
+                        <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:25px; border-radius:16px; display:flex; flex-direction:column; justify-content:space-between; height:fit-content; box-shadow:0 10px 25px rgba(0,0,0,0.01);">
                             <div>
-                                <h3 style="color:#0f172a; font-size:16px; font-weight:700; margin-bottom:25px;">ملخص الفاتورة الحالية</h3>
-                                <div id="checkout-items-summary-list-area">${summaryHtml ? summaryHtml : 'جاري تحميل منتجات السلة...'}</div>
+                                <h3 style="color:#0f172a; font-size:16px; font-weight:700; margin-bottom:15px; border-bottom:2px solid #e2e8f0; padding-bottom:8px;">ملخص ومحتويات الأوردر الحالي</h3>
+                                <div id="checkout-items-summary-list-area" style="display:flex; flex-direction:column; gap:10px;">${summaryHtml ? summaryHtml : 'جاري التحميل...'}</div>
                             </div>
-                            <div style="border-top:2px solid #e2e8f0; padding-top:20px; margin-top:30px;">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px; color:#475569;"><span>قيمة المنتجات:</span><strong id="chkSummarySubtotal">${finalPriceCalculation} ج.م</strong></div>
-                                <div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:14px; color:#475569;"><span>مصاريف الشحن:</span><strong style="color:#ff9900;">مجاني بالكامل</strong></div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; font-size:18px; color:#0f172a; font-weight:700;"><span>إجمالي الدفع عند الاستلام:</span><strong id="chkSummaryGrandTotal" style="color:#ff9900;">${finalPriceCalculation} ج.م</strong></div>
+                            <div style="border-top:2px solid #e2e8f0; padding-top:15px; margin-top:25px;">
+                                <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:14px; color:#475569;"><span>قيمة منتجات السلة:</span><strong id="chkSummarySubtotal" style="color:#1a1e22;">${finalPriceCalculation} ج.م</strong></div>
+                                <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px; color:#475569;"><span>مصاريف التوصيل والشحن:</span><strong style="color:#10b981; font-weight:700;">مجاني بالكامل (هدية أول طلب)</strong></div>
+                                <div style="display:flex; justify-content:space-between; font-size:17px; color:#0f172a; font-weight:700; border-top:1px dashed #cbd5e1; padding-top:12px;"><span>إجمالي الدفع المستحق:</span><strong id="chkSummaryGrandTotal" style="color:#ff9900; font-size:22px;">${finalPriceCalculation} ج.م</strong></div>
                             </div>
                         </div>
                     </div>
                 </div>
             `;
 
-            if (!optionalProductId) { prepareFullCartForCheckout(targetOrderItems); }
+            if (!optionalProductId) { finalPriceCalculation = 0; prepareFullCartForCheckout(targetOrderItems); }
 
             const frm = document.getElementById('koshkDirectCheckoutOrderForm');
             if(frm) {
                 frm.onsubmit = async (e) => {
                     e.preventDefault();
-                    if (!currentCustomerId) return;
                     const targetCity = document.getElementById('chkProvince').value.trim();
-                    try {
-                        await addDoc(collection(db, "orders"), {
-                            userId: currentCustomerId,
-                            clientName: document.getElementById('chkName').value.trim(),
-                            clientPhone: document.getElementById('chkPhone').value.trim(),
-                            clientEmail: document.getElementById('chkEmail').value.trim(),
-                            province: targetCity,
-                            city: document.getElementById('chkCity').value.trim(),
-                            address: document.getElementById('chkAddress').value.trim(),
-                            notes: document.getElementById('chkNotes').value.trim(),
-                            coupon: document.getElementById('chkCoupon').value.trim(),
-                            paymentGateway: selectedPaymentGatewayLive,
-                            orderNumber: `OK-${Math.floor(10000 + Math.random() * 90000)}`,
-                            products: targetOrderItems,
-                            total: parseFloat(document.getElementById('chkSummaryGrandTotal').innerText),
-                            status: "pending",
-                            orderedAt: new Date()
-                        });
+                    const finalOrderData = {
+                        userId: currentCustomerId,
+                        clientName: document.getElementById('chkName').value.trim(),
+                        clientPhone: document.getElementById('chkPhone').value.trim(),
+                        clientEmail: document.getElementById('chkEmail').value.trim(),
+                        province: targetCity,
+                        city: document.getElementById('chkCity').value.trim(),
+                        address: document.getElementById('chkAddress').value.trim(),
+                        notes: document.getElementById('chkNotes').value.trim(),
+                        paymentGateway: selectedPaymentGatewayLive,
+                        txNumber: document.getElementById('chkTransferTxNumber')?.value.trim() || "COD",
+                        receiptImage: window.checkoutReceiptBase64 || "",
+                        orderNumber: `OK-${Math.floor(10000 + Math.random() * 90000)}`,
+                        products: targetOrderItems,
+                        total: parseFloat(document.getElementById('chkSummaryGrandTotal').innerText),
+                        status: "pending",
+                        orderedAt: new Date()
+                    };
 
+                    try {
+                        await addDoc(collection(db, "orders"), finalOrderData);
                         window.updateLocationUIField(targetCity);
+                        
                         if (globalCustomerProfileDocumentId) {
                             await setDoc(doc(db, "users", globalCustomerProfileDocumentId), { city: targetCity }, { merge: true });
                         }
@@ -1600,8 +1579,9 @@
                             const snapshot = await getDocs(q);
                             for (let d of snapshot.docs) { await deleteDoc(doc(db, "carts", d.id)); }
                         }
-                        window.showKoshkToast("تم معالجة الفاتورة وتأكيد طلبك الحركي بالسيرفر بنجاح لايف!", "success");
-                        window.showPage('track');
+                        
+                        window.showKoshkToast("تمت معالجة المعاملة وتأكيد الأوردر بالداتا بيز لايف!", "success");
+                        window.renderKoshkSuccessReceiptViewLive(finalOrderData);
                     } catch(err) { window.showKoshkToast(err.message, "error"); }
                 };
             }
@@ -1621,12 +1601,15 @@
                     targetOrderItems.push(c);
                     if(listArea) {
                         listArea.innerHTML += `
-                            <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e2e8f0; padding:10px 0; cursor:pointer;" onclick="window.viewProductDetailsLive('${c.productId}')">
-                                <div style="display:flex; align-items:center; gap:12px;">
-                                    <img src="${c.image}" style="width:40px; height:40px; object-fit:contain; border-radius:4px;">
-                                    <div style="text-align:right;"><h5 style="color:#0f172a; margin:0;">${c.name} (x${itemQty})</h5><small style="color:#64748b;">اللون: ${c.color} | المقاس: ${c.size}</small></div>
+                            <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e2e8f0; padding:10px 0;">
+                                <div style="display:flex; align-items:center; gap:10px;">
+                                    <img src="${c.image}" style="width:40px; height:40px; object-fit:contain; border-radius:4px; border:1px solid #f1f5f9;">
+                                    <div>
+                                        <h5 style="margin:0; font-size:13px; color:#0f172a; font-weight:700;">${c.name}</h5>
+                                        <small style="color:#64748b; font-weight:600;">الكمية: ${itemQty}</small>
+                                    </div>
                                 </div>
-                                <span style="font-weight:700; color:#1a1e22; font-size:13px;">${c.price * itemQty} ج.م</span>
+                                <span style="font-weight:700; color:#1a1e22; font-size:14px;">${c.price * itemQty} ج.م</span>
                             </div>
                         `;
                     }
@@ -1655,10 +1638,7 @@
         };
 
         window.deleteProfileImageLive = async function() {
-            const confirmed = await window.showKoshkCustomConfirmModal(
-                "حذف الصورة الشخصية نهائياً",
-                "هل أنت متأكد من رغبتك في إزالة صورتك الحالية بالكامل وحذف تشفيرها من سيرفر المتجر؟"
-            );
+            const confirmed = await window.showKoshkCustomConfirmModal("حذف الصورة الشخصية نهائياً", "هل أنت متأكد من رغبتك في إزالة صورتك الحالية وحذف تشفيرها من سيرفر متجرنا؟");
             if(confirmed) {
                 try {
                     if (globalCustomerProfileDocumentId) {
@@ -1673,10 +1653,9 @@
         window.executeClientProfileUpdateLive = async function(e) {
             e.preventDefault();
             if(!currentCustomerId) return;
-            
             const submitBtn = e.target.querySelector('button[type="submit"]');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = '<i class="fas fa-slate fa-spin"></i> جاري الحفظ...';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري حفظ التعديلات...';
 
             try {
                 const name = document.getElementById('profName').value.trim();
@@ -1684,7 +1663,6 @@
                 const email = document.getElementById('profEmail').value.trim();
                 const city = document.getElementById('profCity').value.trim();
                 const address = document.getElementById('profAddress').value.trim();
-                const zip = document.getElementById('profZip').value.trim();
 
                 if(globalCustomerProfileDocumentId) {
                     await setDoc(doc(db, "users", globalCustomerProfileDocumentId), {
@@ -1693,18 +1671,253 @@
                         email: email,
                         city: city || "N/A",          
                         address: address || "N/A",          
-                        zip: zip || "N/A",            
                         updatedAt: new Date()
                     }, { merge: true });
 
                     if(city) { window.updateLocationUIField(city); }
-                    window.showKoshkToast("تم تحديث وحفظ بيانات ملفك الشخصي لايف بالسيرفر!", "success");
+                    window.showKoshkToast("تمت معالجة وتحديث بيانات ملفك الشخصي لايف بالسيرفر بنجاح!", "success");
                 }
             } catch(err) {
                 window.showKoshkToast("فشل تحديث البيانات: " + err.message, "error");
             } finally {
                 submitBtn.disabled = false;
-                submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ التغييرات الحالية';
+                submitBtn.innerHTML = '<i class="fas fa-save"></i> حفظ وتحديث بيانات حسابي لايف';
+            }
+        };
+
+        window.showPage = function(pageName) {
+            // [إصلاح وحماية]: التحقق الآمن لعدم محاولة تعديل ستايل عنصر null في الشاشات الفرعية
+            const wrap1 = document.getElementById('amazonStyleCategoriesWrapper');
+            const wrap2 = document.getElementById('koshkMainHeroSliderContainerBlock');
+            
+            if(pageName === 'home' || pageName === 'feed') {
+                if (wrap1) wrap1.style.display = 'block';
+                if (wrap2) wrap2.style.display = 'block';
+            } else {
+                if (wrap1) wrap1.style.display = 'none';
+                if (wrap2) wrap2.style.display = 'none';
+            }
+
+            const mainContainer = document.getElementById('koshkMainHomepageFeedContentGridArea');
+
+            if(pageName === 'auth') {
+                if (currentCustomerId) {
+                    mainContainer.innerHTML = `
+                        <div style="width:100%; text-align:right; padding-top: 35px;">
+                            <div style="max-width:900px; margin:0 auto; display:grid; grid-template-columns:300px 1fr; gap:30px; background:#ffffff; border:1px solid #e2e8f0; padding:30px; border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,0.01);">
+                                <div style="display:flex; flex-direction:column; align-items:center; text-align:center; background:#f8fafc; padding:25px 15px; border-radius:12px; border:1px solid #e2e8f0; height:fit-content;">
+                                    <div style="width:120px; height:120px; border-radius:50%; border:3px solid #ff9900; background:#ffffff; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:0 8px 16px rgba(0,0,0,0.05); margin-bottom:15px;" id="koshkProfileAvatarBoxView">
+                                        <i class="fas fa-user" style="font-size:50px; color:#cbd5e1;"></i>
+                                    </div>
+                                    <div style="display:flex; flex-direction:column; gap:10px; width:100%;" id="profileAvatarActionsButtonsArea"></div>
+                                    <input type="file" id="koshkHiddenProfileImageFileInput" accept="image/*" style="display:none;">
+                                </div>
+                                <div>
+                                    <h2 style="color:#0f172a; margin-bottom:20px; font-size:20px; font-weight:800; border-bottom:2px solid #ff9900; padding-bottom:6px; display:inline-block;"><i class="fas fa-id-card"></i> إعدادات وبيدج حسابك الشخصي</h2>
+                                    <form id="koshkClientProfileUpdateForm" class="auth-form" style="box-shadow:none; padding:0; border:none; background:none;">
+                                        <div class="form-group"><label>الاسم بالكامل المعتمد *</label><input type="text" id="profName" required></div>
+                                        <div class="form-group"><label>رقم الهاتف المفعل *</label><input type="tel" id="profPhone" required></div>
+                                        <div class="form-group"><label>البريد الإلكتروني الحالي (مؤمن)</label><input type="email" id="profEmail" required disabled style="background:#f1f5f9; cursor:not-allowed;"></div>
+                                        <div class="form-group"><label>المدينة للتوصيل *</label><input type="text" id="profCity" required placeholder="مثال: القاهرة"></div>
+                                        <div class="form-group"><label>العنوان السكني التفصيلي *</label><input type="text" id="profAddress" required></div>
+                                        <button type="submit" class="auth-btn" style="background:#1a1e22;"><i class="fas fa-save"></i> حفظ وتحديث بيانات حسابي لايف</button>
+                                    </form>
+                                    <button onclick="window.executeClientSignOutLive()" style="width:100%; background:#ef4444; color:#fff; border:none; padding:12px; border-radius:8px; font-family:'Cairo'; font-weight:700; cursor:pointer; margin-top:15px; display:flex; align-items:center; justify-content:center; gap:8px; transition:all 0.2s;"><i class="fas fa-sign-out-alt"></i> تسجيل خروج آمن من المتجر</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    setTimeout(async () => {
+                        try {
+                            const q = query(collection(db, "users"), where("uid", "==", currentCustomerId));
+                            const s = await getDocs(q);
+                            if(!s.empty) {
+                                globalCustomerProfileDocumentId = s.docs[0].id;
+                                const u = s.docs[0].data();
+                                document.getElementById('profName').value = u.name || '';
+                                document.getElementById('profPhone').value = u.phone || '';
+                                document.getElementById('profEmail').value = u.email || '';
+                                document.getElementById('profCity').value = u.city === "N/A" ? "" : (u.city || "");
+                                document.getElementById('profAddress').value = u.address === "N/A" ? "" : (u.address || "");
+                                
+                                const avatarArea = document.getElementById('profileAvatarActionsButtonsArea');
+                                const avatarBox = document.getElementById('koshkProfileAvatarBoxView');
+                                if (u.avatar && u.avatar.trim() !== "") {
+                                    avatarBox.innerHTML = `<img src="${u.avatar}" style="width:100%; height:100%; object-fit:cover;">`;
+                                    avatarArea.innerHTML = `
+                                        <button class="auth-btn" style="background:#ff9900; color:#1a1e22; font-size:12px; padding:8px 12px; width:100%;" onclick="document.getElementById('koshkHiddenProfileImageFileInput').click()"><i class="fas fa-sync"></i> تغيير الصورة</button>
+                                        <button class="auth-btn" style="background:#fee2e2; color:#ef4444; font-size:12px; padding:8px 12px; width:100%;" onclick="window.deleteProfileImageLive()"><i class="fas fa-trash-alt"></i> حذفها</button>
+                                    `;
+                                } else {
+                                    avatarArea.innerHTML = `
+                                        <button class="auth-btn" style="background:#1a1e22; color:#fff; font-size:12px; padding:8px 12px; width:100%;" onclick="document.getElementById('koshkHiddenProfileImageFileInput').click()"><i class="fas fa-image"></i> إضافة صورة شخصية</button>
+                                    `;
+                                }
+                                document.getElementById('koshkHiddenProfileImageFileInput').onchange = window.triggerProfileImageUploadLive;
+                            }
+                            document.getElementById('koshkClientProfileUpdateForm').onsubmit = window.executeClientProfileUpdateLive;
+                        } catch(err) { console.error(err); }
+                    }, 50);
+                } else {
+                    mainContainer.innerHTML = `
+                        <div style="width:100%; text-align:right; padding-top: 35px;">
+                            <div class="page-card auth-card" style="max-width:480px; margin:0 auto; padding:35px 30px;">
+                                <div class="auth-tabs">
+                                    <button class="auth-tab active" id="koshkTabLoginBtn" onclick="window.toggleKoshkAuthSubForm('login')">تسجيل الدخول</button>
+                                    <button class="auth-tab" id="koshkTabRegisterBtn" onclick="window.toggleKoshkAuthSubForm('register')">إنشاء حساب جديد</button>
+                                </div>
+                                <form id="koshkSubLoginForm" onsubmit="window.executeSubLoginBlock(event)" class="auth-form">
+                                    <div class="form-group"><label>البريد الإلكتروني للمستخدِم</label><input type="email" id="subLogEmail" placeholder="name@example.com" required></div>
+                                    <div class="form-group"><label>كلمة المرور / مفتاح الولوج</label><input type="password" id="subLogPass" placeholder="••••••••" required></div>
+                                    <div class="remember-me-container">
+                                        <input type="checkbox" id="loginRememberMe" checked><label for="loginRememberMe">تذكرني تلقائياً في هذا المتصفح</label>
+                                    </div>
+                                    <button type="submit" class="auth-btn">تسجيل دخول لحسابي</button>
+                                </form>
+                                <form id="koshkSubRegisterForm" onsubmit="window.executeSubRegisterBlock(event)" class="auth-form" style="display:none;">
+                                    <div class="form-group"><label>الاسم الثلاثي بالكامل *</label><input type="text" id="subRegName" placeholder="أدخل اسمك الثلاثي المعتمد" required></div>
+                                    <div class="form-group"><label>رقم الهاتف المفعل للتوصيل *</label><input type="tel" id="subRegPhone" placeholder="مثال: 01500812929" required></div>
+                                    <div class="form-group"><label>البريد الإلكتروني الموثق *</label><input type="email" id="subRegEmail" placeholder="example@gmail.com" required></div>
+                                    <div class="form-group"><label>المحافظة / مدينة التوصيل *</label><input type="text" id="subRegCity" placeholder="مثال: القاهرة الجديدة" required></div>
+                                    <div class="form-group"><label>إنشاء كلمة مرور الحساب *</label><input type="password" id="subRegPass" placeholder="على الأقل 6 أحرف أو أرقام" minlength="6" required></div>
+                                    <button type="submit" class="auth-btn" style="background:#ff9900; color:#1a1e22;">إنشاء الحساب وتفعيله بالسيرفر</button>
+                                </form>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            else if(pageName === 'wishlist') {
+                mainContainer.innerHTML = `
+                    <div style="width:100%; text-align:right; padding-top: 35px;">
+                        <div style="max-width:1100px; margin:0 auto; background:#ffffff; border:1px solid #e2e8f0; padding:30px; border-radius:16px; box-shadow:0 10px 25px rgba(0,0,0,0.01);">
+                            <h2 class="page-title" style="margin-bottom:20px; border-bottom:2px solid #ff9900; padding-bottom:8px; display:inline-block;"><i class="far fa-heart" style="color:#ef4444;"></i> قائمة السلع والمنتجات المفضلة المربوطة بحسابك</h2>
+                            <div class="products-grid" id="wishlist-dynamic-injection-area" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:20px; width:100%; margin-top:15px;"></div>
+                        </div>
+                    </div>
+                `;
+                window.loadCustomerWishlistLive();
+            }
+            else if(pageName === 'cart') {
+                mainContainer.innerHTML = `
+                    <div style="width:100%; text-align:right; padding-top: 35px;">
+                        <div style="max-width:850px; margin:0 auto;" class="cart-premium-box-layout">
+                            <h2 class="page-title" style="margin-bottom:20px; border-bottom:2px solid #ff9900; padding-bottom:8px; display:inline-block;"><i class="fas fa-shopping-basket"></i> عربة المشتريات والتحقق لايف (<span id="cart-internal-total-count">0</span>)</h2>
+                            <div id="cart-dynamic-items-area" style="display:flex; flex-direction:column; gap:5px; margin-bottom:20px;"></div>
+                            <div style="display:flex; justify-content:space-between; align-items:center; border-top:2px solid #f1f5f9; padding-top:20px; margin-bottom:25px;">
+                                <h3 style="margin:0; font-size:16px; font-weight:700; color:#334155;">إجمالي قيمة الفاتورة الإجمالية المستحقة:</h3>
+                                <h3 id="cart-calculated-total-price" style="color:#ff9900; font-weight:800; margin:0; font-size:24px;">0 ج.م</h3>
+                            </div>
+                            <button onclick="window.showCheckoutPageDirectly()" class="form-submit-action-btn" style="max-width:380px; font-size:15px; padding:12px 20px;"><i class="fas fa-credit-card"></i> الذهاب لصفحة إتمام شحن المشتريات</button>
+                        </div>
+                    </div>
+                `;
+                window.loadCustomerCartLive();
+            }
+            else if(pageName === 'track') {
+                mainContainer.innerHTML = `
+                    <div style="width:100%; text-align:right; padding-top: 35px;">
+                        <div class="page-card" style="max-width:900px; margin:0 auto; padding:30px;">
+                            <h2 class="page-title" style="margin-bottom:15px;"><i class="fas fa-truck"></i> تتبع وفحص حالة شحناتك لايف بالسيرفر</h2>
+                            <div id="koshkCustomerRegisteredTrackSection" style="margin-top:10px;">
+                                <div class="orders-page-tabs-container">
+                                    <button class="orders-tab-trigger active" data-order-tab="all" onclick="window.loadCustomerActiveOrdersLive('all')">الكل</button>
+                                    <button class="orders-tab-trigger" data-order-tab="pending" onclick="window.loadCustomerActiveOrdersLive('pending')">بانتظار الاستلام</button>
+                                    <button class="orders-tab-trigger" data-order-tab="delivered" onclick="window.loadCustomerActiveOrdersLive('delivered')">تم استلامها</button>
+                                    <button class="orders-tab-trigger" data-order-tab="cancelled" onclick="window.loadCustomerActiveOrdersLive('cancelled')">الملغاة</button>
+                                </div>
+                                <div id="customer-orders-live-injection-area" class="orders-tracking-grid-layout"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                setTimeout(() => {
+                    if(currentCustomerId) {
+                        window.loadCustomerActiveOrdersLive('all');
+                    } else {
+                        const sec = document.getElementById('koshkCustomerRegisteredTrackSection');
+                        if(sec) sec.innerHTML = '<p style="color:#64748b; text-align:center; padding:15px 0; font-size:13px; font-weight:600;"><i class="fas fa-lock"></i> يرجى تسجيل الدخول لعرض وفرز كافة طلباتك السابقة تلقائياً وإلغائها.</p>';
+                    }
+                }, 50);
+            }
+            else if(pageName === 'home') {
+                syncStoreLive();
+            }
+
+            // [إصلاح آلي]: إذا تم حقن صفحة فرعية عادية (about, privacy, terms, contact, shipping-policy)
+            // وكان المحتوى المبدئي فارغاً، يتم تمريره فوراً للدالة القارئة بملف main.js لتشغيل الحقن الديناميكي بأمان كامل
+            if (mainContainer && mainContainer.innerHTML === '' && typeof window.showPage === 'function') {
+                const checkTemplates = ['about', 'privacy', 'terms', 'contact', 'shipping-policy'];
+                if (checkTemplates.includes(pageName) && window.location.pathname.includes('index.html')) {
+                    // الاعتماد الفوري على محرك الحقن المباشر بملف main.js
+                }
+            }
+        };
+
+        window.toggleKoshkAuthSubForm = function(targetMode) {
+            const loginFrm = document.getElementById('koshkSubLoginForm');
+            const regFrm = document.getElementById('koshkSubRegisterForm');
+            const tabLog = document.getElementById('koshkTabLoginBtn');
+            const tabReg = document.getElementById('koshkTabRegisterBtn');
+
+            if (targetMode === 'login') {
+                loginFrm.style.display = 'block';
+                regFrm.style.display = 'none';
+                tabLog.classList.add('active');
+                tabReg.classList.remove('active');
+            } else {
+                loginFrm.style.display = 'none';
+                regFrm.style.display = 'block';
+                tabLog.classList.remove('active');
+                tabReg.classList.add('active');
+            }
+        };
+
+        window.executeSubLoginBlock = async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('subLogEmail').value.trim();
+            const pass = document.getElementById('subLogPass').value;
+            const rememberMe = document.getElementById('loginRememberMe').checked;
+
+            try {
+                await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
+                await signInWithEmailAndPassword(auth, email, pass);
+                window.showKoshkToast("تم تسجيل الدخول لمتجر كشك أونلاين بنجاح مبروك!", "success");
+                window.showPage('home');
+            } catch(err) {
+                window.showKoshkToast("فشل تسجيل الدخول: تأكد من صحة البريد وكلمة المرور.", "error");
+            }
+        };
+
+        window.executeSubRegisterBlock = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('subRegName').value.trim();
+            const phone = document.getElementById('subRegPhone').value.trim();
+            const email = document.getElementById('subRegEmail').value.trim();
+            const city = document.getElementById('subRegCity').value.trim();
+            const pass = document.getElementById('subRegPass').value;
+
+            try {
+                const cred = await createUserWithEmailAndPassword(auth, email, pass);
+                await addDoc(collection(db, "users"), {
+                    uid: cred.user.uid,
+                    name: name,
+                    phone: phone,
+                    email: email,
+                    city: city,
+                    address: "N/A",
+                    role: "customer",
+                    avatar: "",
+                    createdAt: new Date()
+                });
+                
+                sessionStorage.removeItem('koshkWelcomeGiftShownInSession');
+                window.checkFirstOrderWelcomeGiftLive(cred.user.uid);
+                
+                window.showKoshkToast("تهانينا! تم إنشاء وتنشيط حسابك بالكامل بالداتا بيز.", "success");
+                window.showPage('home');
+            } catch(err) {
+                window.showKoshkToast("فشل تفعيل الحساب بالسيرفر: " + err.message, "error");
             }
         };
 
@@ -1729,7 +1942,6 @@
                     const mainImg = (prod.images && prod.images.length > 0) ? prod.images[0] : 'https://via.placeholder.com/300?text=Online+Koshk';
                     let badgeHtml = '';
                     if (prod.badge) { badgeHtml = `<div class="badge-discount">${prod.badge}</div>`; }
-                    else if (prod.discountPrice && prod.price) { const diff = prod.price - prod.discountPrice; if(diff > 0) badgeHtml = `<div class="badge-discount">وفر ${diff}ج</div>`; }
 
                     let priceHtml = `<span class="current-price">${prod.price} ج.م</span>`;
                     if (prod.discountPrice) priceHtml = `<span class="current-price">${prod.discountPrice} ج.م</span><span class="old-price">${prod.price} ج.م</span>`;
@@ -1739,7 +1951,7 @@
                             ${badgeHtml}
                             <div class="wishlist-icon" onclick="window.toggleProductWishlistLive(event, '${docId}', '${prod.name}', '${prod.discountPrice || prod.price}', '${mainImg}')"><i class="far fa-heart"></i></div>
                             <a href="?product=${docId}" onclick="event.preventDefault(); window.viewProductDetailsLive('${docId}')" style="display:block;">
-                                <div class="product-img-wrapper" style="display:flex; align-items:center; justify-content:center; overflow:hidden;"><img src="${mainImg}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
+                                <div class="product-img-wrapper"><img src="${mainImg}" style="max-width:100%; max-height:100%; object-fit:contain;"></div>
                                 <div class="product-info">
                                     <span class="product-brand">${prod.brand || 'عام'}</span>
                                     <h3 class="product-name">${prod.name}</h3>
@@ -1754,125 +1966,30 @@
                     `;
 
                     if(mainGrid) mainGrid.insertAdjacentHTML('beforeend', cardHtml);
-                    if(clothingGrid && (prod.category === 'ملابس رجالي' || prod.category === 'ملابس حريمي' || prod.category === 'ملابس أطفال' || prod.category === 'ملابس')) clothingGrid.insertAdjacentHTML('beforeend', cardHtml);
-                    if(electronicsGrid && (prod.category === 'إلكترونيات' || prod.category === 'موبايلات')) electronicsGrid.insertAdjacentHTML('beforeend', cardHtml);
+                    if(clothingGrid && (prod.category?.includes("ملابس"))) clothingGrid.insertAdjacentHTML('beforeend', cardHtml);
+                    if(electronicsGrid && (prod.category?.includes("إلكترونيات") || prod.category?.includes("موبايلات"))) electronicsGrid.insertAdjacentHTML('beforeend', cardHtml);
                     if(badgeGrid && (prod.badge || prod.discountPrice)) badgeGrid.insertAdjacentHTML('beforeend', cardHtml);
                 });
+                
+                handleQueryRoutingOnLoad();
             });
         }
 
-        function validateEmailDomain(email) {
-            const allowedDomains = ["@gmail.com", "@outlook.com", "@hotmail.com", "@yahoo.com", "@proton.me", "@protonmail.com"];
-            return allowedDomains.some(domain => email.toLowerCase().endsWith(domain));
-        }
+        function handleQueryRoutingOnLoad() {
+            const params = new URLSearchParams(window.location.search);
+            const page = params.get('page') || params.get('view');
+            const product = params.get('product');
 
-        window.executeClientRegister = async function(e) {
-            e.preventDefault();
-            const form = e.target;
-            const name = form.querySelector('input[placeholder="أدخل اسمك الثلاثي"]').value.trim();
-            const email = form.querySelector('input[placeholder="example@domain.com"]').value.trim();
-            const password = form.querySelector('input[placeholder="كلمة مرور قوية"]').value;
-            const phone = form.querySelector('input[placeholder="01XXXXXXXXX"]').value.trim();
-            const rememberMe = document.getElementById('registerRememberMe').checked;
-
-            if(!validateEmailDomain(email)) {
-                window.showKoshkToast("برجاء إدخال بريد إلكتروني صحيح!", "error");
-                return;
+            if (page) {
+                window.showPage(page);
+            } else if (product && currentProductsListInMemory.length > 0) {
+                window.viewProductDetailsLive(product);
             }
-
-            currentVerificationCode = String(Math.floor(100000 + Math.random() * 900000));
-            pendingSignUpData = { name, email, password, phone, rememberMe };
-
-            const registerBtn = form.querySelector('button[type="submit"]');
-            registerBtn.disabled = true;
-            registerBtn.innerText = "جاري إرسال كود التأكيد لايف...";
-
-            emailjs.send("service_hkzswlw", "template_5pp5rjt", {
-                user_name: name,
-                user_email: email,
-                otp_code: currentVerificationCode
-            }).then(() => {
-                window.showKoshkToast("تم إرسال كود التحقق لإيميلك! اكتبه في الحقل بالأسفل لتفعيل الحساب.", "success");
-                
-                const otpSection = document.getElementById('registerFormOtpSectionBlock');
-                if(otpSection) otpSection.style.display = 'block';
-                
-                registerBtn.disabled = false;
-                registerBtn.innerText = "إعادة إرسال كود التحقق";
-            }).catch((err) => {
-                window.showKoshkToast("فشل إرسال الإيميل، تأكد من إعدادات القوالب أو كود التفعيل.", "error");
-                registerBtn.disabled = false;
-                registerBtn.innerText = "تأكيد وإنشاء الحساب";
-            });
-        };
-
-        window.submitDirectOtpRegistrationVerifyLive = async function() {
-            const userCode = document.getElementById('inlineRegisterFormOtpInputField').value.trim();
-            if(!userCode) { window.showKoshkToast("برجاء كتابة الـ OTP أولاً!", "error"); return; }
-            if(userCode !== currentVerificationCode) { window.showKoshkToast("كود التحقق غير صحيح! برجاء المراجعة.", "error"); return; }
-
-            const { name, email, password, phone, rememberMe } = pendingSignUpData;
-
-            try {
-                await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-                const credential = await createUserWithEmailAndPassword(auth, email, password);
-                await addDoc(collection(db, "users"), { uid: credential.user.uid, name, phone, email, role: "customer", avatar: "", city: "N/A", createdAt: new Date() });
-                
-                window.showKoshkToast("تم إنشاء حسابك وتفعيله بنجاح لايف على السيرفر!", "success");
-                globalClientActiveName = name;
-                const navText = document.getElementById('user-nav-text');
-                if(navText) navText.innerText = globalClientActiveName;
-                window.showPage('home');
-            } catch (error) { window.showKoshkToast(error.message, "error"); }
-        };
-
-        window.executeClientLogin = async function(e) {
-            e.preventDefault();
-            const form = e.target;
-            const email = form.querySelector('input[type="email"]').value.trim();
-            const password = form.querySelector('input[type="password"]').value;
-            const rememberMe = document.getElementById('loginRememberMe').checked;
-
-            try {
-                const userQuery = query(collection(db, "users"), where("email", "==", email));
-                const userSnapshot = await getDocs(userQuery);
-                
-                if(userSnapshot.empty) {
-                    window.showKoshkToast("عذراً، لا يوجد حساب مسجل بهذا البريد الإلكتروني في المتجر!", "error");
-                    return;
-                }
-
-                await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence);
-                await signInWithEmailAndPassword(auth, email, password);
-                window.showKoshkToast("تم تسجيل الدخول بنجاح لايف!", "success");
-                window.showPage('home');
-            } catch (error) { window.showKoshkToast("خطأ في تسجيل الدخول، يرجى مراجعة كلمة المرور المدخلة.", "error"); }
-        };
-
-        window.bindAuthFormsLive = function() {
-            const registerForm = document.getElementById('registerForm');
-            const loginForm = document.getElementById('loginForm');
-            if(registerForm) registerForm.onsubmit = (e) => window.executeClientRegister(e);
-            if(loginForm) loginForm.onsubmit = (e) => window.executeClientLogin(e);
-            
-            const inputs = document.querySelectorAll('.auth-form input');
-            inputs.forEach(input => {
-                input.onkeydown = (event) => {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        if(input.id === 'inlineRegisterFormOtpInputField') {
-                            window.submitDirectOtpRegistrationVerifyLive();
-                        } else {
-                            input.closest('form').querySelector('button[type="submit"]').click();
-                        }
-                    }
-                };
-            });
-        };
+        }
 
         window.updateLocation = function(cityName) {
             window.updateLocationUIField(cityName);
-            window.showKoshkToast(`تم تحديث مدينة التوصيل لتصبح: ${cityName}`, "success");
+            window.showKoshkToast(`تم تحديث مدينة التوصيل المعتمدة: ${cityName}`, "success");
             if(currentCustomerId && globalCustomerProfileDocumentId) {
                 setDoc(doc(db, "users", globalCustomerProfileDocumentId), { city: cityName }, { merge: true });
             }
@@ -1882,241 +1999,47 @@
             toggleSidebar();
         };
 
-        window.loadShippingPolicyLive = function() {
-            const block = document.getElementById('dynamicShippingPolicyPayloadBlock');
-            if(!block) return;
-            onSnapshot(doc(db, "page_contents", "shipping_policy"), (docSnap) => {
-                if(docSnap.exists()) {
-                    block.innerHTML = `<p style="font-size:15px; line-height:1.8; color:#334155; white-space:pre-wrap;">${docSnap.data().text}</p>`;
-                } else {
-                    block.innerHTML = `<p style="font-size:15px; line-height:1.8; color:#334155;">نحن ملتزمون بتوفير تجربة شحن سلسة.</p>`;
-                }
-            });
-        };
+        function syncSlidersLive() {
+            const wrapper = document.getElementById('slider-wrapper');
+            if(!wrapper) return;
+            onSnapshot(collection(db, "sliders"), (snapshot) => {
+                if (snapshot.empty) return;
+                wrapper.innerHTML = '';
+                let count = 0;
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    const slide = document.createElement('div');
+                    slide.className = "slide " + (count === 0 ? "active-slide" : "");
+                    slide.style.backgroundColor = data.bg || '#1e293b';
 
-        const originalShowPage = window.showPage;
-        window.showPage = function(pageName) {
-            const validPages = ['home', 'auth', 'wishlist', 'cart', 'track', 'about', 'privacy', 'terms', 'contact', 'shipping-policy'];
-            if (!validPages.includes(pageName)) {
-                originalShowPage(pageName);
-                const mainContainer = document.querySelector('main .full-width-container');
-                mainContainer.innerHTML = `
-                    <div class="container" style="padding:60px 15px; text-align:center;">
-                        <div class="page-card" style="max-width:550px; margin:0 auto; padding:40px 30px;">
-                            <div style="font-size:70px; color:#ef4444; margin-bottom:20px;"><i class="fas fa-exclamation-triangle"></i></div>
-                            <h2 style="color:#0f172a; font-size:22px; font-weight:700; margin-bottom:12px;">عفواً.. الصفحة غير متوفرة!</h2>
-                            <p style="color:#64748b; font-size:14px; line-height:1.7; margin-bottom:25px;">الرابط أو الصفحة غير متاحة.</p>
-                            <button onclick="showPage('home')" class="auth-btn" style="background:#1a1e22; width:auto; padding:10px 30px; display:inline-block;"><i class="fas fa-home"></i> العودة للرئيسية</button>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            originalShowPage(pageName);
-            const mainContainer = document.querySelector('main .full-width-container');
-
-            if(pageName === 'auth') {
-                const navText = document.getElementById('user-nav-text');
-                if (currentCustomerId) {
-                    if(navText) navText.innerText = globalClientActiveName;
-                    mainContainer.innerHTML = `
-                        <div class="container" style="padding:40px 15px; text-align:right;">
-                            <div class="page-card" style="max-width:700px; margin:0 auto; padding:30px;">
-                                <h2 style="color:#0f172a; margin-bottom:15px;"><i class="fas fa-user-circle"></i> إعدادات حسابك الشخصي</h2>
-                                <div style="display:flex; align-items:center; gap:25px; margin-bottom:35px; background:#f8fafc; padding:20px; border-radius:8px; border:1px solid #ff9900; flex-wrap:wrap;">
-                                    <div style="width:100px; height:100px; border-radius:50%; border:3px solid #ff9900; background:#e2e8f0; display:flex; align-items:center; justify-content:center; overflow:hidden;" id="koshkProfileAvatarBoxView">
-                                        <i class="fas fa-user" style="font-size:40px; color:#94a3b8;"></i>
-                                    </div>
-                                    <div style="display:flex; flex-direction:column; gap:10px;" id="profileAvatarActionsButtonsArea"></div>
-                                    <input type="file" id="koshkHiddenProfileImageFileInput" accept="image/*" style="display:none;">
-                                </div>
-                                <form id="koshkClientProfileUpdateForm" class="auth-form" style="box-shadow:none; padding:0; border:none; margin-bottom:30px;">
-                                    <div class="form-group"><label>الاسم بالكامل (إجباري)</label><input type="text" id="profName" required></div>
-                                    <div class="form-group"><label>رقم الهاتف المعتمد (إجباري)</label><input type="tel" id="profPhone" required></div>
-                                    <div class="form-group"><label>البريد الإلكتروني الحالي (إجباري)</label><input type="email" id="profEmail" required disabled style="background:#f1f5f9; cursor:not-allowed;"></div>
-                                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                                        <div class="form-group"><label>المدينة المعتمدة للتوصيل (إجباري)</label><input type="text" id="profCity" required placeholder="مثال: القاهرة"></div>
-                                        <div class="form-group"><label>المنطقة الفرعية / الحي (اختياري)</label><input type="text" id="profProvince"></div>
-                                    </div>
-                                    <div class="form-group"><label>العنوان السكني التفصيلي (اختياري)</label><input type="text" id="profAddress"></div>
-                                    <div class="form-group"><label>الرمز البريدي / Zip Code (اختياري)</label><input type="text" id="profZip"></div>
-                                    <button type="submit" class="auth-btn" style="background:#1a1e22;"><i class="fas fa-save"></i> حفظ التغييرات الحالية</button>
-                                </form>
-                                <button onclick="window.executeClientSignOutLive()" style="width:100%; background:#ef4444; color:#fff; border:none; padding:12px; border-radius:6px; font-family:'Cairo'; font-weight:700; cursor:pointer;"><i class="fas fa-sign-out-alt"></i> تسجيل خروج من المتجر</button>
-                            </div>
+                    let badgeHtml = data.badge ? `<span class="banner-badge">${data.badge}</span>` : '';
+                    slide.innerHTML = `
+                        <div class="slide-content">
+                            ${badgeHtml}
+                            <h1>${data.title || ''}</h1>
+                            <p>${data.desc || ''}</p>
+                            <a href="${data.url || '#'}" class="slider-btn">${data.btnText || 'تفاصيل المعاملة'}</a>
                         </div>
                     `;
-                    setTimeout(async () => {
-                        try {
-                            const q = query(collection(db, "users"), where("uid", "==", currentCustomerId));
-                            const s = await getDocs(q);
-                            if(!s.empty) {
-                                globalCustomerProfileDocumentId = s.docs[0].id;
-                                const u = s.docs[0].data();
-                                document.getElementById('profName').value = u.name || '';
-                                document.getElementById('profPhone').value = u.phone || '';
-                                document.getElementById('profEmail').value = u.email || '';
-                                document.getElementById('profCity').value = u.city === "N/A" ? "" : (u.city || "");
-                                document.getElementById('profProvince').value = u.province === "N/A" ? "" : (u.province || "");
-                                document.getElementById('profAddress').value = u.address === "N/A" ? "" : (u.address || "");
-                                document.getElementById('profZip').value = u.zip === "N/A" ? "" : (u.zip || "");
-                                
-                                const avatarArea = document.getElementById('profileAvatarActionsButtonsArea');
-                                const avatarBox = document.getElementById('koshkProfileAvatarBoxView');
-                                if (u.avatar && u.avatar.trim() !== "") {
-                                    avatarBox.innerHTML = `<img src="${u.avatar}" style="width:100%; height:100%; object-fit:cover;">`;
-                                    avatarArea.innerHTML = `
-                                        <button class="profile-img-action-btn" style="background:#ff9900; color:#1a1e22;" onclick="document.getElementById('koshkHiddenProfileImageFileInput').click()"><i class="fas fa-sync"></i> تغيير الصورة الشخصية</button>
-                                        <button class="profile-img-action-btn" style="background:#fee2e2; color:#ef4444;" onclick="window.deleteProfileImageLive()"><i class="fas fa-trash"></i> حذف الصورة</button>
-                                    `;
-                                } else {
-                                    avatarArea.innerHTML = `
-                                        <button class="profile-img-action-btn" style="background:#1a1e22; color:#fff;" onclick="document.getElementById('koshkHiddenProfileImageFileInput').click()"><i class="fas fa-image"></i> إضافة صورة شخصية</button>
-                                    `;
-                                }
-                                document.getElementById('koshkHiddenProfileImageFileInput').onchange = window.triggerProfileImageUploadLive;
-                            }
-                            document.getElementById('koshkClientProfileUpdateForm').onsubmit = window.executeClientProfileUpdateLive;
-                            bindEnterKeyToSubmit('koshkClientProfileUpdateForm');
-                        } catch(err) { console.error(err); }
-                    }, 50);
-                } else {
-                    if(navText) navText.innerText = "حسابي";
-                    setTimeout(() => { window.bindAuthFormsLive(); }, 50);
-                }
-            }
-            else {
-                const navText = document.getElementById('user-nav-text');
-                if(navText) navText.innerText = globalClientActiveName;
-
-                if(pageName === 'shipping-policy') {
-                    mainContainer.innerHTML = `
-                        <div class="container" style="padding:40px 15px; text-align:right;">
-                            <div class="page-card text-page">
-                                <h2><i class="fas fa-shipping-fast" style="color:#ff9900; margin-left:10px;"></i> سياسة الشحن والتوصيل والاسترجاع</h2>
-                                <div id="dynamicShippingPolicyPayloadBlock" style="margin-top:20px;"></div>
-                            </div>
-                        </div>
-                    `;
-                    window.loadShippingPolicyLive();
-                }
-                else if(pageName === 'wishlist') {
-                    mainContainer.innerHTML = `
-                        <div class="container" style="padding:40px 15px; text-align:right;">
-                            <h2 class="page-title"><i class="far fa-heart" style="color:#ef4444;"></i> المنتجات المفضلة المربوطة بحسابك</h2>
-                            <div class="products-grid" id="wishlist-dynamic-injection-area" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px; width: 100%;"></div>
-                        </div>
-                    `;
-                    window.loadCustomerWishlistLive();
-                }
-                else if(pageName === 'cart') {
-                    mainContainer.innerHTML = `
-                        <div class="container" style="padding:40px 15px; text-align:right;">
-                            <h2 class="page-title"><i class="fas fa-shopping-basket" style="color:#1a1e22;"></i> حقيبة المشتريات والـ Checkout (<span id="cart-internal-total-count">0</span>)</h2>
-                            <div style="background:#ffffff; border:1px solid #e2e8f0; padding:25px; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.01);">
-                                <div id="cart-dynamic-items-area" style="display:flex; flex-direction:column; gap:15px; margin-bottom:25px;"></div>
-                                <div style="display:flex; justify-content:space-between; align-items:center; border-top:2px solid #f1f5f9; padding-top:20px; margin-bottom:25px;">
-                                    <h3 style="color:#0f172a; margin:0;">إجمالي الفاتورة:</h3>
-                                    <h3 id="cart-calculated-total-price" style="color:#ff9900; font-weight:700; margin:0;">0 ج.م</h3>
-                                </div>
-                                <button onclick="window.showCheckoutPageDirectly()" style="width:100%; max-width:400px; background:#1a1e22; color:#fff; border:none; padding:14px; border-radius:8px; font-family:'Cairo'; font-weight:700; font-size:15px; cursor:pointer;" onmouseover="this.style.background='#ff9900'; this.style.color='#1a1e22';" onmouseout="this.style.background='#1a1e22'; this.style.color='#ffffff';"><i class="fas fa-credit-card"></i> الذهاب لصفحة شحن المشتريات</button>
-                            </div>
-                        </div>
-                    `;
-                    window.loadCustomerCartLive();
-                }
-                else if(pageName === 'track') {
-                    mainContainer.innerHTML = `
-                        <div class="container" style="padding:40px 15px; text-align:right;">
-                            <div class="page-card">
-                                <h2 class="page-title"><i class="fas fa-truck"></i> تتبع الشحنات الجارية برقم الهاتف</h2>
-                                <p style="margin-bottom: 20px; color:#64748b;">أدخل رقم الهاتف الذي قمت بالشراء به للكشف عن الطلبات.</p>
-                                <div class="search-bar" style="margin: 0 auto 30px auto; max-width: 500px;">
-                                    <input type="tel" id="storeTrackingPhoneInputField" placeholder="أدخل رقم الموبايل المعتمد للطلب..." style="padding: 8px 16px;">
-                                    <button type="button" id="triggerOrderTrackingSearchBtn" style="background:#1a1e22; color:#ff9900; border-radius:0 6px 6px 0; left:auto; right:0; width:60px;"><i class="fas fa-search"></i></button>
-                                </div>
-                                <div id="tracking-live-output-payload-block"></div>
-                            </div>
-                        </div>
-                    `;
-                    setTimeout(() => {
-                        const trackingSearchBtn = document.getElementById('triggerOrderTrackingSearchBtn');
-                        if(trackingSearchBtn) trackingSearchBtn.onclick = window.executeKoshkOrderTrackingByPhoneLive;
-                    }, 50);
-                }
-                else if (pageName === 'about') {
-                    mainContainer.innerHTML = `
-                        <div class="container">
-                            <div class="page-card text-page">
-                                <h2>من نحن</h2>
-                                <p>مرحباً بكم في <strong>Online Koshk</strong>، فكرتنا بدأت من روح الحارة المصرية الأصيلة.</p>
-                                <div style="margin-top: 30px; text-align: center;">
-                                    <a href="https://wa.me/201500812929" target="_blank" class="whatsapp-action-nav-capsule" style="display: inline-flex; padding: 10px 25px;">
-                                        <i class="fab fa-whatsapp" style="color: #ffffff; font-size: 18px;"></i>
-                                        <span>تواصل معنا مباشرة عبر الواتساب</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                else if (pageName === 'contact') {
-                    mainContainer.innerHTML = `
-                        <div class="container">
-                            <div class="page-card">
-                                <h2 class="page-title"><i class="fas fa-headset"></i> اتصل بنا</h2>
-                                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:30px;">
-                                    <form class="auth-form" style="box-shadow:none; padding:0; border:none;" onsubmit="event.preventDefault();">
-                                        <div class="form-group"><label>الاسم</label><input type="text" placeholder="أدخل اسمك" required></div>
-                                        <div class="form-group"><label>البريد الإلكتروني</label><input type="email" placeholder="email@domain.com" required></div>
-                                        <div class="form-group"><label>نص الرسالة</label><textarea placeholder="اكتب استفسارك هنا..." style="width:100%; height:120px; padding:12px; border-radius:6px; border:1px solid #e2e8f0; font-family:'Cairo'; outline:none; resize:none;"></textarea></div>
-                                        <button type="submit" class="auth-btn">إرسال الرسالة</button>
-                                    </form>
-                                    <div style="background:#f8fafc; padding:25px; border-radius:8px; border:1px solid #e2e8f0; display:flex; flex-direction:column; gap:20px;">
-                                        <div>
-                                            <h4 style="color:#0f172a; margin-bottom:10px;"><i class="fab fa-whatsapp" style="color:#25d366;"></i> محادثة واتساب فورية</h4>
-                                            <a href="https://wa.me/201500812929" target="_blank" class="whatsapp-action-nav-capsule" style="display: inline-flex;">
-                                                <i class="fab fa-whatsapp" style="color: #ffffff;"></i>
-                                                <span>اضغط لبدء الشات الآن</span>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-            }
-        };
-
-        function bindEnterKeyToSubmit(formId) {
-            const frm = document.getElementById(formId);
-            if(!frm) return;
-            const inputs = frm.querySelectorAll('input');
-            inputs.forEach(input => {
-                input.onkeydown = (event) => {
-                    if (event.key === 'Enter') {
-                        event.preventDefault();
-                        frm.querySelector('button[type="submit"]').click();
-                    }
-                };
+                    wrapper.appendChild(slide);
+                    count++;
+                });
             });
         }
 
         window.executeClientSignOutLive = function() {
             signOut(auth).then(() => {
-                window.showKoshkToast("تم تسجيل الخروج بنجاح.", "success");
+                window.showKoshkToast("تم تسجيل خروجك من الكشك بنجاح وبأمان.", "success");
                 window.showPage('home');
             });
         };
 
         document.addEventListener('DOMContentLoaded', () => {
-            syncStoreLive(); 
+            syncStoreLive();
+            syncSlidersLive(); 
             const sBtn = document.getElementById('triggerStoreSearchBtn');
             if(sBtn) sBtn.onclick = window.executeStoreGlobalSearchLive;
 
-            // حقن مستمع الحدث للبحث الفوري بمجرد ضغط زر Enter في السيرش بار الأساسي للمتجر
             const mainSearchInput = document.getElementById('storeSearchInputField');
             if(mainSearchInput) {
                 mainSearchInput.addEventListener('keydown', (event) => {
@@ -2125,6 +2048,13 @@
                         window.executeStoreGlobalSearchLive();
                     }
                 });
+            }
+
+            // [حقن ذكي وآمن]: عند تحميل الصفحة، إذا كان الرابط يحتوي على معيار التوجيه الاسترجاعي، يتم تنفيذه فوراً
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryPage = urlParams.get('page');
+            if (queryPage && window.showPage) {
+                setTimeout(() => { window.showPage(queryPage); }, 150);
             }
         });
     </script>
