@@ -23,14 +23,14 @@ const showConfirm = window.showKoshkCustomConfirmModal || async function(title, 
 
 onAuthStateChanged(auth, (user) => {
     if (!user) {
-        window.location.href = 'auth.html';
+        window.location.href = 'admin-auth.html';
     }
 });
 
 document.getElementById('adminLogoutLink').addEventListener('click', (e) => {
     e.preventDefault();
     signOut(auth).then(() => {
-        window.location.href = 'auth.html';
+        window.location.href = 'admin-auth.html';
     });
 });
 
@@ -52,9 +52,13 @@ function changeDashboardTab(tabName) {
 window.changeDashboardTab = changeDashboardTab;
 
 async function triggerLiveToggle(type) {
-    const isChecked = document.getElementById(`${type}Toggle`).checked;
+    const isChecked = document.getElementById(`${type}Toggle`) ? document.getElementById(`${type}Toggle`).checked : (document.getElementById(`toggleGateway_${type.replace('gateway_', '')}`) ? document.getElementById(`toggleGateway_${type.replace('gateway_', '')}`).checked : false);
     try {
         await setDoc(doc(db, "system_settings", type), { value: isChecked }, { merge: true });
+        // مزامنة إضافية لضمان التحديث في adminSettings لربط القوالب القديمة والجديدة
+        if(type === 'maintenance') {
+            await setDoc(doc(db, "adminSettings", "general"), { maintenanceMode: isChecked }, { merge: true });
+        }
         showToast(`تم تحديث حالة (${type}) في السيرفر بنجاح!`, "success");
     } catch (err) {
         console.error(err);
@@ -86,12 +90,12 @@ async function updateTaxRate() {
 window.updateTaxRate = updateTaxRate;
 
 function listenToSystemSettings() {
-    const toggles = ['maintenance', 'cashback', 'freeShipping', 'tracking'];
+    const toggles = ['maintenance', 'cashback', 'freeShipping', 'tracking', 'gateway_cod', 'gateway_vodafone', 'gateway_etisalat', 'gateway_orange', 'gateway_instapay', 'gateway_fawry', 'gateway_bank'];
     toggles.forEach(type => {
         onSnapshot(doc(db, "system_settings", type), (docSnap) => {
             if (docSnap.exists()) {
                 const isMaintenanceActive = docSnap.data().value;
-                const el = document.getElementById(`${type}Toggle`);
+                const el = document.getElementById(`${type}Toggle`) || document.getElementById(`toggleGateway_${type.replace('gateway_', '')}`);
                 if(el) el.checked = isMaintenanceActive;
                 
                 if (type === 'maintenance' && isMaintenanceActive && window.location.pathname.includes('index.html')) {
@@ -344,8 +348,8 @@ window.deleteSliderLive = deleteSliderLive;
 let encodedImageString = "";
 
 function previewImages(event) {
-    const gallery = document.getElementById('previewGallery');
-    gallery.innerHTML = '';
+    const gallery = document.getElementById('previewGallery') || document.getElementById('previewGalleryModal');
+    if(gallery) gallery.innerHTML = '';
     const file = event.target.files[0];
     
     if (file) {
@@ -368,7 +372,7 @@ function previewImages(event) {
             };
             box.appendChild(img);
             box.appendChild(removeBtn);
-            gallery.appendChild(box);
+            if(gallery) gallery.appendChild(box);
         };
         reader.readAsDataURL(file);
     }
@@ -377,11 +381,15 @@ window.previewImages = previewImages;
 
 async function handleProductSubmit(e) {
     e.preventDefault();
-    const submitBtn = document.getElementById('mainSubmitBtn');
-    const editingId = document.getElementById('pEditingId').value;
+    const isModal = e.target.id === 'productSubmissionFormModal';
+    const pSuff = isModal ? 'Modal' : '';
+    const submitBtn = document.getElementById('mainSubmitBtn' + pSuff);
+    const editingId = document.getElementById('pEditingId' + pSuff).value;
     
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المزامنة...';
+    if(submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري المزامنة...';
+    }
 
     const finalImageUrls = [];
     if (encodedImageString) {
@@ -398,21 +406,21 @@ async function handleProductSubmit(e) {
     }
 
     const productPayload = {
-        name: document.getElementById('pName').value,
-        brand: document.getElementById('pBrand').value,
-        category: document.getElementById('pCategory').value,
-        sku: document.getElementById('pSku').value,
-        price: parseFloat(document.getElementById('pPrice').value),
-        discountPrice: parseFloat(document.getElementById('pDiscountPrice').value) || null,
-        cost: parseFloat(document.getElementById('pCost').value),
-        stock: parseInt(document.getElementById('pStock').value),
-        minOrder: parseInt(document.getElementById('pMinOrder').value) || 1,
-        weight: parseFloat(document.getElementById('pWeight').value) || null,
-        warranty: document.getElementById('pWarranty').value || '',
-        colors: document.getElementById('pColors').value.split(',').map(c => c.trim()).filter(c => c),
-        sizes: document.getElementById('pSizes').value.split(',').map(s => s.trim()).filter(s => s),
-        badge: document.getElementById('pBadge').value || '',
-        desc: document.getElementById('pDesc').value,
+        name: document.getElementById('pName' + pSuff).value,
+        brand: document.getElementById('pBrand' + pSuff).value,
+        category: document.getElementById('pCategory' + pSuff).value,
+        sku: document.getElementById('pSku' + pSuff).value,
+        price: parseFloat(document.getElementById('pPrice' + pSuff).value),
+        discountPrice: parseFloat(document.getElementById('pDiscountPrice' + pSuff).value) || null,
+        cost: parseFloat(document.getElementById('pCost' + pSuff).value),
+        stock: parseInt(document.getElementById('pStock' + pSuff).value),
+        minOrder: parseInt(document.getElementById('pMinOrder' + pSuff).value) || 1,
+        weight: parseFloat(document.getElementById('pWeight' + pSuff).value) || null,
+        warranty: document.getElementById('pWarranty' + pSuff).value || '',
+        colors: document.getElementById('pColors' + pSuff).value.split(',').map(c => c.trim()).filter(c => c),
+        sizes: document.getElementById('pSizes' + pSuff).value.split(',').map(s => s.trim()).filter(s => s),
+        badge: document.getElementById('pBadge' + pSuff).value || '',
+        desc: document.getElementById('pDesc' + pSuff).value,
         images: finalImageUrls,
         isDuplicate: editingId ? false : false
     };
@@ -426,53 +434,62 @@ async function handleProductSubmit(e) {
             await addDoc(collection(db, "products"), productPayload);
             showToast('تم نشر وحقن المنتج بنجاح بالمتجر لايف!', "success");
         }
-        resetProductForm();
+        if(isModal) { window.closeProductModal(); } else { resetProductForm(); }
     } catch (error) {
         showToast('حدث خطأ أثناء المزامنة: ' + error.message, "error");
     } finally {
-        submitBtn.disabled = false;
-        resetProductForm();
+        if(submitBtn) submitBtn.disabled = false;
+        if(isModal) { window.closeProductModal(); } else { resetProductForm(); }
     }
 }
 window.handleProductSubmit = handleProductSubmit;
 
 window.triggerProductEdit = async function(docId) {
-    const formTitle = document.getElementById('formActionTitle');
-    const submitBtn = document.getElementById('mainSubmitBtn');
-    formTitle.innerHTML = '<i class="fas fa-edit" style="color:#ef8121;"></i> تعديل بيانات المنتج الحالي';
-    submitBtn.innerHTML = '<i class="fas fa-edit"></i> حفظ وتعديل المنتج الحالي لايف';
-    submitBtn.style.background = "#ef8121";
+    const isModalFormExist = document.getElementById('productSubmissionFormModal');
+    const pSuff = isModalFormExist ? 'Modal' : '';
+    
+    if(isModalFormExist) { window.openAddProductModal(); }
+    
+    const formTitle = document.getElementById('formActionTitle' + pSuff);
+    const submitBtn = document.getElementById('mainSubmitBtn' + pSuff);
+    if(formTitle) formTitle.innerHTML = '<i class="fas fa-edit" style="color:#ef8121;"></i> تعديل بيانات المنتج الحالي';
+    if(submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-edit"></i> حفظ وتعديل المنتج الحالي لايف';
+        submitBtn.style.background = "#ef8121";
+    }
     
     try {
         const docSnap = await getDoc(doc(db, "products", docId));
         if (docSnap.exists()) {
             const prod = docSnap.data();
-            document.getElementById('pEditingId').value = docId;
-            document.getElementById('pName').value = prod.name || '';
-            document.getElementById('pBrand').value = prod.brand || '';
-            document.getElementById('pCategory').value = prod.category || 'إلكترونيات';
-            document.getElementById('pSku').value = prod.sku || '';
-            document.getElementById('pPrice').value = prod.price || '';
-            document.getElementById('pDiscountPrice').value = prod.discountPrice || '';
-            document.getElementById('pCost').value = prod.cost || '';
-            document.getElementById('pStock').value = prod.stock || '';
-            document.getElementById('pMinOrder').value = prod.minOrder || '1';
-            document.getElementById('pWeight').value = prod.weight || '';
-            document.getElementById('pWarranty').value = prod.warranty || '';
-            document.getElementById('pColors').value = (prod.colors || []).join(', ');
-            document.getElementById('pSizes').value = (prod.sizes || []).join(', ');
-            document.getElementById('pBadge').value = prod.badge || '';
-            document.getElementById('pDesc').value = prod.desc || '';
+            document.getElementById('pEditingId' + pSuff).value = docId;
+            document.getElementById('pName' + pSuff).value = prod.name || '';
+            document.getElementById('pBrand' + pSuff).value = prod.brand || '';
+            document.getElementById('pCategory' + pSuff).value = prod.category || 'إلكترونيات';
+            document.getElementById('pSku' + pSuff).value = prod.sku || '';
+            document.getElementById('pPrice' + pSuff).value = prod.price || '';
+            document.getElementById('pDiscountPrice' + pSuff).value = prod.discountPrice || '';
+            document.getElementById('pCost' + pSuff).value = prod.cost || '';
+            document.getElementById('pStock' + pSuff).value = prod.stock || '';
+            document.getElementById('pMinOrder' + pSuff).value = prod.minOrder || '1';
+            document.getElementById('pWeight' + pSuff).value = prod.weight || '';
+            document.getElementById('pWarranty' + pSuff).value = prod.warranty || '';
+            document.getElementById('pColors' + pSuff).value = (prod.colors || []).join(', ');
+            document.getElementById('pSizes' + pSuff).value = (prod.sizes || []).join(', ');
+            document.getElementById('pBadge' + pSuff).value = prod.badge || '';
+            document.getElementById('pDesc' + pSuff).value = prod.desc || '';
             
-            const gallery = document.getElementById('previewGallery');
-            gallery.innerHTML = '';
-            if (prod.images && prod.images.length > 0) {
-                const box = document.createElement('div');
-                box.className = 'preview-img-box';
-                box.innerHTML = `<img src="${prod.images[0]}">`;
-                gallery.appendChild(box);
+            const gallery = document.getElementById('previewGallery' + pSuff);
+            if(gallery) {
+                gallery.innerHTML = '';
+                if (prod.images && prod.images.length > 0) {
+                    const box = document.createElement('div');
+                    box.className = 'preview-img-box';
+                    box.innerHTML = `<img src="${prod.images[0]}">`;
+                    gallery.appendChild(box);
+                }
             }
-            window.scrollTo({ top: document.getElementById('formActionTitle').offsetTop - 20, behavior: 'smooth' });
+            if(!isModalFormExist) window.scrollTo({ top: document.getElementById('formActionTitle').offsetTop - 20, behavior: 'smooth' });
         }
     } catch(err) { 
         showToast("خطأ في جلب بيانات المنتج: " + err.message, "error"); 
@@ -502,16 +519,60 @@ async function duplicateProductLive(docId) {
 }
 window.duplicateProductLive = duplicateProductLive;
 
+
+// --- Add Product Modal Controllers ---
+window.openAddProductModal = function() {
+    const modal = document.getElementById('addProductModalWrapper');
+    if(modal) {
+        modal.style.display = 'flex';
+        setTimeout(() => { modal.style.opacity = '1'; }, 50);
+    }
+};
+
+window.closeProductModal = function() {
+    const modal = document.getElementById('addProductModalWrapper');
+    if(modal) {
+        modal.style.opacity = '0';
+        setTimeout(() => { modal.style.display = 'none'; }, 300);
+    }
+    resetProductForm();
+};
+
+window.openZoom = function(src) {
+    const overlay = document.getElementById('zoomOverlay') || document.getElementById('receiptImageZoomOverlay');
+    const img = document.getElementById('zoomedImg') || document.getElementById('zoomedReceiptImage');
+    if(overlay && img) {
+        img.src = src;
+        overlay.style.display = 'flex';
+        setTimeout(() => { overlay.classList.add('open'); }, 10);
+    }
+};
+
+window.closeZoom = function() {
+    const overlay = document.getElementById('zoomOverlay') || document.getElementById('receiptImageZoomOverlay');
+    if(overlay) {
+        overlay.classList.remove('open');
+        setTimeout(() => { overlay.style.display = 'none'; }, 300);
+    }
+};
+
 function resetProductForm() {
-    const form = document.getElementById('productSubmissionForm');
+    const form = document.getElementById('productSubmissionForm') || document.getElementById('productSubmissionFormModal');
     if (form) form.reset();
-    document.getElementById('previewGallery').innerHTML = '';
-    document.getElementById('pEditingId').value = "";
+    const gallery = document.getElementById('previewGallery') || document.getElementById('previewGalleryModal');
+    if(gallery) gallery.innerHTML = '';
+    const editingIdField = document.getElementById('pEditingId') || document.getElementById('pEditingIdModal');
+    if(editingIdField) editingIdField.value = "";
     encodedImageString = "";
-    document.getElementById('formActionTitle').innerHTML = 'حقن منتج جديد بتفاصيل عميقة ومتقدمة جداً';
-    const submitBtn = document.getElementById('mainSubmitBtn');
-    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> نشر وإتاحة فورية بالمتجر لايف';
-    submitBtn.style.background = "#5EEAD4";
+    
+    const formTitle = document.getElementById('formActionTitle') || document.getElementById('formActionTitleModal');
+    if(formTitle) formTitle.innerHTML = 'حقن منتج جديد بتفاصيل عميقة ومتقدمة جداً';
+    
+    const submitBtn = document.getElementById('mainSubmitBtn') || document.getElementById('mainSubmitBtnModal');
+    if(submitBtn) {
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> نشر وإتاحة فورية بالمتجر لايف';
+        submitBtn.style.background = "#5EEAD4";
+    }
 }
 window.resetProductForm = resetProductForm;
 
@@ -558,7 +619,7 @@ function loadProductsLive() {
 }
 
 async function deleteProductLive(docId) {
-    const confirmAction = await showConfirm("حذف منتج", "هل أنت متأكد تماماً من رغبتك في حذف هذا المنتج من المخزن لايف?").
+    const confirmAction = await showConfirm("حذف منتج", "هل أنت متأكد تماماً من رغبتك في حذف هذا المنتج من المخزن لايف؟");
     if (confirmAction) {
         try {
             await deleteDoc(doc(db, "products", docId));
@@ -583,21 +644,24 @@ function listenToConstants() {
     });
 }
 
-document.getElementById('globalConstantsForm').onsubmit = async (e) => {
-    e.preventDefault();
-    try {
-        await setDoc(doc(db, "page_contents", "constants"), {
-            aboutUs: document.getElementById('cAboutUs').value,
-            privacy: document.getElementById('cPrivacy').value,
-            facebook: document.getElementById('cFacebook').value,
-            instagram: document.getElementById('cInstagram').value,
-            hotline: document.getElementById('cHotline').value
-        }, { merge: true });
-        showToast('تم حفظ ونشر كل الثوابت والمحتويات لايف بنجاح بالتزامن مع جميع الصفحات الديناميكية للموقع!', "success");
-    } catch(err) { 
-        showToast("حدث خطأ أثناء حفظ الثوابت: " + err.message, "error"); 
-    }
-};
+const globalConstForm = document.getElementById('globalConstantsForm');
+if(globalConstForm) {
+    globalConstForm.onsubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await setDoc(doc(db, "page_contents", "constants"), {
+                aboutUs: document.getElementById('cAboutUs').value,
+                privacy: document.getElementById('cPrivacy').value,
+                facebook: document.getElementById('cFacebook').value,
+                instagram: document.getElementById('cInstagram').value,
+                hotline: document.getElementById('cHotline').value
+            }, { merge: true });
+            showToast('تم حفظ ونشر كل الثوابت والمحتويات لايف بنجاح بالتزامن مع جميع الصفحات الديناميكية للموقع!', "success");
+        } catch(err) { 
+            showToast("حدث خطأ أثناء حفظ الثوابت: " + err.message, "error"); 
+        }
+    };
+}
 
 async function approveStaffRow(btn, staffName, selectId, email, password) {
     const roleSelect = document.getElementById(selectId);
@@ -711,31 +775,55 @@ function toggleAdminTheme() {
 window.toggleAdminTheme = toggleAdminTheme;
 
 function listenToPendingReviewsLive() {
-    const tbody = document.getElementById('adminPendingReviewsTableBody');
-    if(!tbody) return;
+    const tbodyPending = document.getElementById('adminPendingReviewsTableBody');
+    const tbodyApproved = document.getElementById('adminApprovedReviewsTableBody');
 
-    onSnapshot(query(collection(db, "reviews"), where("status", "==", "pending")), (snapshot) => {
-        tbody.innerHTML = '';
-        if(snapshot.empty) {
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">لا توجد تقييمات معلقة حالياً</td></tr>';
-            return;
-        }
+    onSnapshot(collection(db, "reviews"), (snapshot) => {
+        if (tbodyPending) tbodyPending.innerHTML = '';
+        if (tbodyApproved) tbodyApproved.innerHTML = '';
+        
+        let hasPending = false;
+        let hasApproved = false;
+
         snapshot.forEach(docSnap => {
             const review = docSnap.data();
             const docId = docSnap.id;
             const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${review.userName}</td>
-                <td><small>${review.productId}</small></td>
-                <td><span style="color:#ff9900;">${review.rating} / 5</span></td>
-                <td>${review.comment}</td>
-                <td>
-                    <button class="action-circle-btn edit-btn" style="width:auto; padding:6px 14px; background:#ff9900; color:#1a1e22;" onclick="approveKoshkReviewLive('${docId}')">موافقة ونشر</button>
-                    <button class="action-circle-btn delete-btn" style="width:auto; padding:6px 14px;" onclick="rejectKoshkReviewLive('${docId}')">حذف ورفض</button>
-                </td>
-            `;
-            tbody.appendChild(row);
+
+            if (review.status === "pending") {
+                hasPending = true;
+                row.innerHTML = `
+                    <td>${review.userName}</td>
+                    <td><small>${review.productId}</small></td>
+                    <td><span style="color:#ff9900;">${review.rating} / 5</span></td>
+                    <td>${review.comment}</td>
+                    <td>
+                        <button class="action-circle-btn edit-btn" style="width:auto; padding:6px 14px; background:#ff9900; color:#1a1e22;" onclick="approveKoshkReviewLive('${docId}')">موافقة ونشر</button>
+                        <button class="action-circle-btn delete-btn" style="width:auto; padding:6px 14px;" onclick="rejectKoshkReviewLive('${docId}')">حذف ورفض</button>
+                    </td>
+                `;
+                if (tbodyPending) tbodyPending.appendChild(row);
+            } else if (review.status === "approved" || review.approved === true) {
+                hasApproved = true;
+                row.innerHTML = `
+                    <td>${review.userName}</td>
+                    <td><small>${review.productId}</small></td>
+                    <td><span style="color:#ff9900;">${review.rating} / 5</span></td>
+                    <td>${review.comment}</td>
+                    <td>
+                        <button class="action-circle-btn delete-btn" style="width:auto; padding:6px 14px;" onclick="rejectKoshkReviewLive('${docId}')"><i class="fas fa-trash-alt"></i> حذف</button>
+                    </td>
+                `;
+                if (tbodyApproved) tbodyApproved.appendChild(row);
+            }
         });
+
+        if (!hasPending && tbodyPending) {
+            tbodyPending.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">لا توجد تقييمات معلقة حالياً</td></tr>';
+        }
+        if (!hasApproved && tbodyApproved) {
+            tbodyApproved.innerHTML = '<tr><td colspan="5" style="text-align:center; color:#64748b;">لا توجد تقييمات معروضة حالياً</td></tr>';
+        }
     });
 }
 
@@ -747,7 +835,7 @@ window.approveKoshkReviewLive = async function(docId) {
 };
 
 window.rejectKoshkReviewLive = async function(docId) {
-    if(confirm("هل أنت متأكد من حذف ورفض هذا التقييم نهائياً؟")) {
+    if(await showConfirm("حذف التقييم", "هل أنت متأكد من حذف ورفض هذا التقييم نهائياً؟")) {
         try {
             await deleteDoc(doc(db, "reviews", docId));
             showToast("تم رفض وحذف التعليق بنجاح.", "success");
@@ -761,8 +849,11 @@ function listenToGatewaysAndShippingPolicyVaultLive() {
             const data = docSnap.data();
             if(document.getElementById('gVodafone')) document.getElementById('gVodafone').value = data.vodafone || '';
             if(document.getElementById('gEtisalat')) document.getElementById('gEtisalat').value = data.etisalat || '';
+            if(document.getElementById('gOrange')) document.getElementById('gOrange').value = data.orange || '';
+            if(document.getElementById('gInstapay')) document.getElementById('gInstapay').value = data.instapay || '';
             if(document.getElementById('gWe')) document.getElementById('gWe').value = data.we || '';
             if(document.getElementById('gFawry')) document.getElementById('gFawry').value = data.fawry || '';
+            if(document.getElementById('gBankAccount')) document.getElementById('gBankAccount').value = data.bankAccount || '';
         }
     });
 
@@ -778,11 +869,24 @@ if(gatewaysForm) {
     gatewaysForm.onsubmit = async (e) => {
         e.preventDefault();
         try {
-            await setDoc(doc(db, "system_settings", "payment_accounts"), {
+            const paymentPayload = {
                 vodafone: document.getElementById('gVodafone').value.trim(),
                 etisalat: document.getElementById('gEtisalat').value.trim(),
-                we: document.getElementById('gWe').value.trim(),
-                fawry: document.getElementById('gFawry').value.trim()
+                orange: document.getElementById('gOrange') ? document.getElementById('gOrange').value.trim() : '',
+                instapay: document.getElementById('gInstapay') ? document.getElementById('gInstapay').value.trim() : '',
+                we: document.getElementById('gWe') ? document.getElementById('gWe').value.trim() : '',
+                fawry: document.getElementById('gFawry').value.trim(),
+                bankAccount: document.getElementById('gBankAccount') ? document.getElementById('gBankAccount').value.trim() : ''
+            };
+            await setDoc(doc(db, "system_settings", "payment_accounts"), paymentPayload, { merge: true });
+            // المزامنة الإضافية لضمان الربط الكامل
+            await setDoc(doc(db, "paymentGateways", "cash"), {
+                vodafoneCash: paymentPayload.vodafone,
+                etisalatCash: paymentPayload.etisalat,
+                orangeCash: paymentPayload.orange,
+                instapay: paymentPayload.instapay,
+                bankAccount: paymentPayload.bankAccount,
+                updatedAt: new Date()
             }, { merge: true });
             showToast("تم تحديث وحفظ أرقام بوابات الكاش بنجاح بالسيرفر لايف!", "success");
         } catch(err) { showToast("فشل حفظ البوابات: " + err.message, "error"); }
@@ -817,10 +921,57 @@ document.addEventListener('DOMContentLoaded', () => {
     listenToForgotPasswordsLive();
     listenToDynamicContactMessagesLive();
 
-    if (document.getElementById('productSubmissionForm')) {
-        document.getElementById('productSubmissionForm').addEventListener('submit', handleProductSubmit);
+    const prodForm = document.getElementById('productSubmissionForm') || document.getElementById('productSubmissionFormModal');
+    if (prodForm) {
+        prodForm.addEventListener('submit', handleProductSubmit);
     }
     if (localStorage.getItem('adminTheme') === 'light') {
         document.body.classList.add('light-mode');
     }
 });
+
+// ==========================================
+// التعديلات الجديدة بدون حذف أي سطر كود قديم:
+// ==========================================
+
+// 1. ربط استمارة المودال (النافذة المنبثقة) بحدث الإرسال لحقن المنتجات لايف بقاعدة البيانات
+document.addEventListener('DOMContentLoaded', () => {
+    const modalProdForm = document.getElementById('productSubmissionFormModal');
+    if (modalProdForm) {
+        modalProdForm.addEventListener('submit', handleProductSubmit);
+    }
+});
+
+// 2. تصحيح وظيفة معاينة الصور لفصل مسار المودال عن مسار الجدول العادي بشكل ذكي
+window.previewImages = function(event) {
+    const isModalInput = event.target.id === 'pImagesModal';
+    const gallery = isModalInput ? document.getElementById('previewGalleryModal') : document.getElementById('previewGallery');
+    
+    if(gallery) gallery.innerHTML = '';
+    const file = event.target.files[0];
+    
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            encodedImageString = e.target.result;
+            const box = document.createElement('div');
+            box.className = 'preview-img-box';
+            box.onclick = function() { openZoom(encodedImageString); };
+            const img = document.createElement('img');
+            img.src = encodedImageString;
+            
+            const removeBtn = document.createElement('button');
+            removeBtn.className = 'remove-img-btn';
+            removeBtn.innerHTML = '<i class="fas fa-times"></i>';
+            removeBtn.onclick = function(event) {
+                event.stopPropagation();
+                box.remove();
+                encodedImageString = "";
+            };
+            box.appendChild(img);
+            box.appendChild(removeBtn);
+            if(gallery) gallery.appendChild(box);
+        };
+        reader.readAsDataURL(file);
+    }
+};

@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المقود الرقمي الشامل | لوحة التحكم للمالك</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+
+    <div class="zoom-overlay" id="zoomOverlay" onclick="closeZoom()">
+        <img id="zoomedImg" src="" alt="Zoomed">
+    </div>
+
+    <!-- [بوكس منبثق احترافي وشيك] نافذة ديناميكية لإضافة منتج جديد متناسقة مع التصميم المتقدم للموقع -->
+    <div id="addProductModalWrapper" class="zoom-overlay" style="cursor: default; display: none; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); z-index: 11000;">
+        <div class="glass-form-card" style="width: 90%; max-width: 900px; max-height: 85vh; overflow-y: auto; background: #ffffff; color: #0f172a; border: 1px solid #cbd5e1; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #ff9900; padding-bottom: 10px;">
+                <h3 class="block-title" id="formActionTitleModal" style="margin-bottom: 0;">حقن منتج جديد بتفاصيل عميقة ومتقدمة جداً</h3>
+                <button onclick="closeProductModal()" class="action-circle-btn delete-btn" style="background:#f1f5f9;"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="productSubmissionFormModal" class="workspace-form">
+                <input type="hidden" id="pEditingIdModal" value="">
+                <div class="form-grid-3">
+                    <div class="field-group"><label>اسم السلعة المعروضة</label><input type="text" id="pNameModal" required></div>
+                    <div class="field-group"><label>البراند / Mاركة</label><input type="text" id="pBrandModal" required></div>
+                    <div class="field-group">
+                        <label>التصنيف الأساسي للمنتج</label>
+                        <select id="pCategoryModal" class="custom-select">
+                            <option value="إلكترونيات">إلكترونيات</option>
+                            <option value="ملابس رجالي">ملابس رجالي</option>
+                            <option value="ملابس حريمي">ملابس حريمي</option>
+                            <option value="ملابس أطفال">ملابس أطفال</option>
+                            <option value="ميكب وبيرفيوم">ميكب وبيرفيوم</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-grid-4">
+                    <div class="field-group"><label>رقم الـ SKU / باركود المخزن</label><input type="text" id="pSkuModal" required></div>
+                    <div class="field-group"><label>سعر البيع للجمهور (ج.م)</label><input type="number" id="pPriceModal" required></div>
+                    <div class="field-group"><label>السعر بعد الخصم (ج.م)</label><input type="number" id="pDiscountPriceModal"></div>
+                    <div class="field-group"><label>تكلفة المنتج عليك</label><input type="number" id="pCostModal" required></div>
+                </div>
+                <div class="form-grid-4">
+                    <div class="field-group"><label>الكمية المتوفرة بالمخزن</label><input type="number" id="pStockModal" required></div>
+                    <div class="field-group"><label>الحد الأدنى للطلب</label><input type="number" id="pMinOrderModal" value="1" required></div>
+                    <div class="field-group"><label>الوزن بالجرام</label><input type="number" id="pWeightModal"></div>
+                    <div class="field-group"><label>مدة الضمان</label><input type="text" id="pWarrantyModal"></div>
+                </div>
+                <div class="form-grid-3">
+                    <div class="field-group"><label>الألوان المتاحة</label><input type="text" id="pColorsModal"></div>
+                    <div class="field-group"><label>المقاسات المتاحة</label><input type="text" id="pSizesModal"></div>
+                    <div class="field-group"><label>شارات التميز البصرية</label><input type="text" id="pBadgeModal"></div>
+                </div>
+                <div class="field-group"><label>وصف المنتج التفصيلي</label><textarea id="pDescModal" rows="3" required></textarea></div>
+                <div class="field-group">
+                    <label>رفع صورة المنتج</label>
+                    <div class="file-upload-wrapper" style="background:#f8fafc;">
+                        <input type="file" id="pImagesModal" accept="image/*" onchange="previewImages(event)">
+                        <div class="upload-box-caption"><i class="fas fa-cloud-upload-alt"></i> اضغط هنا لاختيار صورة من ملفات جهازك</div>
+                    </div>
+                    <div class="images-preview-gallery" id="previewGalleryModal"></div>
+                </div>
+                <div class="form-action-btns" style="margin-top:20px; display:flex; gap:10px;">
+                    <button type="submit" id="mainSubmitBtnModal" class="submit-neon-form"><i class="fas fa-paper-plane"></i> نشر وإتاحة فورية بالمتجر لايف</button>
+                    <button type="button" class="submit-neon-form" style="background: #64748b; color: #fff;" onclick="closeProductModal()">إغلاق</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة منبثقة ديناميكية لعرض وتعديل الطلبات المعلقة -->
+    <div id="ordersModal" class="zoom-overlay" style="cursor: default; display: none; align-items: center; justify-content: center;">
+        <div class="glass-form-card" style="width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; background: #0f172a; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 class="block-title" style="margin-bottom: 0;">تفاصيل وإدارة الطلبات الحية بالمتجر</h3>
+                <button onclick="closeOrdersModal()" class="action-circle-btn delete-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="glass-table-wrapper">
+                <table class="neon-table">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>العميل</th>
+                            <th>الإجمالي</th>
+                            <th>الحالة</th>
+                            <th>الإجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalOrdersTableBody">
+                        <!-- يتم حقن الطلبات هنا ديناميكياً -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- نافذة منبثقة ديناميكية لعرض رسائل وضع الصيانة الواردة -->
+    <div id="maintenanceMessagesModal" class="zoom-overlay" style="cursor: default; display: none; align-items: center; justify-content: center;">
+        <div class="glass-form-card" style="width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto; background: #0f172a; border: 1px solid rgba(255,255,255,0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h3 class="block-title" style="margin-bottom: 0;">رسائل اتصل بنا الواردة أثناء الصيانة</h3>
+                <button onclick="closeMaintenanceMessagesModal()" class="action-circle-btn delete-btn"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="glass-table-wrapper">
+                <table class="neon-table">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>الإيميل</th>
+                            <th>الرسالة</th>
+                            <th>التاريخ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="maintenanceMessagesTableBody">
+                        <!-- يتم حقن الرسائل هنا ديناميكياً -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-viewport">
+        
+        <aside class="dashboard-sidebar">
+            <div class="sidebar-identity">
+                <div class="identity-icon"><i class="fas fa-crown"></i></div>
+                <div>
+                    <h2>Online Koshk</h2>
+                    <span>غرفة التحكم العليا</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-navigation">
+                <span class="nav-caption">الرئيسية</span>
+                <ul>
+                    <li class="nav-link active" onclick="changeDashboardTab('live-center')"><a href="#"><i class="fas fa-sliders-h"></i> مركز التحكم الحي</a></li>
+                    <li class="nav-link" onclick="changeDashboardTab('product-vault')"><a href="#"><i class="fas fa-cubes"></i> خزنة المنتجات المتقدمة</a></li>
+                    <li class="nav-link" onclick="changeDashboardTab('dynamic-slider')"><a href="#"><i class="fas fa-layer-group"></i> محرك السلايدر</a></li>
+                    <li class="nav-link" style="display: none;" onclick="changeDashboardTab('visual-customizer')"><a href="#"><i class="fas fa-paint-brush"></i> المخصص البصري (Live Preview)</a></li>
+                    <li class="nav-link" style="display: none;" onclick="changeDashboardTab('content-manager')"><a href="#"><i class="fas fa-edit"></i> محتوى الصفحات والثوابت</a></li>
+                    <li class="nav-link" onclick="changeDashboardTab('reviews-moderator')"><a href="#"><i class="fas fa-star"></i> إدارة التقييمات والتعليقات</a></li>
+                    <li class="nav-link" onclick="changeDashboardTab('shipping-gateways-vault')"><a href="#"><i class="fas fa-wallet"></i> بوابات الدفع وسياسة الشحن</a></li>
+                </ul>
+                
+                <!-- تم إخفاء قسم "طلبات نسيت كلمة السر" برمجياً بناءً على طلبك دون المساس بالأكواد الخلفية -->
+                <span class="nav-caption" style="display: none !important;">طلبات الدعم والمستخدمين</span>
+                <ul style="display: none !important;">
+                    <li class="nav-link" onclick="changeDashboardTab('forgot-passwords-vault')"><a href="#"><i class="fas fa-key"></i> طلبات نسيت كلمة السر</a></li>
+                </ul>
+
+                <span class="nav-caption">الإدارة والسيادة (للمالك)</span>
+                <ul>
+                    <li class="nav-link" onclick="changeDashboardTab('staff-permissions')"><a href="#"><i class="fas fa-user-shield"></i> صلاحيات طاقم العمل</a></li>
+                </ul>
+
+                <span class="nav-caption">الخروج الأمن</span>
+                <ul>
+                    <li><a href="#" id="adminLogoutLink" class="exit-link"><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="dashboard-workspace">
+            
+            <header class="workspace-header">
+                <div class="header-brief">
+                    <h1>منصة السيادة الرقمية لإدارة المتجر</h1>
+                    <p>المزامنة الحية مع السيرفر: <span class="sync-status"><i class="fas fa-circle"></i> متصل لايف</span></p>
+                </div>
+                <div class="header-controls">
+                    <button class="theme-toggle-btn" onclick="toggleAdminTheme()">
+                        <i class="fas fa-moon" id="main-theme-icon"></i>
+                    </button>
+                    <div class="header-profile">
+                        <div class="profile-avatar"><i class="fas fa-crown" style="color:#5EEAD4;"></i></div>
+                        <div class="profile-meta">
+                            <strong>Mohammed Said (المالك)</strong>
+                            <span>صاحب المشروع</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="workspace-body">
+                
+                <div id="tab-live-center" class="tab-pane active-pane">
+                    
+                    <div class="metrics-grid">
+                        <div class="metric-glass-card">
+                            <div class="metric-header">
+                                <span>صندوق الأرباح الصافية (المكتملة)</span>
+                                <i class="fas fa-wallet"></i>
+                            </div>
+                            <h2 id="totalSalesBox">0 ج.م</h2>
+                            <span class="metric-trend up"><i class="fas fa-arrow-trend-up"></i> بعد إتمامعملية الشراء</span>
+                        </div>
+                        <div class="metric-glass-card" style="cursor: pointer;" onclick="openOrdersModal()">
+                            <div class="metric-header">
+                                <span>الطلبات المعلقة الجاري مراجعتها</span>
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h2 id="pendingOrdersBox">0 طلبات</h2>
+                            <span class="metric-trend warning"><i class="fas fa-truck-loading"></i> اضغط للعرض والتعديل</span>
+                        </div>
+                        <div class="metric-glass-card">
+                            <div class="metric-header">
+                                <span>أوردرات قيد التنفيذ (مع المندوب)</span>
+                                <i class="fas fa-shipping-fast"></i>
+                            </div>
+                            <h2 id="shippingOrdersBox">0 طلبات</h2>
+                            <span class="metric-trend up" style="background:rgba(59,130,246,0.1); color:#3b82f6;"><i class="fas fa-spinner fa-spin"></i> جاري شحنها حالياً</span>
+                        </div>
+                        <div class="metric-glass-card">
+                            <div class="metric-header">
+                                <span>صندوق المرتجعات والملغيات</span>
+                                <i class="fas fa-ban"></i>
+                            </div>
+                            <h2 id="returnedSalesBox">0 ج.م</h2>
+                            <span class="metric-trend warning" style="background:rgba(239,68,68,0.1); color:#ef4444;"><i class="fas fa-arrow-left"></i> إجمالي الطلبات الملغاة</span>
+                        </div>
+                    </div>
+
+                    <h2 class="block-title">مفاتيح السيطرة والتحكم العام بالمتجر لايف</h2>
+                    <div class="control-center-grid">
+                        
+                        <div class="control-box-card">
+                            <div class="control-box-header">
+                                <i class="fas fa-power-off"></i>
+                                <h3>وضع الصيانة الشامل</h3>
+                            </div>
+                            <p>إغلاق المتجر بالكامل عن الزوار وعرض صفحة صيانة مؤقتة بضغطة واحدة.</p>
+                            <div class="toggle-switch-wrapper">
+                                <span>تفعيل وضع الصيانة:</span>
+                                <label class="switch-box">
+                                    <input type="checkbox" id="maintenanceToggle" onchange="triggerLiveToggle('maintenance')">
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                            <button onclick="openMaintenanceMessagesModal()" class="submit-neon-form" style="margin-top: 15px; width: 100%; justify-content: center; background: #3b82f6; color:#fff;">
+                                <i class="fas fa-envelope"></i> عرض رسائل الصيانة الواردة
+                            </button>
+                        </div>
+
+                        <div class="control-box-card">
+                            <div class="control-box-header">
+                                <i class="fas fa-percentage"></i>
+                                <h3>سيستم التخفيضات العام</h3>
+                            </div>
+                            <p>تشغيل أو إخفاء شارات الخصومات وأقسام الـ Cashback من المتجر بالكامل.</p>
+                            <div class="toggle-switch-wrapper">
+                                <span>تفعيل سكشن كاش باك وعروض:</span>
+                                <label class="switch-box">
+                                    <input type="checkbox" id="cashbackToggle" onchange="triggerLiveToggle('cashback')">
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="control-box-card">
+                            <div class="control-box-header">
+                                <i class="fas fa-shipping-fast"></i>
+                                <h3>سيستم الشحن المجاني العالي</h3>
+                            </div>
+                            <p>تفعيل أو إلغاء الشحن المجاني التلقائي للعملاء بناءً على قيمة سلة المشتريات.</p>
+                            <div class="toggle-switch-wrapper">
+                                <span>تفعيل شحن مجاني للطلبات الكبرى:</span>
+                                <label class="switch-box">
+                                    <input type="checkbox" id="freeShippingToggle" onchange="triggerLiveToggle('freeShipping')">
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="control-box-card">
+                            <div class="control-box-header">
+                                <i class="fas fa-calculator"></i>
+                                <h3>الحسابات المالية والضرائب العامة</h3>
+                            </div>
+                            <p>تعديل نسبة ضريبة القيمة المضافة المطبقة تلقائياً في صفحة الدفع وعربة التسوق.</p>
+                            <div class="input-inline-action">
+                                <input type="number" id="taxRateInput" value="14" placeholder="نسبة الضريبة %...">
+                                <button onclick="updateTaxRate()">تحديث النسبة</button>
+                            </div>
+                        </div>
+
+                        <div class="control-box-card">
+                            <div class="control-box-header">
+                                <i class="fas fa-route"></i>
+                                <h3>سيستم تتبع حالة الشحنات لايف</h3>
+                            </div>
+                            <p>إتاحة أو إيقاف صفحة تتبع الطلبات للمستخدمين مؤقتاً أثناء تحديثات شركات الشحن.</p>
+                            <div class="toggle-switch-wrapper">
+                                <span>سماح للمستخدمين بالتتبع:</span>
+                                <label class="switch-box">
+                                    <input type="checkbox" id="trackingToggle" onchange="triggerLiveToggle('tracking')">
+                                    <span class="switch-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="control-box-card">
+                            <div class="control-box-header">
+                                <i class="fas fa-bullhorn"></i>
+                                <h3>شريط الإعلانات العاجل</h3>
+                            </div>
+                            <p>رسالة نصية متحركة تظهر لكل الزوار أعلى الموقع فوراً بلون مميز.</p>
+                            <div class="input-inline-action">
+                                <input type="text" id="globalNoticeText" placeholder="مثال: خصم جديد KOSHK10 بيدي 10%...">
+                                <button onclick="saveGlobalNotice()">تحديث فوري</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div id="tab-product-vault" class="tab-pane">
+                    <div style="display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                        <button class="orders-tab-trigger active" style="font-family:'Cairo'; font-weight:700; background:none; border:none; cursor:pointer;" onclick="document.getElementById('koshkAdminProductsListSection').style.display='block'; document.getElementById('koshkAdminAddProductSection').style.display='none';">📦 المنتجات الموجودة بالمخزن</button>
+                        <button class="orders-tab-trigger" style="font-family:'Cairo'; font-weight:700; background:none; border:none; cursor:pointer;" onclick="document.getElementById('koshkAdminProductsListSection').style.display='none'; document.getElementById('koshkAdminAddProductSection').style.display='block';">➕ إدارة العمليات والإضافة</button>
+                    </div>
+
+                    <div id="koshkAdminAddProductSection" style="display: none; margin-bottom: 25px;">
+                        <button class="submit-neon-form" style="background: #ff9900; color: #1a1e22; font-size:15px; padding:14px 28px;" onclick="window.openAddProductModal()"><i class="fas fa-plus-circle"></i> اضغط لفتح نافذة حقن منتج جديد</button>
+                    </div>
+
+                    <div id="koshkAdminProductsListSection">
+                        <div class="glass-table-wrapper">
+                            <table class="neon-table">
+                                <thead>
+                                    <tr><th>المنتج والباركود</th><th>التصنيف</th><th>سعر البيع</th><th>التكلفة الفليّة</th><th>المخزون الحالي</th><th>العمليات الإدارية الفورية</th></tr>
+                                </thead>
+                                <tbody id="adminProductsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="glass-form-card" style="margin-bottom: 30px; display: none;">
+                        <h3 class="block-title" id="formActionTitle" style="margin-bottom: 20px;">حقن منتج جديد بتفاصيل عميقة ومتقدمة جداً</h3>
+                        <form id="productSubmissionForm" class="workspace-form">
+                            <input type="hidden" id="pEditingId" value="">
+                            <div class="form-grid-3">
+                                <div class="field-group"><label>اسم السلعة المعروضة</label><input type="text" id="pName" required></div>
+                                <div class="field-group"><label>البراند / الماركة</label><input type="text" id="pBrand" required></div>
+                                <div class="field-group">
+                                    <label>التصنيف الأساسي للمنتج</label>
+                                    <select id="pCategory" class="custom-select">
+                                        <option value="إلكترونيات">إلكترونيات</option>
+                                        <option value="ملابس رجالي">ملابس رجالي</option>
+                                        <option value="ملابس حريمي">ملابس حريمي</option>
+                                        <option value="ملابس أطفال">ملابس أطفال</option>
+                                        <option value="ميكب وبيرفيوم">ميكب وبيرفيوم</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-grid-4">
+                                <div class="field-group"><label>رقم الـ SKU / باركود المخزن</label><input type="text" id="pSku" required></div>
+                                <div class="field-group"><label>سعر البيع للجمهور (ج.م)</label><input type="number" id="pPrice" required></div>
+                                <div class="field-group"><label>السعر بعد الخصم (ج.م)</label><input type="number" id="pDiscountPrice"></div>
+                                <div class="field-group"><label>تكلفة المنتج عليك</label><input type="number" id="pCost" required></div>
+                            </div>
+                            <div class="form-grid-4">
+                                <div class="field-group"><label>الكمية المتوفرة بالمخزن</label><input type="number" id="pStock" required></div>
+                                <div class="field-group"><label>الحد الأدنى للطلب</label><input type="number" id="pMinOrder" value="1" required></div>
+                                <div class="field-group"><label>الوزن بالجرام</label><input type="number" id="pWeight"></div>
+                                <div class="field-group"><label>مدة الضمان</label><input type="text" id="pWarranty"></div>
+                            </div>
+                            <div class="form-grid-3">
+                                <div class="field-group"><label>الألوان المتاحة</label><input type="text" id="pColors"></div>
+                                <div class="field-group"><label>المقاسات المتاحة</label><input type="text" id="pSizes"></div>
+                                <div class="field-group"><label>شارات التميز البصرية</label><input type="text" id="pBadge"></div>
+                            </div>
+                            <div class="field-group"><label>وصف المنتج التفصيلي</label><textarea id="pDesc" rows="3" required></textarea></div>
+                            <div class="field-group">
+                                <label>رفع صورة المنتج</label>
+                                <div class="file-upload-wrapper">
+                                    <input type="file" id="pImages" accept="image/*" onchange="previewImages(event)">
+                                    <div class="upload-box-caption"><i class="fas fa-cloud-upload-alt"></i> اضغط هنا لاختيار صورة من ملفات جهازك</div>
+                                </div>
+                                <div class="images-preview-gallery" id="previewGallery"></div>
+                            </div>
+                            <div class="form-action-btns">
+                                <button type="submit" id="mainSubmitBtn" class="submit-neon-form"><i class="fas fa-paper-plane"></i> نشر وإتاحة فورية بالمتجر لايف</button>
+                                <button type="button" class="submit-neon-form" style="background: #64748b; color: #fff; margin-right: 10px;" onclick="resetProductForm()">إلغاء وتصفير الاستمارة</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="tab-dynamic-slider" class="tab-pane">
+                    <div class="action-header-row">
+                        <h2>محرك السلايدرز الرئيسي والإعلانات البصرية</h2>
+                        <button class="neon-action-btn" onclick="openSliderModal()"><i class="fas fa-plus"></i> إضافة شريحة سلايدر جديدة</button>
+                    </div>
+                    <div class="glass-form-card" id="sliderModalCard" style="margin-bottom: 30px; display: none;">
+                        <form class="workspace-form" onsubmit="handleSliderSubmit(event)">
+                            <div class="form-grid-2">
+                                <div class="field-group"><label>العنوان</label><input type="text" id="sTitle" required></div>
+                                <div class="field-group"><label>الوصف</label><input type="text" id="sDesc" required></div>
+                            </div>
+                            <button type="submit" class="submit-neon-form">حفظ وإدراج</button>
+                        </form>
+                    </div>
+                    <div class="glass-table-wrapper">
+                        <table class="neon-table">
+                            <thead><tr><th>الشريحة الإعلانية</th><th>الوصف النصي</th><th>نص الزر</th><th>التحكم</th></tr></thead>
+                            <tbody id="adminSliderTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-forgot-passwords-vault" class="tab-pane" style="display: none !important;">
+                    <div class="action-header-row">
+                        <h2>طلبات "نسيت كلمة السر" المستلمة لايف من خدمة عملاء كشك</h2>
+                    </div>
+                    <div class="glass-table-wrapper">
+                        <table class="neon-table">
+                            <thead>
+                                <tr>
+                                    <th>اسم العميل طالب الاستعادة</th>
+                                    <th>رقم هاتف العميل للتواصل</th>
+                                    <th>توقيت تقديم الطلب</th>
+                                    <th>الإجراء النهائي</th>
+                                </tr>
+                            </thead>
+                            <tbody id="forgotPasswordsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-content-manager" class="tab-pane" style="display: none !important;">
+                    <div class="glass-form-card">
+                        <form class="workspace-form" id="globalConstantsForm">
+                            <div class="field-group"><label>محتوى صفحة (من نحن)</label><textarea id="cAboutUs" rows="4"></textarea></div>
+                            <div class="field-group"><label>محتوى صفحة (سياسة الخصوصية)</label><textarea id="cPrivacy" rows="4"></textarea></div>
+                            <button type="submit" class="submit-neon-form">حفظ ونشر المحتويات الثابتة لايف فوراً</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="tab-reviews-moderator" class="tab-pane">
+                    <div style="display: flex; gap: 15px; margin-bottom: 25px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;">
+                        <button class="orders-tab-trigger active" style="font-family:'Cairo'; font-weight:700; background:none; border:none; cursor:pointer;" onclick="document.getElementById('koshkAdminPendingReviewsSection').style.display='block'; document.getElementById('koshkAdminApprovedReviewsSection').style.display='none';">⏳ تقييمات معلقة بانتظار الموافقة</button>
+                        <button class="orders-tab-trigger" style="font-family:'Cairo'; font-weight:700; background:none; border:none; cursor:pointer;" onclick="document.getElementById('koshkAdminPendingReviewsSection').style.display='none'; document.getElementById('koshkAdminApprovedReviewsSection').style.display='block';">✅ تقييمات مقبولة وظاهرة بالمتجر</button>
+                    </div>
+
+                    <div id="koshkAdminPendingReviewsSection">
+                        <div class="glass-table-wrapper">
+                            <table class="neon-table">
+                                <thead><tr><th>العميل</th><th>المنتج</th><th>التقييم</th><th>التعليق</th><th>القرار الإداري</th></tr></thead>
+                                <tbody id="adminPendingReviewsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="koshkAdminApprovedReviewsSection" style="display: none;">
+                        <div class="glass-table-wrapper">
+                            <table class="neon-table">
+                                <thead><tr><th>العميل</th><th>المنتج</th><th>التقييم</th><th>التعليق</th><th>التحكم والمراجعة</th></tr></thead>
+                                <tbody id="adminApprovedReviewsTableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="tab-shipping-gateways-vault" class="tab-pane">
+                    <div class="glass-form-card" style="margin-bottom:30px;">
+                        <form class="workspace-form" id="koshkLiveGatewaysFormBlock">
+                            <h3 class="block-title" style="font-size:15px; margin-bottom:15px;">إعدادات وأرقام المحافظ وبوابات الكاش الحية</h3>
+                            <div class="form-grid-4">
+                                <div class="field-group"><label>محفظة فودافون كاش</label><input type="text" id="gVodafone"></div>
+                                <div class="field-group"><label>محفظة اتصالات كاش</label><input type="text" id="gEtisalat"></div>
+                                <div class="field-group"><label>محفظة أورانج كاش</label><input type="text" id="gOrange"></div>
+                                <div class="field-group"><label>حساب إنستا باي InstaPay</label><input type="text" id="gInstapay"></div>
+                            </div>
+                            <div class="form-grid-2" style="margin-top: 10px;">
+                                <div class="field-group"><label>كود دفع فوري Fawry</label><input type="text" id="gFawry"></div>
+                                <div class="field-group"><label>الحساب البنكي الرسمي</label><input type="text" id="gBankAccount"></div>
+                            </div>
+
+                            <h3 class="block-title" style="font-size:15px; margin-top:25px; margin-bottom:15px;">لوحة التنشيط والتعطيل الفوري لوسائل الدفع بالمتجر لايف</h3>
+                            <div class="control-center-grid" style="margin-bottom: 20px;">
+                                <div class="toggle-switch-wrapper"><span>الدفع عند الاستلام (COD):</span><label class="switch-box"><input type="checkbox" id="toggleGateway_cod" checked onchange="triggerLiveToggle('gateway_cod')"><span class="switch-slider"></span></label></div>
+                                <div class="toggle-switch-wrapper"><span>فودافون كاش:</span><label class="switch-box"><input type="checkbox" id="toggleGateway_vodafone" checked onchange="triggerLiveToggle('gateway_vodafone')"><span class="switch-slider"></span></label></div>
+                                <div class="toggle-switch-wrapper"><span>اتصالات كاش:</span><label class="switch-box"><input type="checkbox" id="toggleGateway_etisalat" checked onchange="triggerLiveToggle('gateway_etisalat')"><span class="switch-slider"></span></label></div>
+                                <div class="toggle-switch-wrapper"><span>أورانج كاش:</span><label class="switch-box"><input type="checkbox" id="toggleGateway_orange" checked onchange="triggerLiveToggle('gateway_orange')"><span class="switch-slider"></span></label></div>
+                                <div class="toggle-switch-wrapper"><span>إنستا باي (InstaPay):</span><label class="switch-box"><input type="checkbox" id="toggleGateway_instapay" checked onchange="triggerLiveToggle('gateway_instapay')"><span class="switch-slider"></span></label></div>
+                                <div class="toggle-switch-wrapper"><span>بوابة فوري (Fawry):</span><label class="switch-box"><input type="checkbox" id="toggleGateway_fawry" checked onchange="triggerLiveToggle('gateway_fawry')"><span class="switch-slider"></span></label></div>
+                                <div class="toggle-switch-wrapper"><span>التحويل البنكي المباشر:</span><label class="switch-box"><input type="checkbox" id="toggleGateway_bank" checked onchange="triggerLiveToggle('gateway_bank')"><span class="switch-slider"></span></label></div>
+                            </div>
+
+                            <button type="submit" class="submit-neon-form"><i class="fas fa-save"></i> حفظ ومزامنة إعدادات بوابات الدفع والمحافظ فوراً</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div id="tab-staff-permissions" class="tab-pane">
+                    <div class="glass-table-wrapper">
+                        <table class="neon-table">
+                            <thead><tr><th>اسم المشرف</th><th>البريد الإلكتروني</th><th>كود التحقق</th><th>مستوى الصلاحية</th><th>القرار النهائي</th></tr></thead>
+                            <tbody id="pendingStaffTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="tab-visual-customizer" class="tab-pane" style="display: none !important;"></div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="js/admin.js"></script>
+    <script type="module" src="js/admin-core.js"></script>
+</body>
+</html>

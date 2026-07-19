@@ -38,7 +38,15 @@ function renderStoreProducts(targetContainerId, selectedCategory = 'all') {
 
             const card = document.createElement('div');
             card.className = 'product-ecommerce-card';
-            card.style = 'background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:15px; position:relative; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 6px rgba(0,0,0,0.02); transition:transform 0.2s;';
+            card.style = 'background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:15px; position:relative; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 4px 6px rgba(0,0,0,0.02); transition:transform 0.2s; cursor:pointer;';
+            
+            // ربط الكرت بالكامل ليفتح شاشة تفاصيل المنتج الديناميكية عند الضغط عليه
+            card.onclick = () => {
+                if (window.viewProductDetailsLive) {
+                    window.viewProductDetailsLive(docId);
+                }
+            };
+
             card.innerHTML = `
                 ${badgeHtml}
                 <div class="prod-img-wrapper" style="width:100%; height:200px; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:8px; margin-bottom:12px;">
