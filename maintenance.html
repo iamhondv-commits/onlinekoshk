@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أونلاين كشك | نعود إليكم قريباً</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background-color: #f8fafc; /* رمادي فاتح جداً ومريح للعين */
+            color: #334155; /* نصوص باللون الرمادي الغامق الاحترافي */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            font-family: 'Cairo', sans-serif;
+            margin: 0;
+        }
+        .maintenance-container {
+            background: rgba(255, 255, 255, 0.85); /* Glassmorphism خفيف جداً ونظيف */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 153, 0, 0.15); /* حواف ناعمة بلمسة برتقالية هادئة */
+            border-radius: 16px; /* حواف ناعمة 16 بكسل حسب الطلب */
+            max-width: 600px;
+            width: 100%;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(51, 65, 85, 0.06), 0 1px 8px rgba(51, 65, 85, 0.04); /* ظلال ناعمة وخفيفة جداً */
+        }
+        .maintenance-icon {
+            font-size: 65px;
+            color: #ff9900; /* البرتقالي المميز لهوية المتجر */
+            margin-bottom: 20px;
+            animation: gearRotate 4s infinite linear;
+            display: inline-block;
+        }
+        @keyframes gearRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .maintenance-container h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #1a1e22; /* لون داكن صريح للعناوين */
+        }
+        .maintenance-container p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+        .countdown-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+        .countdown-item {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+        .countdown-item span {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff9900;
+        }
+        .countdown-item small {
+            font-size: 12px;
+            color: #64748b;
+            font-weight: 600;
+        }
+        .maintenance-form input, .maintenance-form textarea {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            padding: 12px;
+            border-radius: 8px;
+            color: #1a1e22;
+            font-family: 'Cairo';
+            outline: none;
+            margin-bottom: 15px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            box-sizing: border-box;
+        }
+        .maintenance-form input:focus, .maintenance-form textarea:focus {
+            border-color: #ff9900;
+            box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.15);
+        }
+        .maintenance-form input::placeholder, .maintenance-form textarea::placeholder {
+            color: #94a3b8;
+        }
+        .maintenance-btn {
+            background: #ff9900;
+            color: #ffffff; /* نص أبيض ناصع متناسق مع اللايت مود للزر */
+            border: none;
+            padding: 12px 30px;
+            font-weight: 700;
+            font-family: 'Cairo';
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s, transform 0.1s;
+        }
+        .maintenance-btn:hover {
+            background: #e68a00; /* تأثير مرور تفاعلي بلون أغمق */
+        }
+        .maintenance-btn:active {
+            transform: scale(0.99);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="maintenance-container">
+        <div class="maintenance-icon"><i class="fas fa-tools"></i></div>
+        <h1>كشكنا بيتعدل للأفضل! 🛠️</h1>
+        <p>نحن نقوم الآن ببعض التحديثات البرمجية الدورية واللمسات الفنية الفاخرة على نظام السيرفر لضمان تجربة تسوق إلكترونية فائقة السرعة لك. سنعود لايف خلال دقائق معدودة!</p>
+        
+        <div class="countdown-grid">
+            <div class="countdown-item"><span id="m-hours">02</span><small>ساعة</small></div>
+            <div class="countdown-item"><span id="m-minutes">45</span><small>دقيقة</small></div>
+            <div class="countdown-item"><span id="m-seconds">12</span><small>ثانية</small></div>
+        </div>
+
+        <div style="border-top: 1px dashed #e2e8f0; padding-top: 25px;">
+            <h4 style="color:#ff9900; margin-bottom:15px; font-size:14px; font-weight: 700;">سيب رسالتك للمالك وهنكلمك فور فتح الكشك:</h4>
+            <form id="maintenanceContactFormBlock" class="maintenance-form">
+                <input type="text" id="mName" placeholder="اسمك الكريم" required>
+                <input type="email" id="mEmail" placeholder="بريدك الإلكتروني للتواصل" required>
+                <textarea id="mMessage" rows="3" placeholder="اكتب استفسارك أو طلبك العاجل للمنتج هنا..." required></textarea>
+                <button type="submit" class="maintenance-btn"><i class="fas fa-paper-plane"></i> إرسال رسالتك لايف للسيرفر</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        import { collection, addDoc, onSnapshot, doc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        // التحقق العكسي: لو وضع الصيانة اتقفل من الداش بورد، يرجع الزائر للرئيسية فورا
+        onSnapshot(doc(db, "system_settings", "maintenance"), (docSnap) => {
+            if (docSnap.exists() && !docSnap.data().value) {
+                window.location.href = 'index.html';
+            }
+        });
+
+        // محاكاة حركية للعداد التنازلي الشيك
+        let h = 2, m = 45, s = 12;
+        setInterval(() => {
+            s--;
+            if(s < 0) { s = 59; m--; }
+            if(m < 0) { m = 59; h--; }
+            if(h < 0) { h = 0; m = 0; s = 0; }
+            document.getElementById('m-hours').innerText = String(h).padStart(2, '0');
+            document.getElementById('m-minutes').innerText = String(m).padStart(2, '0');
+            document.getElementById('m-seconds').innerText = String(s).padStart(2, '0');
+        }, 1000);
+
+        // ربط وحقن رسالة العميل لايف لـ Firestore لتظهر في لوحة تحكم المالك فورا
+        document.getElementById('maintenanceContactFormBlock').onsubmit = async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.disabled = true;
+            btn.innerText = "جاري إرسال الإشارة لايف...";
+            try {
+                await addDoc(collection(db, "maintenance_messages"), {
+                    name: document.getElementById('mName').value.trim(),
+                    email: document.getElementById('mEmail').value.trim(),
+                    message: document.getElementById('mMessage').value.trim(),
+                    sentAt: new Date()
+                });
+                alert("تم استلام رسالتك وحقنها بنجاح في السيرفر الإداري للكشك، شكراً لك!");
+                e.target.reset();
+            } catch(err) { alert(err.message); }
+            finally { btn.disabled = false; btn.innerHTML = '<i class="fas fa-paper-plane"></i> إرسال رسالتك لايف للسيرفر'; }
+        };
+    </script>
+</body>
+</html>
