@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم والإدارة الشاملة - أونلاين كشك</title>
+    <!-- Bootstrap 5 RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- ApexCharts for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- Custom Separated CSS Files -->
+    <link rel="stylesheet" href="css/admin-style.css">
+    <link rel="stylesheet" href="css/admin-responsive.css">
+    <style>
+        .virtual-page-frame {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 10px 30px rgba(147, 51, 234, 0.08);
+            overflow-y: auto;
+            max-height: 78vh;
+            padding: 20px;
+        }
+
+        .shortcut-btn {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .shortcut-btn:hover {
+            border-color: var(--purple-main);
+            background: var(--purple-soft);
+            color: var(--purple-main);
+            transform: translateX(-4px);
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.15);
+        }
+
+        .page-switcher-bar {
+            background: #ffffff;
+            border-radius: 50px;
+            padding: 6px;
+            border: 1px solid #e2e8f0;
+            display: inline-flex;
+            gap: 6px;
+        }
+
+        .page-switcher-btn {
+            border: none;
+            background: transparent;
+            color: #64748b;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 6px 16px;
+            border-radius: 30px;
+            transition: all 0.25s ease;
+        }
+
+        .page-switcher-btn.active, .page-switcher-btn:hover {
+            background: linear-gradient(135deg, #9333ea, #6b21a8);
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.25);
+        }
+
+        .site-iframe-container {
+            width: 100%;
+            height: 75vh;
+            border: 2px solid #cbd5e1;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            background: #ffffff;
+        }
+
+        .toggle-preview-mode-btn.active {
+            background-color: #9333ea !important;
+            color: #ffffff !important;
+            border-color: #9333ea !important;
+            box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+        }
+
+        .mini-card-preview {
+            max-width: 220px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(147, 51, 234, 0.12);
+            overflow: hidden;
+            padding: 10px;
+            text-align: right;
+            position: relative;
+        }
+
+        .mini-card-img-box {
+            width: 100%;
+            height: 140px;
+            background-color: #faf5ff;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .mini-card-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 4px;
+        }
+
+        .out-of-stock-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: linear-gradient(135deg, #ea580c, #dc2626);
+            color: #ffffff;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 20px;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(220, 38, 38, 0.35);
+        }
+
+        .shopify-tab-btn {
+            border: none;
+            background: #f1f5f9;
+            color: #475569;
+            font-weight: 700;
+            font-size: 0.8rem;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+        .shopify-tab-btn.active {
+            background: #9333ea;
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-light admin-body">
+
+    <!-- Sidebar & Main Content Wrapper -->
+    <div class="admin-wrapper d-flex">
+        
+        <!-- 1. السايدبار الجانبي -->
+        <aside class="admin-sidebar d-flex flex-column justify-content-between p-3" id="adminSidebar">
+            <div>
+                <!-- الشعار والهوية -->
+                <div class="sidebar-brand text-center pb-3 mb-3 border-bottom border-secondary border-opacity-25">
+                    <a href="../" target="_blank" class="d-flex align-items-center justify-content-center text-decoration-none gap-2">
+                        <div class="sidebar-brand-logo">
+                            <i class="bi bi-shop fs-4"></i>
+                        </div>
+                        <div class="d-flex flex-column text-start">
+                            <span class="fw-extrabold fs-6 lh-1 text-white">كشك الأدمن</span>
+                            <small class="text-purple-soft fs-9 fw-bold">Super Admin 🛡️</small>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- قائمة التبويبات الرئيسية -->
+                <ul class="nav nav-pills flex-column gap-1" id="v-pills-tab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active w-100 text-start" id="tab-products-btn" data-bs-toggle="pill" data-bs-target="#tab-products" type="button">
+                            <i class="bi bi-box-seam"></i> <span>المنتجات والعروض</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-site-editor-btn" data-bs-toggle="pill" data-bs-target="#tab-site-editor" type="button">
+                            <i class="bi bi-eye-fill text-warning"></i> <span class="text-warning">رؤية حية للموقع (Live View)</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-analytics-btn" data-bs-toggle="pill" data-bs-target="#tab-analytics" type="button">
+                            <i class="bi bi-graph-up-arrow"></i> <span>التحليلات والزيارات</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-commissions-btn" data-bs-toggle="pill" data-bs-target="#tab-commissions" type="button">
+                            <i class="bi bi-hourglass-split"></i> <span>الكاش باك والعمولات</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-coupons-btn" data-bs-toggle="pill" data-bs-target="#tab-coupons" type="button">
+                            <i class="bi bi-ticket-perforated"></i> <span>الكوبونات الحصرية</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-payouts-btn" data-bs-toggle="pill" data-bs-target="#tab-payouts" type="button">
+                            <i class="bi bi-wallet2"></i> <span>طلبات السحب</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-users-btn" data-bs-toggle="pill" data-bs-target="#tab-users" type="button">
+                            <i class="bi bi-people"></i> <span>المستخدمين والعملاء</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-categories-btn" data-bs-toggle="pill" data-bs-target="#tab-categories" type="button">
+                            <i class="bi bi-grid-fill"></i> <span>الأقسام والمتاجر</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-banners-btn" data-bs-toggle="pill" data-bs-target="#tab-banners" type="button">
+                            <i class="bi bi-images"></i> <span>سلايدر البانرات</span>
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="nav-link w-100 text-start" id="tab-newsletter-btn" data-bs-toggle="pill" data-bs-target="#tab-newsletter" type="button">
+                            <i class="bi bi-envelope-check"></i> <span>الرسائل والنشرة</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="border-top border-secondary border-opacity-25 pt-3">
+                <a href="../" target="_blank" class="btn btn-purple-soft w-100 rounded-pill btn-sm fw-bold mb-2 fs-8">
+                    معاينة الموقع <i class="bi bi-box-arrow-up-right ms-1"></i>
+                </a>
+                <button id="adminLogoutBtn" class="btn btn-outline-danger w-100 rounded-pill btn-sm fw-bold fs-8">
+                    تسجيل الخروج <i class="bi bi-box-arrow-right ms-1"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- 2. منطقة المحتوى الرئيسية -->
+        <div class="admin-main-content flex-grow-1 p-3 p-lg-4">
+            
+            <!-- الهيدر العلوي -->
+            <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
+                <button class="btn btn-purple-soft btn-sm rounded-circle d-lg-none" id="toggleSidebarBtn">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-purple-soft text-purple px-3 py-2 rounded-pill fs-8 fw-bold">
+                        <i class="bi bi-shield-check me-1"></i> لوحة التحكم التفاعلية المباشرة
+                    </span>
+                </div>
+            </div>
+
+            <!-- كروت الإحصائيات -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-md-3">
+                    <div id="statCardUsers" class="stat-card-soft stat-card-orange d-flex align-items-center justify-content-between cursor-pointer">
+                        <div>
+                            <small class="fw-bold fs-9 d-block mb-1">العملاء المسجلين</small>
+                            <h3 id="statUsersCount" class="fw-extrabold mb-0">0</h3>
+                        </div>
+                        <i class="bi bi-people-fill fs-2"></i>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div id="statCardProducts" class="stat-card-soft stat-card-blue d-flex align-items-center justify-content-between cursor-pointer">
+                        <div>
+                            <small class="fw-bold fs-9 d-block mb-1">المنتجات النشطة</small>
+                            <h3 id="statProductsCount" class="fw-extrabold mb-0">0</h3>
+                        </div>
+                        <i class="bi bi-box-seam-fill fs-2"></i>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div id="statCardCoupons" class="stat-card-soft stat-card-purple d-flex align-items-center justify-content-between cursor-pointer">
+                        <div>
+                            <small class="fw-bold fs-9 d-block mb-1">الكوبونات الحصرية</small>
+                            <h3 id="statCouponsCount" class="fw-extrabold mb-0">0</h3>
+                        </div>
+                        <i class="bi bi-ticket-perforated-fill fs-2"></i>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div id="statCardPayouts" class="stat-card-soft stat-card-green d-flex align-items-center justify-content-between cursor-pointer">
+                        <div>
+                            <small class="fw-bold fs-9 d-block mb-1">السحب المعلق</small>
+                            <h3 id="statPayoutsCount" class="fw-extrabold mb-0">0</h3>
+                        </div>
+                        <i class="bi bi-wallet2 fs-2"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تبويبات اللوحة الرئيسية -->
+            <div class="tab-content" id="v-pills-tabContent">
+                
+                <!-- 1. تبويب المنتجات -->
+                <div class="tab-pane fade show active" id="tab-products" role="tabpanel">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+                        <h6 class="fw-extrabold text-dark mb-0"><i class="bi bi-box-seam text-purple me-1"></i> قائمة المنتجات والعروض النشطة</h6>
+                        
+                        <div class="d-flex align-items-center gap-2 admin-filter-controls">
+                            <select id="adminProductCategoryFilter" class="form-select form-select-sm rounded-pill px-3 border-purple-subtle">
+                                <option value="ALL">جميع الأقسام</option>
+                            </select>
+                            <select id="adminProductStoreFilter" class="form-select form-select-sm rounded-pill px-3 border-purple-subtle">
+                                <option value="ALL">جميع المتاجر</option>
+                            </select>
+                            <button type="button" class="btn btn-purple-pill rounded-pill px-4 py-2 fs-8 fw-bold shadow-purple-glow" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                                <i class="bi bi-plus-circle-fill me-1"></i> إضافة منتج جديد
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle text-center fs-8">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>المنتج</th>
+                                        <th>المتجر والقسم</th>
+                                        <th>السعر القديم / الجديد</th>
+                                        <th>حالة المخزون</th>
+                                        <th>الكاش باك</th>
+                                        <th>الإجراء والتعديل</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminProductsTable">
+                                    <tr><td colspan="6" class="text-muted py-3">جاري تحميل المنتجات...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. تبويب رؤية حية للموقع (Live View) -->
+                <div class="tab-pane fade" id="tab-site-editor" role="tabpanel">
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white mb-4">
+                        
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 border-bottom pb-3 mb-3">
+                            <div>
+                                <h6 class="fw-extrabold text-dark mb-1"><i class="bi bi-eye-fill text-purple me-1"></i> رؤية حية للموقع (Live View)</h6>
+                                <small class="text-muted fs-8">تابع ما يراه الزائر حاليًا بشكل مباشر عند إضافة المنتجات أو تعديل البيانات.</small>
+                            </div>
+
+                            <div class="page-switcher-bar shadow-sm">
+                                <button type="button" class="page-switcher-btn active" onclick="switchVirtualPage('../', this)">
+                                    <i class="bi bi-house-door me-1"></i> الرئيسية
+                                </button>
+                                <button type="button" class="page-switcher-btn" onclick="switchVirtualPage('../product', this)">
+                                    <i class="bi bi-bag-check me-1"></i> تفاصيل المنتج
+                                </button>
+                                <button type="button" class="page-switcher-btn" onclick="switchVirtualPage('../stores', this)">
+                                    <i class="bi bi-shop me-1"></i> المتاجر
+                                </button>
+                                <button type="button" class="page-switcher-btn" onclick="switchVirtualPage('../coupons', this)">
+                                    <i class="bi bi-ticket-perforated me-1"></i> الكوبونات
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- إطار المعاينة المباشرة -->
+                        <div class="site-iframe-container position-relative">
+                            <iframe id="liveSiteIframe" src="../" class="w-100 h-100 border-0"></iframe>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 3. تبويب التحليلات -->
+                <div class="tab-pane fade" id="tab-analytics" role="tabpanel">
+                    <div class="row g-4">
+                        <div class="col-lg-8">
+                            <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white h-100">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="fw-bold text-dark mb-0"><i class="bi bi-graph-up text-purple me-1"></i> حركة الزوار والنقرات اليومية</h6>
+                                    <span class="badge bg-purple-soft text-purple fs-8 rounded-pill">آخر 30 يوم</span>
+                                </div>
+                                <div id="trafficChart" class="chart-container"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-geo-alt-fill text-purple me-1"></i> توزيع الزوار حسب الأجهزة</h6>
+                                <div id="locationChart" class="chart-container"></div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white">
+                                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-mouse2-fill text-purple me-1"></i> أكثر الصفحات والمنتجات زيارة</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle text-center fs-8">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>الصفحة / المنتج</th>
+                                                <th>عدد الزيارات</th>
+                                                <th>عدد النقرات (Clicks)</th>
+                                                <th>معدل التحويل المتوقع</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="analyticsTopPagesTable">
+                                            <tr><td colspan="4" class="text-muted py-3">جاري تحميل التحليلات...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-commissions" role="tabpanel">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-extrabold text-dark mb-0"><i class="bi bi-hourglass-split text-purple me-1"></i> عمليات الكاش باك بانتظار موافقة الأدمن</h6>
+                        <button type="button" class="btn btn-purple-pill rounded-pill px-4 py-2 fs-8 fw-bold shadow-purple-glow" data-bs-toggle="modal" data-bs-target="#addCommissionModal">
+                            <i class="bi bi-plus-circle-fill me-1"></i> تسجيل كاش باك معلق
+                        </button>
+                    </div>
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle text-center fs-8">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>التاريخ</th>
+                                        <th>العميل</th>
+                                        <th>المنتج / البيان</th>
+                                        <th>مبلغ الكاش باك</th>
+                                        <th>الحالة الحالية</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminCommissionsTable">
+                                    <tr><td colspan="6" class="text-muted py-3">جاري جلب القائمة...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-coupons" role="tabpanel">
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 mb-4 bg-white">
+                        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-ticket-perforated-fill text-purple me-1"></i> إضافة كود خصم حصري</h6>
+                        <form id="addCouponForm">
+                            <div class="row g-3">
+                                <div class="col-md-3">
+                                    <label class="form-label fs-8 fw-bold">كود الخصم (Code)</label>
+                                    <input type="text" id="coupCode" class="form-control form-control-sm text-center fw-bold text-uppercase" placeholder="SAVE20" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fs-8 fw-bold">المتجر</label>
+                                    <select id="coupStore" class="form-select form-select-sm text-end" required>
+                                        <option value="">جاري تحميل المتاجر...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fs-8 fw-bold">تفاصيل الخصم</label>
+                                    <input type="text" id="coupLabel" class="form-control form-control-sm text-end" placeholder="خصم 20%" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label fs-8 fw-bold">الظهور بالرئيسية</label>
+                                    <select id="coupShowHome" class="form-select form-select-sm text-end">
+                                        <option value="true">نعم</option>
+                                        <option value="false">لا</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="form-label fs-8 fw-bold">الحد الأدنى للشراء (اختياري)</label>
+                                    <input type="text" id="coupMinSpend" class="form-control form-control-sm text-end" placeholder="500 ج.م">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-purple-pill btn-sm rounded-pill px-4 py-2 mt-3 fw-bold">
+                                إضافة الكوبون <i class="bi bi-check-lg ms-1"></i>
+                            </button>
+                        </form>
+                    </div>
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white">
+                        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-ticket-detailed text-purple me-1"></i> الكوبونات المتاحة</h6>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle text-center fs-8">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>الكود</th>
+                                        <th>المتجر</th>
+                                        <th>قيمة الخصم</th>
+                                        <th>الظهور بالرئيسية</th>
+                                        <th>الإجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminCouponsTable">
+                                    <tr><td colspan="5" class="text-muted py-3">جاري تحميل الكوبونات...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-payouts" role="tabpanel">
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white">
+                        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-clock-history text-purple me-1"></i> طلبات سحب الكاش باك</h6>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle text-center fs-8">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>العميل</th>
+                                        <th>المبلغ</th>
+                                        <th>الطريقة</th>
+                                        <th>بيانات الحساب</th>
+                                        <th>الحالة</th>
+                                        <th>الإجراءات</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminPayoutsTable">
+                                    <tr><td colspan="6" class="text-muted py-3">جاري تحميل طلبات السحب...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-users" role="tabpanel">
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white">
+                        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-people-fill text-purple me-1"></i> قائمة العملاء والتحكم بالأرصدة</h6>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle text-center fs-8">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>الاسم والبيانات</th>
+                                        <th>المحفظة</th>
+                                        <th>الحالة</th>
+                                        <th>إدارة الحساب</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminUsersTable">
+                                    <tr><td colspan="4" class="text-muted py-3">جاري جلب العملاء...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 7. الأقسام والمتاجر (محدث لدعم إضافة قسم فرعي يتبع قسماً رئيسياً) -->
+                <div class="tab-pane fade" id="tab-categories" role="tabpanel">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-grid-plus-fill text-purple me-1"></i> إضافة قسم جديد</h6>
+                                <form id="addCategoryForm" class="row g-3 mb-4">
+                                    <div class="col-md-12">
+                                        <label class="form-label fs-8 fw-bold">اسم القسم الجديد</label>
+                                        <input type="text" id="newCatName" class="form-control form-control-sm text-end" placeholder="مثال: موبايلات" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fs-8 fw-bold">يندرج تحت قسم رئيسي</label>
+                                        <select id="newCatParent" class="form-select form-select-sm text-end">
+                                            <option value="">(قسم رئيسي مستقل)</option>
+                                            <option value="الإلكترونيات">الإلكترونيات</option>
+                                            <option value="المنزل والمطبخ">المنزل والمطبخ</option>
+                                            <option value="الموضة">الموضة</option>
+                                            <option value="الجمال والعناية الشخصية">الجمال والعناية الشخصية</option>
+                                            <option value="الأطفال">الأطفال</option>
+                                            <option value="الرياضة">الرياضة</option>
+                                            <option value="السيارات">السيارات</option>
+                                            <option value="الكتب">الكتب</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label fs-8 fw-bold">الظهور بالرئيسية</label>
+                                        <select id="newCatShowHome" class="form-select form-select-sm text-end">
+                                            <option value="true">إظهار بالرئيسية</option>
+                                            <option value="false">إخفاء</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-purple-pill btn-sm w-100 rounded-pill fw-bold">إضافة القسم <i class="bi bi-plus-lg ms-1"></i></button>
+                                    </div>
+                                </form>
+
+                                <h6 class="fw-bold text-dark mb-3 border-top pt-3">الأقسام الحالية</h6>
+                                <div id="adminCategoriesList" class="d-flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-shop text-purple me-1"></i> إضافة متجر جديد</h6>
+                                <form id="addStoreForm" class="row g-3 mb-4">
+                                    <div class="col-md-12">
+                                        <input type="text" id="newStoreName" class="form-control form-control-sm text-end" placeholder="اسم المتجر" required>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="url" id="newStoreLogoUrl" class="form-control form-control-sm text-start" placeholder="رابط اللوجو https://...">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <input type="url" id="newStoreUrl" class="form-control form-control-sm text-start" placeholder="رابط الموقع https://...">
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="form-label fs-8 fw-bold text-purple mb-1"><i class="bi bi-link-45deg me-1"></i> رابط الأفلييت الموجه للمتجر</label>
+                                        <input type="url" id="newStoreAffiliateUrl" class="form-control form-control-sm text-start border-purple-subtle" placeholder="https://amazon.eg/?tag=your_affiliate_id">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="newStoreShowInNavbar" class="form-select form-select-sm text-end">
+                                            <option value="true">إظهار بالناف بار</option>
+                                            <option value="false">إخفاء</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select id="newStoreShowInStoresPage" class="form-select form-select-sm text-end">
+                                            <option value="true">إظهار بصفحة المتاجر</option>
+                                            <option value="false">إخفاء</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-success rounded-pill btn-sm w-100 fw-bold">إضافة المتجر <i class="bi bi-plus-lg ms-1"></i></button>
+                                    </div>
+                                </form>
+
+                                <h6 class="fw-bold text-dark mb-3 border-top pt-3">المتاجر المربوطة</h6>
+                                <div id="adminStoresList" class="d-flex flex-wrap gap-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-banners" role="tabpanel">
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 mb-4 bg-white">
+                        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-image-fill text-purple me-1"></i> إضافة بانر جديد للسلايدر</h6>
+                        <form id="addBannerForm">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fs-8 fw-bold">رابط صورة البانر</label>
+                                    <input type="url" id="bannerImgUrl" class="form-control form-control-sm text-start" placeholder="https://..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fs-8 fw-bold">رابط الأفيليت الموجه</label>
+                                    <input type="url" id="bannerTargetUrl" class="form-control form-control-sm text-start" placeholder="https://..." required>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-purple-pill btn-sm rounded-pill px-4 py-2 mt-3 fw-bold">إضافة للسلايدر <i class="bi bi-check-lg ms-1"></i></button>
+                        </form>
+                    </div>
+
+                    <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white">
+                        <h6 class="fw-bold text-dark mb-3"><i class="bi bi-images text-purple me-1"></i> البنرات النشطة</h6>
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle text-center fs-8">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>الصورة</th>
+                                        <th>الرابط</th>
+                                        <th>الإجراء</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminBannersTable">
+                                    <tr><td colspan="3" class="text-muted py-3">جاري جلب البنرات...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-newsletter" role="tabpanel">
+                    <div class="row g-4">
+                        <div class="col-md-5">
+                            <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-envelope-at-fill text-purple me-1"></i> المشتركون بالنشرة</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle text-center fs-8">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>الإيميل</th>
+                                                <th>التاريخ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="adminNewsletterTable">
+                                            <tr><td colspan="2" class="text-muted py-3">جاري التحميل...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-7">
+                            <div class="card border-0 rounded-4 shadow-subtle-glow p-4 bg-white h-100">
+                                <h6 class="fw-bold text-dark mb-3"><i class="bi bi-chat-left-dots-fill text-purple me-1"></i> رسائل "تواصل معنا" الواردة</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle text-center fs-8">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th>المرسل</th>
+                                                <th>العنوان / الرسالة</th>
+                                                <th>التاريخ</th>
+                                                <th>التفاصيل</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="adminContactMessagesTable">
+                                            <tr><td colspan="4" class="text-muted py-3">جاري التحميل...</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- 3. اللوحة الجانبية اليمنى -->
+        <aside class="admin-right-widget d-none d-xl-block p-3">
+            <div class="mb-4 text-center">
+                <small class="text-muted fw-bold fs-9 d-block mb-1">اللوحة السريعة للعمليات</small>
+                <div class="p-2 bg-purple-soft rounded-3 text-purple fw-extrabold fs-8">
+                    <i class="bi bi-lightning-charge-fill me-1 text-warning"></i> اختصارات سريعة
+                </div>
+            </div>
+
+            <div class="d-flex flex-column gap-2 mb-4">
+                <div class="shortcut-btn" onclick="triggerTabClick('tab-payouts-btn')">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-wallet2 text-danger fs-6"></i>
+                        <span>طلبات السحب المعلقة</span>
+                    </div>
+                    <i class="bi bi-chevron-left fs-9 text-muted"></i>
+                </div>
+
+                <div class="shortcut-btn" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-plus-circle-fill text-purple fs-6"></i>
+                        <span>إضافة منتج جديد</span>
+                    </div>
+                    <i class="bi bi-chevron-left fs-9 text-muted"></i>
+                </div>
+
+                <div class="shortcut-btn" onclick="triggerTabClick('tab-commissions-btn')">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-hourglass-split text-warning fs-6"></i>
+                        <span>تسجيل كاش باك معلق</span>
+                    </div>
+                    <i class="bi bi-chevron-left fs-9 text-muted"></i>
+                </div>
+
+                <div class="shortcut-btn" onclick="triggerTabClick('tab-coupons-btn')">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-ticket-perforated-fill text-primary fs-6"></i>
+                        <span>إضافة كود خصم</span>
+                    </div>
+                    <i class="bi bi-chevron-left fs-9 text-muted"></i>
+                </div>
+
+                <div class="shortcut-btn" onclick="triggerTabClick('tab-newsletter-btn')">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-chat-dots-fill text-success fs-6"></i>
+                        <span>رسائل تواصل معنا</span>
+                    </div>
+                    <i class="bi bi-chevron-left fs-9 text-muted"></i>
+                </div>
+            </div>
+
+            <div class="p-3 bg-purple-soft rounded-4 border border-purple-subtle text-center">
+                <i class="bi bi-shield-check text-purple fs-3 d-block mb-1"></i>
+                <small class="fw-bold text-dark fs-8 d-block mb-1">الرؤية الحية نشطة</small>
+                <small class="text-muted fs-9 leading-relaxed d-block">أي تغيير تنفذه باللوحة ينعكس فوراً بقاعدة بيانات Supabase!</small>
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- MODALS -->
+
+    <!-- Modal 1: إضافة منتج (مع الأقسام الشجرية المجمعة) -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom py-3 bg-purple-soft">
+                    <h6 class="modal-title fw-bold text-purple"><i class="bi bi-plus-circle-fill me-1"></i> محرر المنتجات (Shopify Style Product Builder)</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-end">
+                    <form id="addProductForm">
+                        <div class="row g-4">
+                            <div class="col-lg-5 border-end border-purple-subtle pe-lg-3">
+                                <div class="d-flex flex-wrap gap-1 mb-3 p-1 bg-light rounded-3 border">
+                                    <button type="button" class="shopify-tab-btn active" onclick="switchShopifyTab('add', 'basic', this)">🏷️ الأساسية</button>
+                                    <button type="button" class="shopify-tab-btn" onclick="switchShopifyTab('add', 'pricing', this)">💰 الأسعار</button>
+                                    <button type="button" class="shopify-tab-btn" onclick="switchShopifyTab('add', 'inventory', this)">📦 المخزون</button>
+                                    <button type="button" class="shopify-tab-btn" onclick="switchShopifyTab('add', 'media', this)">🖼️ الصور</button>
+                                    <button type="button" class="shopify-tab-btn" onclick="switchShopifyTab('add', 'details', this)">📝 الوصف</button>
+                                </div>
+
+                                <div id="addTabSection_basic" class="shopify-tab-content">
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold text-dark">عنوان / اسم المنتج</label>
+                                        <input type="text" id="prodTitle" class="form-control form-control-sm text-end live-input" placeholder="اسم المنتج...">
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-dark">اسم المتجر</label>
+                                            <select id="prodStore" class="form-select form-select-sm text-end live-input"></select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-dark">القسم / الفئة الفرعية</label>
+                                            <select id="prodCategory" class="form-select form-select-sm text-end live-input">
+                                                <option value="">اختر القسم...</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-dark">الماركة / Brand</label>
+                                            <input type="text" id="prodBrand" class="form-control form-control-sm text-end live-input" placeholder="مثال: Apple">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-dark">الضمان</label>
+                                            <input type="text" id="prodWarranty" class="form-control form-control-sm text-end live-input" placeholder="ضمان سنة">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="addTabSection_pricing" class="shopify-tab-content d-none">
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-dark">السعر الأصلي (ج.م)</label>
+                                            <input type="number" step="0.01" id="prodOriginalPrice" class="form-control form-control-sm text-end live-input" placeholder="0.00">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-purple">السعر بعد الخصم (ج.م)</label>
+                                            <input type="number" step="0.01" id="prodDiscountPrice" class="form-control form-control-sm text-end live-input" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-success">الكاش باك المستحق (ج.م)</label>
+                                            <input type="number" step="0.01" id="prodCashbackAmount" class="form-control form-control-sm text-end live-input" placeholder="0.00">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-purple"><i class="bi bi-ticket-perforated me-1"></i> كود الخصم</label>
+                                            <input type="text" id="prodCouponCode" class="form-control form-control-sm text-center fw-bold text-uppercase border-purple-subtle live-input" placeholder="KOSHK20">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="addTabSection_inventory" class="shopify-tab-content d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold text-danger">رابط الأفلييت الموجه الأصلي (الحقل الإجباري الوحيد) *</label>
+                                        <input type="url" id="prodAffiliateUrl" class="form-control form-control-sm text-start" placeholder="https://..." required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold text-dark">حالة التوفر والمخزون</label>
+                                        <select id="prodStockStatus" class="form-select form-select-sm text-end live-input">
+                                            <option value="in_stock">متوفر بالمخزن</option>
+                                            <option value="limited">قطع قليلة</option>
+                                            <option value="out_of_stock">⚠️ نفدت الكمية (Out of Stock)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="addTabSection_media" class="shopify-tab-content d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold text-dark">رفع صور معرض المنتج ⭐</label>
+                                        <input type="file" id="prodImageFiles" class="form-control form-control-sm" multiple accept="image/*">
+                                    </div>
+                                    <div id="addImagesPreviewContainer" class="d-flex flex-wrap gap-2 p-2 bg-light rounded-3 border align-items-center"></div>
+                                </div>
+
+                                <div id="addTabSection_details" class="shopify-tab-content d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold text-dark"><i class="bi bi-sliders text-purple me-1"></i> المواصفات الفنية المتقدمة</label>
+                                        <textarea id="prodSpecs" class="form-control form-control-sm text-end live-input" rows="3" placeholder="سعة التخزين: 128 جيجابايت..."></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold text-dark">وصف ومميزات المنتج التفصيلية</label>
+                                        <textarea id="prodDescription" class="form-control form-control-sm text-end live-input" rows="3" placeholder="• كاميرا 50 ميجابكسل..."></textarea>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="prodImageUrl" class="live-input">
+                                <input type="hidden" id="prodShowHome" value="true">
+                            </div>
+
+                            <div class="col-lg-7 ps-lg-3">
+                                <div class="d-flex align-items-center justify-content-center gap-2 mb-3 bg-light p-2 rounded-4 border">
+                                    <button type="button" class="btn btn-sm btn-outline-purple toggle-preview-mode-btn active" id="btnPreviewFullPage" onclick="toggleProductPreviewMode('full')">
+                                        <i class="bi bi-window-sidebar me-1"></i> معاينة صفحة المنتج
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-purple toggle-preview-mode-btn" id="btnPreviewCard" onclick="toggleProductPreviewMode('card')">
+                                        <i class="bi bi-card-heading me-1"></i> معاينة شكل الكارت
+                                    </button>
+                                </div>
+
+                                <div id="previewFullPageContainer" class="virtual-page-frame position-relative">
+                                    <div id="liveOutOfStockBadgePage" class="out-of-stock-badge d-none"><i class="bi bi-slash-circle me-1"></i> نفدت الكمية</div>
+                                    <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
+                                        <span class="badge bg-purple text-white fs-9" id="livePageStore">المتجر</span>
+                                        <span class="badge bg-purple-soft text-purple fs-9" id="livePageBrand">الماركة</span>
+                                    </div>
+
+                                    <h6 id="livePageTitle" class="fw-extrabold text-dark fs-7 mb-2">عنوان المنتج يظهر هنا...</h6>
+
+                                    <div class="text-center mb-3 p-2 bg-light rounded-4 border">
+                                        <img id="livePageMainImg" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400" class="img-fluid rounded-3 object-fit-contain mb-2" style="max-height: 180px;">
+                                        <div id="livePageGalleryThumbs" class="d-flex justify-content-center gap-2 overflow-auto py-1"></div>
+                                    </div>
+
+                                    <div class="p-3 bg-purple-soft rounded-4 border mb-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <span id="livePagePrice" class="fw-bold text-purple fs-6 me-2">0 ج.م</span>
+                                                <del id="livePageOrigPrice" class="text-muted fs-8">0 ج.م</del>
+                                            </div>
+                                            <span id="livePageCashback" class="badge bg-success-subtle text-success fs-8">كاش باك 0 ج.م</span>
+                                        </div>
+                                    </div>
+
+                                    <div id="livePageCouponBox" class="mb-3 p-2 border border-purple-subtle bg-light rounded-3 text-center d-none">
+                                        <small class="text-muted fs-9 d-block">كود الخصم الحصري:</small>
+                                        <strong id="livePageCoupon" class="text-purple fs-8">SAVE20</strong>
+                                    </div>
+
+                                    <div id="livePageSpecsBox" class="mb-3 d-none">
+                                        <label class="form-label fs-9 fw-bold text-dark"><i class="bi bi-sliders text-purple me-1"></i> المواصفات الفنية:</label>
+                                        <div id="livePageSpecs" class="p-2 bg-light rounded border fs-9 text-secondary leading-relaxed"></div>
+                                    </div>
+
+                                    <div id="livePageDescBox" class="mb-3 d-none">
+                                        <label class="form-label fs-9 fw-bold text-dark">وصف المنتج:</label>
+                                        <p id="livePageDesc" class="fs-9 text-secondary leading-relaxed mb-0"></p>
+                                    </div>
+                                </div>
+
+                                <div id="previewCardContainer" class="virtual-page-frame d-none text-center">
+                                    <small class="text-muted d-block mb-3 fw-bold fs-8">شكل الكارت في الرئيسية والأقسام:</small>
+                                    <div class="mini-card-preview mx-auto">
+                                        <div id="liveOutOfStockBadgeCard" class="out-of-stock-badge d-none"><i class="bi bi-slash-circle me-1"></i> نفدت الكمية</div>
+                                        <span class="card-discount-badge" id="liveBadgeDisc">-0%</span>
+                                        <div class="mini-card-img-box mb-2">
+                                            <img id="liveCardImg" src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300">
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate" id="liveCardTitle">عنوان المنتج...</h6>
+                                            <small class="text-muted fs-8 d-block mb-1" id="liveCardCategory">القسم</small>
+                                            <div class="d-flex align-items-center justify-content-center gap-2 mb-1">
+                                                <span class="fw-extrabold text-purple fs-7" id="liveCardDiscPrice">0 ج.م</span>
+                                                <span class="text-muted text-decoration-line-through fs-8" id="liveCardOrigPrice">0 ج.م</span>
+                                            </div>
+                                            <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2 mt-2">
+                                                <span class="fw-bold fs-8 text-dark" id="liveCardStore">أمازون</span>
+                                                <span class="badge bg-purple-soft text-purple fs-8" id="liveCardCashback">كاش باك 0 ج.م</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-end border-top pt-3">
+                            <button type="button" class="btn btn-light btn-sm rounded-pill px-3 me-2" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-purple-pill btn-sm rounded-pill px-4 py-2 fw-bold">حفظ ونشر المنتج <i class="bi bi-check-lg ms-1"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: تعديل المنتج -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom py-3 bg-purple-soft">
+                    <h6 class="modal-title fw-bold text-purple"><i class="bi bi-pencil-square me-1"></i> تعديل بيانات المنتج</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-end">
+                    <form id="editProductForm">
+                        <input type="hidden" id="editProdId">
+                        <div class="row g-4">
+                            <div class="col-lg-5 border-end border-purple-subtle pe-lg-3">
+                                
+                                <div class="d-flex flex-wrap gap-1 mb-3 p-1 bg-light rounded-3 border">
+                                    <button type="button" class="shopify-tab-btn active" onclick="switchShopifyTab('edit', 'basic', this)">🏷️ الأساسية</button>
+                                    <button type="button" class="shopify-tab-btn" onclick="switchShopifyTab('edit', 'pricing', this)">💰 الأسعار</button>
+                                    <button type="button" class="shopify-tab-btn" onclick="switchShopifyTab('edit', 'inventory', this)">📦 المخزون</button>
+                                    <button type="button" class="shopify-tab-btn" onclick="switchShopifyTab('edit', 'media', this)">🖼️ الصور</button>
+                                    <button type="button" class="shopify-tab-btn" onclick="switchShopifyTab('edit', 'details', this)">📝 الوصف</button>
+                                </div>
+
+                                <div id="editTabSection_basic" class="shopify-tab-content">
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold">اسم المنتج</label>
+                                        <input type="text" id="editProdTitle" class="form-control form-control-sm text-end edit-live-input">
+                                    </div>
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold">المتجر</label>
+                                            <select id="editProdStore" class="form-select form-select-sm text-end edit-live-input"></select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold">القسم</label>
+                                            <select id="editProdCategory" class="form-select form-select-sm text-end edit-live-input"></select>
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold">الماركة</label>
+                                            <input type="text" id="editProdBrand" class="form-control form-control-sm text-end edit-live-input">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold">الضمان</label>
+                                            <input type="text" id="editProdWarranty" class="form-control form-control-sm text-end edit-live-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="editTabSection_pricing" class="shopify-tab-content d-none">
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold">السعر الأصلي</label>
+                                            <input type="number" step="0.01" id="editProdOriginalPrice" class="form-control form-control-sm text-end edit-live-input">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold">السعر بعد الخصم</label>
+                                            <input type="number" step="0.01" id="editProdDiscountPrice" class="form-control form-control-sm text-end edit-live-input">
+                                        </div>
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold">الكاش باك</label>
+                                            <input type="number" step="0.01" id="editProdCashbackAmount" class="form-control form-control-sm text-end edit-live-input">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label fs-8 fw-bold text-purple"><i class="bi bi-ticket-perforated me-1"></i> كود الخصم</label>
+                                            <input type="text" id="editProdCouponCode" class="form-control form-control-sm text-center fw-bold text-uppercase border-purple-subtle edit-live-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="editTabSection_inventory" class="shopify-tab-content d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold text-danger">رابط الأفلييت *</label>
+                                        <input type="url" id="editProdAffiliateUrl" class="form-control form-control-sm text-start" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold">حالة المخزون</label>
+                                        <select id="editProdStockStatus" class="form-select form-select-sm text-end edit-live-input">
+                                            <option value="in_stock">متوفر بالمخزن</option>
+                                            <option value="limited">قطع قليلة</option>
+                                            <option value="out_of_stock">⚠️ نفدت الكمية</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="editTabSection_media" class="shopify-tab-content d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold">رفع صور جديدة المعرض</label>
+                                        <input type="file" id="editProdImageFiles" class="form-control form-control-sm" multiple accept="image/*">
+                                    </div>
+                                    <div id="editImagesPreviewContainer" class="d-flex flex-wrap gap-2 p-2 bg-light rounded-3 border align-items-center"></div>
+                                </div>
+
+                                <div id="editTabSection_details" class="shopify-tab-content d-none">
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold">المواصفات الفنية</label>
+                                        <textarea id="editProdSpecs" class="form-control form-control-sm text-end edit-live-input" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fs-8 fw-bold">الوصف والتفاصيل</label>
+                                        <textarea id="editProdDescription" class="form-control form-control-sm text-end edit-live-input" rows="3"></textarea>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="editProdImageUrl" class="edit-live-input">
+                                <input type="hidden" id="editProdShowHome" value="true">
+                            </div>
+
+                            <div class="col-lg-7 ps-lg-3">
+                                <div class="virtual-page-frame position-relative">
+                                    <div id="editLiveOutOfStockBadge" class="out-of-stock-badge d-none"><i class="bi bi-slash-circle me-1"></i> نفدت الكمية</div>
+                                    <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
+                                        <span class="badge bg-purple text-white fs-9" id="editLivePageStore">اسم المتجر</span>
+                                        <span class="badge bg-purple-soft text-purple fs-9" id="editLivePageBrand">الماركة</span>
+                                    </div>
+
+                                    <h6 id="editLivePageTitle" class="fw-extrabold text-dark fs-7 mb-2">عنوان المنتج...</h6>
+
+                                    <div class="text-center mb-3 p-2 bg-light rounded-4 border">
+                                        <img id="editLivePageMainImg" src="" class="img-fluid rounded-3 object-fit-contain mb-2" style="max-height: 180px;">
+                                        <div id="editLivePageGalleryThumbs" class="d-flex justify-content-center gap-2 overflow-auto py-1"></div>
+                                    </div>
+
+                                    <div class="p-3 bg-purple-soft rounded-4 border mb-3">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div>
+                                                <span id="editLivePagePrice" class="fw-bold text-purple fs-6 me-2">0 ج.م</span>
+                                                <del id="editLivePageOrigPrice" class="text-muted fs-8">0 ج.م</del>
+                                            </div>
+                                            <span id="editLivePageCashback" class="badge bg-success-subtle text-success fs-8">كاش باك 0 ج.م</span>
+                                        </div>
+                                    </div>
+
+                                    <div id="editLivePageCouponBox" class="mb-3 p-2 border border-purple-subtle bg-light rounded-3 text-center d-none">
+                                        <small class="text-muted fs-9 d-block">كود الخصم:</small>
+                                        <strong id="editLivePageCoupon" class="text-purple fs-8">SAVE20</strong>
+                                    </div>
+
+                                    <div id="editLivePageSpecsBox" class="mb-3 d-none">
+                                        <label class="form-label fs-9 fw-bold text-dark"><i class="bi bi-sliders text-purple me-1"></i> المواصفات الفنية:</label>
+                                        <div id="editLivePageSpecs" class="p-2 bg-light rounded border fs-9 text-secondary leading-relaxed"></div>
+                                    </div>
+
+                                    <div id="editLivePageDescBox" class="mb-3 d-none">
+                                        <label class="form-label fs-9 fw-bold text-dark">الوصف والتفاصيل:</label>
+                                        <p id="editLivePageDesc" class="fs-9 text-secondary leading-relaxed mb-0"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 text-end border-top pt-3">
+                            <button type="button" class="btn btn-light btn-sm rounded-pill px-3 me-2" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-purple-pill btn-sm rounded-pill px-4 py-2 fw-bold">حفظ التغييرات <i class="bi bi-save ms-1"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: معاينة المنتج -->
+    <div class="modal fade" id="productPreviewModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+                <div class="modal-header bg-purple-soft border-bottom py-3">
+                    <h6 class="modal-title fw-bold text-purple"><i class="bi bi-eye-fill me-1"></i> معاينة تفاصيل المنتج</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-end">
+                    <div class="row g-4">
+                        <div class="col-md-5 text-center">
+                            <img id="previewModalImg" src="" class="img-fluid rounded-3 border shadow-sm object-fit-contain" style="max-height: 240px;">
+                        </div>
+                        <div class="col-md-7 d-flex flex-column justify-content-between">
+                            <div>
+                                <span id="previewModalStore" class="badge bg-purple text-white mb-2 fs-8">أمازون</span>
+                                <h5 id="previewModalTitle" class="fw-extrabold text-dark mb-2">عنوان المنتج</h5>
+                                <div class="d-flex align-items-baseline gap-2 mb-2">
+                                    <h4 id="previewModalDiscPrice" class="fw-bold text-purple mb-0">0 ج.م</h4>
+                                    <del id="previewModalOrigPrice" class="text-muted fs-8">0 ج.م</del>
+                                </div>
+                                <p id="previewModalDesc" class="text-secondary fs-8 leading-relaxed mb-3">وصف المنتج...</p>
+                            </div>
+                            <div class="border-top pt-2">
+                                <a id="previewModalLink" href="#" target="_blank" class="btn btn-purple-pill btn-sm w-100 rounded-pill fw-bold">تجربة رابط الأفيليت <i class="bi bi-box-arrow-up-right ms-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: إدارة رصيد العميل -->
+    <div class="modal fade" id="manageUserBalanceModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom py-3 bg-purple-soft">
+                    <h6 class="modal-title fw-bold text-purple"><i class="bi bi-sliders me-1"></i> الإدارة المباشرة لأرصدة وحالة العميل</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-end">
+                    <form id="manageUserBalanceForm">
+                        <input type="hidden" id="targetUserId">
+                        <div class="mb-3">
+                            <label class="form-label fs-8 fw-bold">اسم العميل</label>
+                            <input type="text" id="targetUserName" class="form-control form-control-sm bg-light" readonly>
+                        </div>
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label fs-8 fw-bold text-success">الرصيد المتاح بالسحب (ج.م)</label>
+                                <input type="number" step="0.01" id="targetAvailableBalance" class="form-control form-control-sm text-end" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fs-8 fw-bold text-purple">الكاش باك المعلق (ج.م)</label>
+                                <input type="number" step="0.01" id="targetPendingBalance" class="form-control form-control-sm text-end" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fs-8 fw-bold text-warning">بانتظار موافقة السحب (ج.م)</label>
+                                <input type="number" step="0.01" id="targetAwaitingBalance" class="form-control form-control-sm text-end" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fs-8 fw-bold text-primary">إجمالي المسحوبات (ج.م)</label>
+                                <input type="number" step="0.01" id="targetWithdrawnBalance" class="form-control form-control-sm text-end" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-8 fw-bold text-danger">حالة الحساب</label>
+                            <select id="targetUserStatus" class="form-select form-select-sm text-end">
+                                <option value="active">نشط (مفعل)</option>
+                                <option value="frozen">مجمّد</option>
+                            </select>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-light btn-sm rounded-pill px-3 me-2" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-purple-pill btn-sm rounded-pill px-4 py-2 fw-bold">حفظ التحديثات <i class="bi bi-save ms-1"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: ملف العميل -->
+    <div class="modal fade" id="adminUserProfileModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom py-3 bg-purple-soft">
+                    <h6 class="modal-title fw-bold text-purple"><i class="bi bi-person-lines-fill me-1"></i> الملف التفصيلي للعميل</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-end">
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <small class="text-muted d-block fw-bold">الاسم الكامل</small>
+                            <span id="modalUserFullName" class="fw-bold text-dark fs-7">-</span>
+                        </div>
+                        <div class="col-md-4">
+                            <small class="text-muted d-block fw-bold">رقم الهاتف</small>
+                            <span id="modalUserPhone" class="fw-bold text-dark fs-7">-</span>
+                        </div>
+                        <div class="col-md-4">
+                            <small class="text-muted d-block fw-bold">العنوان</small>
+                            <span id="modalUserLocation" class="fw-bold text-dark fs-7">-</span>
+                        </div>
+                    </div>
+                    <div class="row g-3 mb-4 bg-light p-3 rounded-4 border">
+                        <div class="col-3 text-center">
+                            <small class="text-muted d-block fw-bold">معلق</small>
+                            <span id="modalUserEarnings" class="fw-bold text-purple fs-7">0 ج.م</span>
+                        </div>
+                        <div class="col-3 text-center">
+                            <small class="text-muted d-block fw-bold">متاح</small>
+                            <span id="modalUserAvailable" class="fw-bold text-success fs-7">0 ج.م</span>
+                        </div>
+                        <div class="col-3 text-center">
+                            <small class="text-muted d-block fw-bold">قيد السحب</small>
+                            <span id="modalUserPending" class="fw-bold text-warning fs-7">0 ج.م</span>
+                        </div>
+                        <div class="col-3 text-center">
+                            <small class="text-muted d-block fw-bold">مسحوب</small>
+                            <span id="modalUserWithdrawn" class="fw-bold text-primary fs-7">0 ج.م</span>
+                        </div>
+                    </div>
+                    <h6 class="fw-bold text-dark mb-2 fs-8">سجل المعاملات</h6>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle text-center fs-9">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>التاريخ</th>
+                                    <th>المبلغ</th>
+                                    <th>الطريقة</th>
+                                    <th>الحالة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalUserHistoryTable"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 6: إضافة كاش باك معلق -->
+    <div class="modal fade" id="addCommissionModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom py-3 bg-purple-soft">
+                    <h6 class="modal-title fw-bold text-purple"><i class="bi bi-plus-circle-fill me-1"></i> تسجيل كاش باك معلق لعميل</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-end">
+                    <form id="addCommissionForm">
+                        <div class="mb-3">
+                            <label class="form-label fs-8 fw-bold">العميل المستحق</label>
+                            <select id="commUserId" class="form-select form-select-sm text-end" required></select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-8 fw-bold">المنتج / البيان</label>
+                            <input type="text" id="commProductTitle" class="form-control form-control-sm text-end" placeholder="شراء من أمازون" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fs-8 fw-bold">المبلغ (ج.م)</label>
+                            <input type="number" step="0.01" id="commAmount" class="form-control form-control-sm text-end" placeholder="50.00" required>
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-light btn-sm rounded-pill px-3 me-2" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-purple-pill btn-sm rounded-pill px-4 py-2 fw-bold">إضافة معلق <i class="bi bi-check-lg ms-1"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 7: رفض طلب السحب -->
+    <div class="modal fade" id="rejectPayoutModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 rounded-4 shadow-lg">
+                <div class="modal-header border-bottom py-3 bg-danger-subtle">
+                    <h6 class="modal-title fw-bold text-danger"><i class="bi bi-x-circle-fill me-1"></i> رفض طلب السحب</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-end">
+                    <form id="rejectPayoutForm">
+                        <input type="hidden" id="rejectPayoutRequestId">
+                        <input type="hidden" id="rejectPayoutUserId">
+                        <input type="hidden" id="rejectPayoutAmount">
+                        <div class="mb-3">
+                            <label class="form-label fs-8 fw-bold text-dark">سبب الرفض</label>
+                            <textarea id="rejectPayoutReason" class="form-control form-control-sm text-end" rows="3" placeholder="رقم المحفظة غير صحيح..." required></textarea>
+                        </div>
+                        <div class="alert alert-warning fs-9 p-2 rounded-3 mb-3">
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> سيتم إعادة (<strong><span id="rejectAmountDisplay">0</span> ج.م</strong>) لرصيد العميل المتاح تلقائياً.
+                        </div>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-light btn-sm rounded-pill px-3 me-2" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="submit" class="btn btn-danger btn-sm rounded-pill px-4 py-2 fw-bold">تأكيد الرفض <i class="bi bi-arrow-counterclockwise ms-1"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 8: تفاصيل رسالة التواصل -->
+    <div class="modal fade" id="contactMessageDetailsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+                <div class="modal-header bg-purple-soft border-bottom py-3">
+                    <h6 class="modal-title fw-bold text-purple"><i class="bi bi-envelope-open-fill me-2"></i> تفاصيل رسالة التواصل</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-end">
+                    <div class="row g-3 mb-3 p-3 bg-light rounded-4 border">
+                        <div class="col-md-4">
+                            <small class="text-muted d-block fs-9 fw-bold">اسم المرسل:</small>
+                            <span id="msgModalName" class="fw-bold text-dark fs-7">-</span>
+                        </div>
+                        <div class="col-md-4">
+                            <small class="text-muted d-block fs-9 fw-bold">رقم الهاتف:</small>
+                            <span id="msgModalPhone" class="fw-bold text-dark fs-7">-</span>
+                        </div>
+                        <div class="col-md-4 text-start">
+                            <small class="text-muted d-block fs-9 fw-bold">تاريخ الإرسال:</small>
+                            <span id="msgModalDate" class="badge bg-purple-soft text-purple fs-9">-</span>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block fs-9 fw-bold mb-1">البريد الإلكتروني:</small>
+                        <div class="input-group input-group-sm">
+                            <input type="text" id="msgModalEmail" class="form-control text-end bg-white font-monospace" readonly>
+                            <a id="msgModalReplyBtn" href="#" class="btn btn-purple px-3 fw-bold"><i class="bi bi-reply-fill me-1"></i> رد للعميل</a>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block fs-9 fw-bold mb-1">عنوان الموضوع:</small>
+                        <input type="text" id="msgModalSubject" class="form-control form-control-sm text-end bg-white fw-bold" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block fs-9 fw-bold mb-1">نص الرسالة بالكامل:</small>
+                        <div id="msgModalContent" class="p-3 bg-white border border-purple-subtle rounded-3 text-secondary fs-8 leading-relaxed shadow-sm" style="min-height: 120px; max-height: 250px; overflow-y: auto;">-</div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center border-top pt-3 mt-3">
+                        <button type="button" id="msgModalDeleteBtn" class="btn btn-outline-danger btn-sm rounded-pill px-3 fw-bold fs-8">حذف الرسالة</button>
+                        <button type="button" class="btn btn-light btn-sm rounded-pill px-4 fw-bold fs-8" data-bs-dismiss="modal">إغلاق</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- حماية صفحة الأدمن -->
+    <script>
+        document.addEventListener('DOMContentLoaded', async function () {
+            let client = window.supabaseClient;
+            if (!client && window.supabase && typeof SUPABASE_URL !== 'undefined') {
+                client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            }
+
+            if (client) {
+                const { data: { user } } = await client.auth.getUser();
+                if (!user || user.email !== 'iamhondv@gmail.com') {
+                    alert('⛔ عفواً، هذه اللوحة مخصصة للأدمن الرئيسي فقط!');
+                    window.location.href = 'login';
+                }
+            }
+        });
+    </script>
+
+    <!-- Config & Admin Script -->
+    <script src="../js/supabase-config.js"></script>
+    <script src="js/admin-main.js"></script>
+</body>
+</html>

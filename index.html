@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أونلاين كشك - أفضل العروض، عمولات أفضل</title>
+    <!-- Bootstrap 5 RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- ربط ملف التجاوب والستايل الخاص بالموقع -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <!-- 1. الهيدر المطور والمستجيب -->
+    <header class="navbar navbar-expand-lg bg-white sticky-top py-1 border-bottom shadow-sm nav-glass-blur">
+        <div class="container-fluid px-lg-4">
+            
+            <!-- أ) اسم الموقع كنص فقط للموبايل -->
+            <a class="navbar-brand d-lg-none mobile-brand-text py-0 my-0" href="index.html">
+                <span class="fw-extrabold fs-5 text-purple">أونلاين كشك</span>
+            </a>
+
+            <!-- ب) اللوجو الأصلي للديسكتوب -->
+            <a class="navbar-brand d-none d-lg-flex align-items-center me-0 ms-lg-3 py-0" href="index.html">
+                <img src="images/logo.png" alt="أونلاين كشك" height="38" class="me-2" style="border: none !important; box-shadow: none !important; background: transparent !important;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3514/3514491.png'">
+                <div class="d-flex flex-column text-start ms-2">
+                    <span class="fw-extrabold fs-5 lh-1 text-purple">أونلاين كشك</span>
+                    <small class="text-muted fs-8">أفضل العروض، عمولات أفضل</small>
+                </div>
+            </a>
+
+            <!-- ج) زر القائمة الجانبية للموبايل -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- د) شريط البحث الذكي -->
+            <div class="position-relative search-input-glow flex-grow-1 mx-lg-3 my-1 my-lg-0 header-search-container" style="max-width: 600px;">
+                <div class="input-group input-group-sm rounded-pill border-0 bg-light overflow-hidden">
+                    <input type="text" id="mainSearchInput" class="form-control border-0 bg-transparent text-end px-3 fs-7 shadow-none" placeholder="ابحث عن منتج، متجر، أو كوبون خصم..." autocomplete="off">
+                    <button class="btn btn-purple-pill px-4" id="mainSearchBtn" type="button"><i class="bi bi-search text-white"></i></button>
+                </div>
+                <!-- قائمة الاقتراحات الذكية أثناء الكتابة -->
+                <div id="searchSuggestions" class="dropdown-menu w-100 text-end shadow-lg rounded-4 border-0 p-2 border border-purple-subtle mt-1 d-none position-absolute" style="z-index: 1050; max-height: 320px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- هـ) القائمة الجانبية والعناصر الأفقية -->
+            <div class="collapse navbar-collapse" id="mobileNavbar">
+                
+                <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-2 flex-grow-1 my-2 my-lg-0">
+                    
+                    <!-- 1. قائمة أكبر المتاجر -->
+                    <div class="dropdown w-100 w-lg-auto">
+                        <button class="btn btn-purple-pill rounded-pill px-3 py-2 fw-bold text-white dropdown-toggle fs-8 shadow-purple-glow w-100 w-lg-auto" type="button" id="storesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-shop me-1"></i> أكبر المتاجر
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end text-end fs-8 shadow-lg rounded-4 border-0 p-2 border border-purple-subtle mt-2" aria-labelledby="storesDropdown">
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=أمازون"><i class="bi bi-bag-check text-warning fs-6"></i> أمازون</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=نون"><i class="bi bi-bag-check text-dark fs-6"></i> نون</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=جوميا"><i class="bi bi-bag-check text-danger fs-6"></i> جوميا</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=كارفور"><i class="bi bi-cart text-primary fs-6"></i> كارفور</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=سبينيس"><i class="bi bi-basket text-success fs-6"></i> سبينيس</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- 2. قائمة تسوق حسب الفئة -->
+                    <div class="dropdown w-100 w-lg-auto">
+                        <button class="btn btn-purple-soft rounded-pill px-3 py-2 fw-bold text-purple dropdown-toggle fs-8 border border-purple-subtle w-100 w-lg-auto" type="button" id="categoriesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-grid-fill me-1"></i> تسوق حسب الفئة
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end text-end fs-8 shadow-lg rounded-4 border-0 p-2 border border-purple-subtle mt-2" aria-labelledby="categoriesDropdown">
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=إلكترونيات"><i class="bi bi-laptop text-purple fs-6"></i> إلكترونيات وموبايلات</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=موضة"><i class="bi bi-bag-heart text-purple fs-6"></i> موضة وأزياء</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=منزل"><i class="bi bi-house-gear text-purple fs-6"></i> أدوات منزلية</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=جمال"><i class="bi bi-stars text-purple fs-6"></i> عطور ومستحضرات تجميل</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. زر كوبونات حصرية -->
+                    <a href="coupons.html" class="btn btn-outline-purple rounded-pill px-3 py-2 fw-bold fs-8 border border-purple-subtle d-flex align-items-center justify-content-center gap-1 text-nowrap w-100 w-lg-auto">
+                        <i class="bi bi-ticket-perforated-fill text-purple fs-6"></i> كوبونات حصرية
+                        <span class="badge bg-danger rounded-pill fs-9 ms-1">جديد</span>
+                    </a>
+
+                </div>
+
+                <!-- أزرار التحكم بالمفضلة وتسجيل الدخول -->
+                <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0 ms-lg-2 pt-2 pt-lg-0 border-top border-lg-0">
+                    <a href="favorites.html" class="btn btn-icon-light rounded-circle text-muted p-2 fs-6 position-relative glow-icon-btn" title="المفضلة">
+                        <i class="bi bi-heart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-purple rounded-circle"></span>
+                    </a>
+                    
+                    <div id="authSection" class="d-flex align-items-center gap-2 w-100 w-lg-auto">
+                        <a href="login.html" id="navLoginBtn" class="btn btn-outline-purple btn-sm rounded-pill px-3 fw-bold glow-btn-outline w-100 w-lg-auto text-center">تسجيل الدخول</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. السلايدر الرئيسي (Pure Image Banners - معدل لعدم قص التفاصيل) -->
+    <section class="hero-curved-section py-3">
+        <div class="container position-relative">
+            <div id="heroCarousel" class="carousel slide carousel-fade rounded-5 position-relative overflow-hidden shadow-hero-card" data-bs-ride="carousel" data-bs-interval="4000">
+                
+                <!-- فقاعات بنفسجية متحركة خلف السلايدر -->
+                <div class="bubbles-container" id="bubblesWrapper"></div>
+
+                <!-- السلايدات المباشرة مع تحسين أبعاد عرض الصور لمنع القص -->
+                <div class="carousel-inner z-2 position-relative" id="carouselBannersWrapper">
+                    
+                    <!-- Slide 1: أمازون -->
+                    <div class="carousel-item active">
+                        <a href="stores.html?name=أمازون" class="banner-slide-link d-block position-relative user-select-none text-center">
+                            <picture>
+                                <source media="(max-width: 767.98px)" srcset="images/banners/amazon-banner-mobile.png">
+                                <img src="images/banners/amazon-banner-web.png" alt="عروض أمازون مصر" class="img-fluid w-100 rounded-5 banner-fit-full" style="max-height: 420px; object-fit: contain; background-color: #f8fafc;" onerror="this.src='https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200'">
+                            </picture>
+                            <div class="banner-glow-overlay"></div>
+                        </a>
+                    </div>
+
+                    <!-- Slide 2: نون -->
+                    <div class="carousel-item">
+                        <a href="stores.html?name=نون" class="banner-slide-link d-block position-relative user-select-none text-center">
+                            <picture>
+                                <source media="(max-width: 767.98px)" srcset="images/banners/noon-banner-mobile.png">
+                                <img src="images/banners/noon-banner-web.png" alt="عروض نون مصر" class="img-fluid w-100 rounded-5 banner-fit-full" style="max-height: 420px; object-fit: contain; background-color: #f8fafc;" onerror="this.src='https://images.unsplash.com/photo-1607082349566-187342175e2f?w=1200'">
+                            </picture>
+                            <div class="banner-glow-overlay"></div>
+                        </a>
+                    </div>
+
+                    <!-- Slide 3: جوميا -->
+                    <div class="carousel-item">
+                        <a href="stores.html?name=جوميا" class="banner-slide-link d-block position-relative user-select-none text-center">
+                            <picture>
+                                <source media="(max-width: 767.98px)" srcset="images/banners/jumia-banner-mobile.png">
+                                <img src="images/banners/jumia-banner-web.png" alt="عروض جوميا مصر" class="img-fluid w-100 rounded-5 banner-fit-full" style="max-height: 420px; object-fit: contain; background-color: #f8fafc;" onerror="this.src='https://images.unsplash.com/photo-1526178613552-2b45c6c302f0?w=1200'">
+                            </picture>
+                            <div class="banner-glow-overlay"></div>
+                        </a>
+                    </div>
+
+                </div>
+
+                <!-- أسهم التصفح الشفافة الأنيقة -->
+                <button class="carousel-control-prev minimal-subdued-arrow" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+                    <span class="bi bi-chevron-right fs-4 text-purple"></span>
+                </button>
+                <button class="carousel-control-next minimal-subdued-arrow" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+                    <span class="bi bi-chevron-left fs-4 text-purple"></span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. أقوى عروض اليوم 1 -->
+    <section class="main-deals-coupons py-3">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="frameless-section-box p-4 rounded-4 shadow-subtle-glow h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark mb-0 fs-6 section-title-accent">أقوى عروض اليوم</h5>
+                            <a href="categories.html" class="text-purple fs-8 text-decoration-none fw-semibold link-hover-slide">عرض الكل <i class="bi bi-chevron-left"></i></a>
+                        </div>
+
+                        <!-- شبكة كروت المنتجات -->
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-2 g-md-3" id="homeProductsGrid">
+                            <div class="col">
+                                <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between">
+                                    <span class="card-discount-badge">-36%</span>
+                                    <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
+                                        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300" alt="Nike Shoes" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3">
+                                    </div>
+                                    <div class="text-start">
+                                        <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">Nike Air Max Excee</h6>
+                                        <small class="text-muted fs-8 d-block mb-1">أحذية رياضية</small>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="fw-extrabold text-purple fs-7">$69.99</span>
+                                            <span class="text-muted text-decoration-line-through fs-8">$99.99</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                                            <span class="fw-bold fs-8 text-dark">أمازون</span>
+                                            <a href="product.html?id=demo-1" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-5"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between">
+                                    <span class="card-discount-badge">-25%</span>
+                                    <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
+                                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300" alt="Headphones" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3">
+                                    </div>
+                                    <div class="text-start">
+                                        <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">سماعات سوني اللاسلكية</h6>
+                                        <small class="text-muted fs-8 d-block mb-1">إلكترونيات</small>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="fw-extrabold text-purple fs-7">$59.99</span>
+                                            <span class="text-muted text-decoration-line-through fs-8">$79.99</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                                            <span class="fw-bold fs-8 text-primary">نون</span>
+                                            <a href="product.html?id=demo-2" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-5"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between">
+                                    <span class="card-discount-badge">-20%</span>
+                                    <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
+                                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=300" alt="Smartwatch" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3">
+                                    </div>
+                                    <div class="text-start">
+                                        <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">ساعة أبل الذكية 2</h6>
+                                        <small class="text-muted fs-8 d-block mb-1">ساعات ذكية</small>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="fw-extrabold text-purple fs-7">$199.00</span>
+                                            <span class="text-muted text-decoration-line-through fs-8">$249.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                                            <span class="fw-extrabold fs-8 text-dark">جوميا</span>
+                                            <a href="product.html?id=demo-3" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-5"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between">
+                                    <span class="card-discount-badge">-40%</span>
+                                    <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
+                                        <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300" alt="Backpack" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3">
+                                    </div>
+                                    <div class="text-start">
+                                        <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">حقيبة ظهر للابتوب</h6>
+                                        <small class="text-muted fs-8 d-block mb-1">حقائب واكسسوارات</small>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="fw-extrabold text-purple fs-7">$29.99</span>
+                                            <span class="text-muted text-decoration-line-through fs-8">$49.99</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                                            <span class="fw-bold fs-8 text-danger">أمازون</span>
+                                            <a href="product.html?id=demo-4" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-5"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أفضل الكوبونات -->
+                <div class="col-lg-4">
+                    <div class="frameless-section-box p-4 rounded-4 shadow-subtle-glow h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold text-dark mb-0 fs-6 section-title-accent">أفضل الكوبونات</h5>
+                                <small class="text-muted fs-8">خصومات حصرية</small>
+                            </div>
+
+                            <div class="d-flex flex-column gap-3 mb-3" id="homeCouponsWrapper">
+                                <div class="dashed-coupon-card p-3 rounded-4 d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="coupon-ticket-icon p-2 rounded-3 text-purple"><i class="bi bi-ticket-perforated fs-5"></i></div>
+                                        <div>
+                                            <span class="fw-bold fs-7 text-dark d-block">AFFILY20</span>
+                                            <small class="text-muted fs-8">الحد الأدنى للفاتورة: 100$</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="fw-bold fs-8 text-purple d-block mb-1">خصم 20%</span>
+                                        <button class="btn btn-purple-pill btn-sm px-3 rounded-pill fs-8 text-white copy-btn" data-code="AFFILY20">نسخ</button>
+                                    </div>
+                                </div>
+
+                                <div class="dashed-coupon-card p-3 rounded-4 d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="coupon-ticket-icon p-2 rounded-3 text-purple"><i class="bi bi-ticket-perforated fs-5"></i></div>
+                                        <div>
+                                            <span class="fw-bold fs-7 text-dark d-block">SAVE15</span>
+                                            <small class="text-muted fs-8">الحد الأدنى للفاتورة: 50$</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="fw-bold fs-8 text-purple d-block mb-1">خصم 15%</span>
+                                        <button class="btn btn-purple-pill btn-sm px-3 rounded-pill fs-8 text-white copy-btn" data-code="SAVE15">نسخ</button>
+                                    </div>
+                                </div>
+
+                                <div class="dashed-coupon-card p-3 rounded-4 d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="coupon-ticket-icon p-2 rounded-3 text-purple"><i class="bi bi-ticket-perforated fs-5"></i></div>
+                                        <div>
+                                            <span class="fw-bold fs-7 text-dark d-block">WELCOME10</span>
+                                            <small class="text-muted fs-8">الحد الأدنى للفاتورة: بدون حد أدنى</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="fw-bold fs-8 text-purple d-block mb-1">خصم 10%</span>
+                                        <button class="btn btn-purple-pill btn-sm px-3 rounded-pill fs-8 text-white copy-btn" data-code="WELCOME10">نسخ</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center border-top border-purple-subtle pt-2">
+                            <a href="coupons.html" class="btn btn-borderless-highlight w-100 py-2 fw-bold fs-7">
+                                تصفح كل الكوبونات <i class="bi bi-arrow-left ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. أقوى عروض اليوم 2 (القسم العكسي) -->
+    <section class="main-deals-coupons-reverse py-3">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="frameless-section-box p-4 rounded-4 shadow-subtle-glow h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="fw-bold text-dark mb-0 fs-6 section-title-accent">كوبونات مميزة</h5>
+                                <small class="text-muted fs-8">أحدث العروض</small>
+                            </div>
+
+                            <div class="d-flex flex-column gap-3 mb-3">
+                                <div class="dashed-coupon-card p-3 rounded-4 d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="coupon-ticket-icon p-2 rounded-3 text-purple"><i class="bi bi-ticket-perforated fs-5"></i></div>
+                                        <div>
+                                            <span class="fw-bold fs-7 text-dark d-block">NOON50</span>
+                                            <small class="text-muted fs-8">الحد الأدنى للفاتورة: 300 ج.م</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="fw-bold fs-8 text-purple d-block mb-1">خصم 50 ج.م</span>
+                                        <button class="btn btn-purple-pill btn-sm px-3 rounded-pill fs-8 text-white copy-btn" data-code="NOON50">نسخ</button>
+                                    </div>
+                                </div>
+
+                                <div class="dashed-coupon-card p-3 rounded-4 d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="coupon-ticket-icon p-2 rounded-3 text-purple"><i class="bi bi-ticket-perforated fs-5"></i></div>
+                                        <div>
+                                            <span class="fw-bold fs-7 text-dark d-block">JUMIA15</span>
+                                            <small class="text-muted fs-8">الحد الأدنى للفاتورة: 200 ج.م</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="fw-bold fs-8 text-purple d-block mb-1">خصم 15%</span>
+                                        <button class="btn btn-purple-pill btn-sm px-3 rounded-pill fs-8 text-white copy-btn" data-code="JUMIA15">نسخ</button>
+                                    </div>
+                                </div>
+
+                                <div class="dashed-coupon-card p-3 rounded-4 d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <div class="coupon-ticket-icon p-2 rounded-3 text-purple"><i class="bi bi-ticket-perforated fs-5"></i></div>
+                                        <div>
+                                            <span class="fw-bold fs-7 text-dark d-block">AMAZON25</span>
+                                            <small class="text-muted fs-8">الحد الأدنى للفاتورة: 150 ج.م</small>
+                                        </div>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="fw-bold fs-8 text-purple d-block mb-1">خصم 25%</span>
+                                        <button class="btn btn-purple-pill btn-sm px-3 rounded-pill fs-8 text-white copy-btn" data-code="AMAZON25">نسخ</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center border-top border-purple-subtle pt-2">
+                            <a href="coupons.html" class="btn btn-borderless-highlight w-100 py-2 fw-bold fs-7">
+                                تصفح كل الكوبونات <i class="bi bi-arrow-left ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8">
+                    <div class="frameless-section-box p-4 rounded-4 shadow-subtle-glow h-100">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h5 class="fw-bold text-dark mb-0 fs-6 section-title-accent">أقوى عروض اليوم (إضافي)</h5>
+                            <a href="categories.html" class="text-purple fs-8 text-decoration-none fw-semibold link-hover-slide">مشاهدة الكل <i class="bi bi-chevron-left"></i></a>
+                        </div>
+
+                        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-2 g-md-3">
+                            <div class="col">
+                                <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between">
+                                    <span class="card-discount-badge">-15%</span>
+                                    <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
+                                        <img src="https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=300" alt="Apple Watch" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3">
+                                    </div>
+                                    <div class="text-start">
+                                        <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">ساعة أبل سيريس 8</h6>
+                                        <small class="text-muted fs-8 d-block mb-1">إلكترونيات</small>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="fw-extrabold text-purple fs-7">$299.00</span>
+                                            <span class="text-muted text-decoration-line-through fs-8">$349.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                                            <span class="fw-bold fs-8 text-dark">أمازون</span>
+                                            <a href="product.html?id=demo-5" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-5"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between">
+                                    <span class="card-discount-badge">-30%</span>
+                                    <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
+                                        <img src="https://images.unsplash.com/photo-1585386959984-a4155224a1ad?w=300" alt="Perfume" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3">
+                                    </div>
+                                    <div class="text-start">
+                                        <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">عطر شانيل بلو</h6>
+                                        <small class="text-muted fs-8 d-block mb-1">عطور</small>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="fw-extrabold text-purple fs-7">$120.00</span>
+                                            <span class="text-muted text-decoration-line-through fs-8">$170.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                                            <span class="fw-bold fs-8 text-warning">نون</span>
+                                            <a href="product.html?id=demo-6" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-5"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between">
+                                    <span class="card-discount-badge">-20%</span>
+                                    <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
+                                        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=300" alt="Puma Shoes" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3">
+                                    </div>
+                                    <div class="text-start">
+                                        <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">حذاء بوما الرياضي</h6>
+                                        <small class="text-muted fs-8 d-block mb-1">أحذية</small>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="fw-extrabold text-purple fs-7">$45.00</span>
+                                            <span class="text-muted text-decoration-line-through fs-8">$60.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                                            <span class="fw-bold fs-8 text-danger">جوميا</span>
+                                            <a href="product.html?id=demo-7" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-5"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between">
+                                    <span class="card-discount-badge">-25%</span>
+                                    <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
+                                        <img src="https://images.unsplash.com/photo-1583394838336-acd977736f90?w=300" alt="Headset" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3">
+                                    </div>
+                                    <div class="text-start">
+                                        <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">سماعة جيمينج للألعاب</h6>
+                                        <small class="text-muted fs-8 d-block mb-1">ألعاب</small>
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            <span class="fw-extrabold text-purple fs-7">$35.00</span>
+                                            <span class="text-muted text-decoration-line-through fs-8">$50.00</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                                            <span class="fw-bold fs-8 text-primary">بي تك</span>
+                                            <a href="product.html?id=demo-8" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-5"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. "تسوق في أكبر المتاجر" -->
+    <section class="shop-stores py-3">
+        <div class="container">
+            <div class="frameless-section-box p-4 rounded-4 shadow-subtle-glow">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0 fs-6 section-title-accent"><i class="bi bi-shop text-purple me-1"></i> تسوق في أكبر المتاجر</h5>
+                    <a href="stores.html" class="text-purple fs-8 text-decoration-none fw-semibold link-hover-slide">عرض كل المتاجر <i class="bi bi-chevron-left"></i></a>
+                </div>
+
+                <div class="row row-cols-2 row-cols-sm-3 row-cols-md-5 g-3">
+                    <div class="col">
+                        <div class="neon-wave-store-card p-3 rounded-4 text-center d-flex flex-column justify-content-between h-100 position-relative overflow-hidden">
+                            <div class="store-glow-bg"></div>
+                            <div class="my-2 position-relative z-2">
+                                <div class="store-logo-pill mx-auto bg-warning text-dark fw-extrabold p-2 rounded-3 fs-5 shadow-sm">amazon</div>
+                            </div>
+                            <div class="position-relative z-2 mt-2">
+                                <h6 class="fw-extrabold fs-7 text-dark mb-1">أمازون مصر</h6>
+                                <span class="badge bg-purple-soft text-purple fs-8 rounded-pill px-3 py-1">كاش باك 10%</span>
+                                <a href="stores.html?name=أمازون" class="btn btn-purple-pill btn-sm rounded-pill w-100 mt-3 fs-8 fw-bold store-action-btn">تسوق الآن <i class="bi bi-arrow-left me-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="neon-wave-store-card p-3 rounded-4 text-center d-flex flex-column justify-content-between h-100 position-relative overflow-hidden">
+                            <div class="store-glow-bg"></div>
+                            <div class="my-2 position-relative z-2">
+                                <div class="store-logo-pill mx-auto text-dark fw-extrabold p-2 rounded-3 fs-5 shadow-sm" style="background-color: #feee00;">noon</div>
+                            </div>
+                            <div class="position-relative z-2 mt-2">
+                                <h6 class="fw-extrabold fs-7 text-dark mb-1">نون مصر</h6>
+                                <span class="badge bg-purple-soft text-purple fs-8 rounded-pill px-3 py-1">كاش باك 15%</span>
+                                <a href="stores.html?name=نون" class="btn btn-purple-pill btn-sm rounded-pill w-100 mt-3 fs-8 fw-bold store-action-btn">تسوق الآن <i class="bi bi-arrow-left me-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="neon-wave-store-card p-3 rounded-4 text-center d-flex flex-column justify-content-between h-100 position-relative overflow-hidden">
+                            <div class="store-glow-bg"></div>
+                            <div class="my-2 position-relative z-2">
+                                <div class="store-logo-pill mx-auto text-white fw-extrabold p-2 rounded-3 fs-5 shadow-sm" style="background-color: #f68b1e;">JUMIA</div>
+                            </div>
+                            <div class="position-relative z-2 mt-2">
+                                <h6 class="fw-extrabold fs-7 text-dark mb-1">جوميا مصر</h6>
+                                <span class="badge bg-purple-soft text-purple fs-8 rounded-pill px-3 py-1">كاش باك 12%</span>
+                                <a href="stores.html?name=جوميا" class="btn btn-purple-pill btn-sm rounded-pill w-100 mt-3 fs-8 fw-bold store-action-btn">تسوق الآن <i class="bi bi-arrow-left me-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="neon-wave-store-card p-3 rounded-4 text-center d-flex flex-column justify-content-between h-100 position-relative overflow-hidden">
+                            <div class="store-glow-bg"></div>
+                            <div class="my-2 position-relative z-2">
+                                <div class="store-logo-pill mx-auto bg-primary text-white fw-extrabold p-2 rounded-3 fs-5 shadow-sm">B.TECH</div>
+                            </div>
+                            <div class="position-relative z-2 mt-2">
+                                <h6 class="fw-extrabold fs-7 text-dark mb-1">بي تك</h6>
+                                <span class="badge bg-purple-soft text-purple fs-8 rounded-pill px-3 py-1">كاش باك 8%</span>
+                                <a href="stores.html?name=بي تك" class="btn btn-purple-pill btn-sm rounded-pill w-100 mt-3 fs-8 fw-bold store-action-btn">تسوق الآن <i class="bi bi-arrow-left me-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="neon-wave-store-card p-3 rounded-4 text-center d-flex flex-column justify-content-between h-100 position-relative overflow-hidden">
+                            <div class="store-glow-bg"></div>
+                            <div class="my-2 position-relative z-2">
+                                <div class="store-logo-pill mx-auto bg-danger text-white fw-extrabold p-2 rounded-3 fs-5 shadow-sm">Carrefour</div>
+                            </div>
+                            <div class="position-relative z-2 mt-2">
+                                <h6 class="fw-extrabold fs-7 text-dark mb-1">كارفور</h6>
+                                <span class="badge bg-purple-soft text-purple fs-8 rounded-pill px-3 py-1">كاش باك 5%</span>
+                                <a href="stores.html?name=كارفور" class="btn btn-purple-pill btn-sm rounded-pill w-100 mt-3 fs-8 fw-bold store-action-btn">تسوق الآن <i class="bi bi-arrow-left me-1"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. "ليه تختار أونلاين كشك" (معدل لون الأيقونة إلى البربل) + "تواصل معنا" -->
+    <section class="why-us-and-contact py-3">
+        <div class="container">
+            <div class="row g-3">
+                <div class="col-lg-6">
+                    <div class="compact-info-card p-3 p-md-4 rounded-4 shadow-sm h-100 d-flex flex-column justify-content-between bg-white border border-purple-subtle position-relative overflow-hidden">
+                        <div class="position-relative z-2">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <div class="mini-shield-icon d-flex align-items-center justify-content-center rounded-circle bg-purple-soft text-purple border border-purple-subtle shadow-sm flex-shrink-0" style="width: 54px; height: 54px;">
+                                    <i class="bi bi-shield-check fs-2 text-purple"></i>
+                                </div>
+                                <div>
+                                    <h5 class="fw-extrabold text-dark mb-1 fs-6">ليه تختار أونلاين كشك؟</h5>
+                                    <span class="badge bg-purple-soft text-purple fw-bold fs-8 px-3 py-1 rounded-pill">منصتك الموثوقة للكاش باك والعروض</span>
+                                </div>
+                            </div>
+                            <p class="fs-8 text-secondary leading-relaxed mb-3">
+                                المنصة الأولى للتسويق بالعمولة والكاش باك في مصر، بنوفرلك أعلى نسبة أرباح ومكافآت مع نظام تتبع دقيق وسحب فوري لعمولاتك عبر فودافون كاش وإنستا باي.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-top border-purple-subtle d-flex align-items-center gap-4 fs-8 position-relative z-2">
+                            <span class="text-dark fw-bold"><i class="bi bi-check-circle-fill text-purple me-1 fs-6"></i> تتبع كاش باك 100%</span>
+                            <span class="text-dark fw-bold"><i class="bi bi-check-circle-fill text-purple me-1 fs-6"></i> سحب أرباح فوري</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="compact-contact-card frameless-section-box p-3 p-md-4 rounded-4 shadow-subtle-glow h-100 d-flex flex-column justify-content-between">
+                        <div>
+                            <h6 class="fw-bold text-dark mb-1 fs-7 section-title-accent"><i class="bi bi-envelope-paper text-purple me-1"></i> تواصل معنا فوراً</h6>
+                            <form id="contactForm">
+                                <div class="row g-2 mb-2">
+                                    <div class="col-6"><input type="text" id="contactName" class="form-control form-control-sm text-end fs-8 form-glow-input" placeholder="الاسم" required></div>
+                                    <div class="col-6"><input type="email" id="contactEmail" class="form-control form-control-sm text-end fs-8 form-glow-input" placeholder="البريد الإلكتروني" required></div>
+                                </div>
+                                <div class="mb-2">
+                                    <textarea id="contactMessage" class="form-control form-control-sm text-end fs-8 form-glow-input" rows="2" placeholder="اكتب رسالتك..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-purple-pill btn-sm w-100 py-1 fw-bold text-white fs-8 shadow-purple-glow">إرسال الرسالة</button>
+                            </form>
+                        </div>
+
+                        <div class="border-top border-purple-subtle pt-2 text-center mt-2">
+                            <a href="https://wa.me/201500812929" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp-glow btn-sm rounded-pill px-4 fw-bold d-inline-flex align-items-center justify-content-center gap-2 shadow-sm fs-8 w-100">
+                                <i class="bi bi-whatsapp fs-6"></i>
+                                <span>محادثة الواتساب المباشرة</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. الفوتر العربي الشامل -->
+    <footer class="footer bg-white border-top pt-4 pb-3">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="images/logo.png" alt="أونلاين كشك" height="34" class="me-2" style="border: none !important; box-shadow: none !important; background: transparent !important;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3514/3514491.png'">
+                        <span class="fw-extrabold fs-5 text-purple me-2">أونلاين كشك</span>
+                    </div>
+                    <small class="text-muted fs-8 d-block">أفضل العروض، عمولات أفضل</small>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-dark fs-8 section-title-accent">روابط سريعة</h6>
+                    <ul class="list-unstyled p-0 fs-8 d-flex flex-column gap-1 text-muted">
+                        <li><a href="about.html" class="text-muted text-decoration-none footer-link-glow">من نحن</a></li>
+                        <li><a href="how-it-works.html" class="text-muted text-decoration-none footer-link-glow">كيف تعمل المنصة</a></li>
+                        <li><a href="blog.html" class="text-muted text-decoration-none footer-link-glow">المدونة</a></li>
+                        <li><a href="contact.html" class="text-muted text-decoration-none footer-link-glow">اتصل بنا</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-dark fs-8 section-title-accent">الدعم والمساعدة</h6>
+                    <ul class="list-unstyled p-0 fs-8 d-flex flex-column gap-1 text-muted">
+                        <li><a href="faq.html" class="text-muted text-decoration-none footer-link-glow">مركز الأسئلة الشائعة</a></li>
+                        <li><a href="terms.html" class="text-muted text-decoration-none footer-link-glow">الشروط والأحكام</a></li>
+                        <li><a href="privacy.html" class="text-muted text-decoration-none footer-link-glow">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-dark fs-8 section-title-accent">تابعنا على</h6>
+                    <div class="d-flex gap-2 text-purple fs-6">
+                        <a href="#" class="social-icon-glow text-purple"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-icon-glow text-purple"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon-glow text-purple"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon-glow text-purple"><i class="bi bi-telegram"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="fw-bold mb-2 text-dark fs-8 section-title-accent">اشترك في النشرة البريدية</h6>
+                    <small class="text-muted fs-8 d-block mb-2">احصل على أفضل العروض مباشرة في بريدك</small>
+                    <form id="newsletterForm">
+                        <div class="input-group input-group-sm search-input-glow">
+                            <input type="email" id="newsletterEmail" class="form-control rounded-pill-start border text-end" placeholder="اكتب بريدك الإلكتروني" required>
+                            <button type="submit" class="btn btn-purple-pill px-3 rounded-pill-end"><i class="bi bi-send text-white"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-top border-purple-subtle pt-3 text-center text-muted fs-8">
+                <p class="mb-0">&copy; 2026 أونلاين كشك. جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Config & Auth & Core Logic -->
+    <script src="./js/supabase-config.js"></script>
+    <script src="./js/auth.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/tracker.js"></script>
+</body>
+</html>

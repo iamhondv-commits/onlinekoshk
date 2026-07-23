@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الشروط والأحكام - أونلاين كشك</title>
+    <!-- Bootstrap 5 RTL -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts - Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+    <!-- 1. الهيدر المطور والمستجيب -->
+    <header class="navbar navbar-expand-lg bg-white sticky-top py-1 border-bottom shadow-sm nav-glass-blur">
+        <div class="container-fluid px-lg-4">
+            
+            <!-- أ) اسم الموقع كنص فقط للموبايل -->
+            <a class="navbar-brand d-lg-none mobile-brand-text py-0 my-0" href="index.html">
+                <span class="fw-extrabold fs-5 text-purple">أونلاين كشك</span>
+            </a>
+
+            <!-- ب) اللوجو الأصلي للديسكتوب -->
+            <a class="navbar-brand d-none d-lg-flex align-items-center me-0 ms-lg-3 py-0" href="index.html">
+                <img src="images/logo.png" alt="أونلاين كشك" height="38" class="me-2" style="border: none !important; box-shadow: none !important; background: transparent !important;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3514/3514491.png'">
+                <div class="d-flex flex-column text-start ms-2">
+                    <span class="fw-extrabold fs-5 lh-1 text-purple">أونلاين كشك</span>
+                    <small class="text-muted fs-8">أفضل العروض، عمولات أفضل</small>
+                </div>
+            </a>
+
+            <!-- ج) زر القائمة الجانبية للموبايل -->
+            <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#mobileNavbar" aria-controls="mobileNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- د) شريط البحث الذكي -->
+            <div class="position-relative search-input-glow flex-grow-1 mx-lg-3 my-1 my-lg-0 header-search-container" style="max-width: 600px;">
+                <div class="input-group input-group-sm rounded-pill border-0 bg-light overflow-hidden">
+                    <input type="text" id="mainSearchInput" class="form-control border-0 bg-transparent text-end px-3 fs-7 shadow-none" placeholder="ابحث عن منتج، متجر، أو كوبون خصم..." autocomplete="off">
+                    <button class="btn btn-purple-pill px-4" id="mainSearchBtn" type="button"><i class="bi bi-search text-white"></i></button>
+                </div>
+                <!-- قائمة الاقتراحات الذكية أثناء الكتابة -->
+                <div id="searchSuggestions" class="dropdown-menu w-100 text-end shadow-lg rounded-4 border-0 p-2 border border-purple-subtle mt-1 d-none position-absolute" style="z-index: 1050; max-height: 320px; overflow-y: auto;"></div>
+            </div>
+
+            <!-- هـ) القائمة الجانبية والعناصر الأفقية -->
+            <div class="collapse navbar-collapse" id="mobileNavbar">
+                
+                <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-2 flex-grow-1 my-2 my-lg-0">
+                    
+                    <!-- 1. قائمة أكبر المتاجر -->
+                    <div class="dropdown w-100 w-lg-auto">
+                        <button class="btn btn-purple-pill rounded-pill px-3 py-2 fw-bold text-white dropdown-toggle fs-8 shadow-purple-glow w-100 w-lg-auto" type="button" id="storesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-shop me-1"></i> أكبر المتاجر
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end text-end fs-8 shadow-lg rounded-4 border-0 p-2 border border-purple-subtle mt-2" aria-labelledby="storesDropdown">
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=أمازون"><i class="bi bi-bag-check text-warning fs-6"></i> أمازون</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=نون"><i class="bi bi-bag-check text-dark fs-6"></i> نون</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=جوميا"><i class="bi bi-bag-check text-danger fs-6"></i> جوميا</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=كارفور"><i class="bi bi-cart text-primary fs-6"></i> كارفور</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="stores.html?name=سبينيس"><i class="bi bi-basket text-success fs-6"></i> سبينيس</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- 2. قائمة تسوق حسب الفئة -->
+                    <div class="dropdown w-100 w-lg-auto">
+                        <button class="btn btn-purple-soft rounded-pill px-3 py-2 fw-bold text-purple dropdown-toggle fs-8 border border-purple-subtle w-100 w-lg-auto" type="button" id="categoriesDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-grid-fill me-1"></i> تسوق حسب الفئة
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end text-end fs-8 shadow-lg rounded-4 border-0 p-2 border border-purple-subtle mt-2" aria-labelledby="categoriesDropdown">
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=إلكترونيات"><i class="bi bi-laptop text-purple fs-6"></i> إلكترونيات وموبايلات</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=موضة"><i class="bi bi-bag-heart text-purple fs-6"></i> موضة وأزياء</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=منزل"><i class="bi bi-house-gear text-purple fs-6"></i> أدوات منزلية</a></li>
+                            <li><a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=جمال"><i class="bi bi-stars text-purple fs-6"></i> عطور ومستحضرات تجميل</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- 3. زر كوبونات حصرية -->
+                    <a href="coupons.html" class="btn btn-outline-purple rounded-pill px-3 py-2 fw-bold fs-8 border border-purple-subtle d-flex align-items-center justify-content-center gap-1 text-nowrap w-100 w-lg-auto">
+                        <i class="bi bi-ticket-perforated-fill text-purple fs-6"></i> كوبونات حصرية
+                        <span class="badge bg-danger rounded-pill fs-9 ms-1">جديد</span>
+                    </a>
+
+                </div>
+
+                <!-- أزرار التحكم بالمفضلة وتسجيل الدخول -->
+                <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0 ms-lg-2 pt-2 pt-lg-0 border-top border-lg-0">
+                    <a href="favorites.html" class="btn btn-icon-light rounded-circle text-muted p-2 fs-6 position-relative glow-icon-btn" title="المفضلة">
+                        <i class="bi bi-heart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle p-1 bg-purple rounded-circle"></span>
+                    </a>
+                    
+                    <div id="authSection" class="d-flex align-items-center gap-2 w-100 w-lg-auto">
+                        <a href="login.html" id="navLoginBtn" class="btn btn-outline-purple btn-sm rounded-pill px-3 fw-bold glow-btn-outline w-100 w-lg-auto text-center">تسجيل الدخول</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="py-5">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="frameless-section-box p-4 p-md-5 rounded-5 shadow-subtle-glow bg-white">
+                        
+                        <div class="mb-4">
+                            <span class="badge bg-purple-soft text-purple fs-8 px-3 py-2 rounded-pill fw-bold mb-2">اتفاقية الاستخدام</span>
+                            <h2 class="fw-extrabold text-dark">الشروط والأحكام</h2>
+                            <small class="text-muted d-block">آخر تحديث: يوليو 2026</small>
+                        </div>
+
+                        <div class="lh-lg fs-8 text-secondary">
+                            <h5 class="fw-bold text-dark fs-6 mt-4 mb-2">1. القبول بالشروط</h5>
+                            <p>بمجرد إنشاء حساب أو استخدام منصة أونلاين كشك، فإنك توافق التزامك الكامل بكل الشروط والأحكام الموضحة في هذه الصفحة.</p>
+
+                            <h5 class="fw-bold text-dark fs-6 mt-4 mb-2">2. حساب المستخدم والأمان</h5>
+                            <p>يلتزم المستخدم بتقديم معلومات حقيقية وصحيحة أثناء التسجيل، ويكون مسؤولاً عن حماية بيانات دخوله وسرية حسابه.</p>
+
+                            <h5 class="fw-bold text-dark fs-6 mt-4 mb-2">3. سياسة الكاش باك والأرباح</h5>
+                            <p>يتم تسجيل الكاش باك بناءً على تأكيد عمليات الشراء من المتاجر الشريكة. يحق للمنصة إلغاء أو تعديل أي كاش باك في حال تم استرجاع الطلب أو إلغاؤه من قبل العميل لدى المتجر.</p>
+
+                            <h5 class="fw-bold text-dark fs-6 mt-4 mb-2">4. طلبات سحب الأموال</h5>
+                            <p>تتم معالجة طلبات السحب عبر وسيلة الدفع التي يحددها المستخدم (فودافون كاش / إنستا باي) بعد التأكد من صحة الحساب ومطابقة رصيد الأرباح المتاح.</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+<!-- 7. الفوتر العربي الشامل -->
+    <footer class="footer bg-white border-top pt-4 pb-3">
+        <div class="container">
+            <div class="row g-4 mb-4">
+                <div class="col-lg-3 col-md-6">
+                    <div class="d-flex align-items-center mb-2">
+                        <img src="images/logo.png" alt="أونلاين كشك" height="34" class="me-2" style="border: none !important; box-shadow: none !important; background: transparent !important;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/3514/3514491.png'">
+                        <span class="fw-extrabold fs-5 text-purple me-2">أونلاين كشك</span>
+                    </div>
+                    <small class="text-muted fs-8 d-block">أفضل العروض، عمولات أفضل</small>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-dark fs-8 section-title-accent">روابط سريعة</h6>
+                    <ul class="list-unstyled p-0 fs-8 d-flex flex-column gap-1 text-muted">
+                        <li><a href="about.html" class="text-muted text-decoration-none footer-link-glow">من نحن</a></li>
+                        <li><a href="how-it-works.html" class="text-muted text-decoration-none footer-link-glow">كيف تعمل المنصة</a></li>
+                        <li><a href="blog.html" class="text-muted text-decoration-none footer-link-glow">المدونة</a></li>
+                        <li><a href="contact.html" class="text-muted text-decoration-none footer-link-glow">اتصل بنا</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-dark fs-8 section-title-accent">الدعم والمساعدة</h6>
+                    <ul class="list-unstyled p-0 fs-8 d-flex flex-column gap-1 text-muted">
+                        <li><a href="faq.html" class="text-muted text-decoration-none footer-link-glow">مركز الأسئلة الشائعة</a></li>
+                        <li><a href="terms.html" class="text-muted text-decoration-none footer-link-glow">الشروط والأحكام</a></li>
+                        <li><a href="privacy.html" class="text-muted text-decoration-none footer-link-glow">سياسة الخصوصية</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-2 col-md-6">
+                    <h6 class="fw-bold mb-3 text-dark fs-8 section-title-accent">تابعنا على</h6>
+                    <div class="d-flex gap-2 text-purple fs-6">
+                        <a href="#" class="social-icon-glow text-purple"><i class="bi bi-facebook"></i></a>
+                        <a href="#" class="social-icon-glow text-purple"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" class="social-icon-glow text-purple"><i class="bi bi-instagram"></i></a>
+                        <a href="#" class="social-icon-glow text-purple"><i class="bi bi-telegram"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h6 class="fw-bold mb-2 text-dark fs-8 section-title-accent">اشترك في النشرة البريدية</h6>
+                    <small class="text-muted fs-8 d-block mb-2">احصل على أفضل العروض مباشرة في بريدك</small>
+                    <form id="newsletterForm">
+                        <div class="input-group input-group-sm search-input-glow">
+                            <input type="email" id="newsletterEmail" class="form-control rounded-pill-start border text-end" placeholder="اكتب بريدك الإلكتروني" required>
+                            <button type="submit" class="btn btn-purple-pill px-3 rounded-pill-end"><i class="bi bi-send text-white"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-top border-purple-subtle pt-3 text-center text-muted fs-8">
+                <p class="mb-0">&copy; 2026 أونلاين كشك. جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./js/main.js"></script>
+    <script src="./js/tracker.js"></script>
+</body>
+</html>
