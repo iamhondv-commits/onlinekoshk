@@ -1,0 +1,156 @@
+/* ==========================================================================
+   Responsive Rules Only - Online Koshk
+   ========================================================================== */
+
+/* Global Overflow & Fluid Reset Fixes */
+html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+img, picture, svg, video, canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+/* ضبط البانر ليتكيف تماماً مع أبعاد الصور المختلفة بدون تشويه */
+.banner-img-fit {
+    width: 100%;
+    height: auto;
+    max-height: 480px;
+    object-fit: cover;
+    aspect-ratio: 16 / 5; /* نسبة متوافقة مع بانرات الويب المعيارية */
+}
+
+/* --------------------------------------------------------------------------
+   1. Desktop Layout (Min-width: 992px)
+   -------------------------------------------------------------------------- */
+@media (min-width: 992px) {
+    .navbar .container,
+    .navbar .container-fluid {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .navbar-brand {
+        margin-left: 1rem !important;
+        margin-right: 0 !important;
+    }
+
+    .header-search-container {
+        width: 320px;
+        max-width: 400px;
+        margin-left: 1.5rem !important;
+        margin-right: 0 !important;
+    }
+
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        margin-left: auto !important;
+        margin-right: 0 !important;
+    }
+
+    .navbar-nav .nav-link {
+        padding: 0.5rem 0.6rem !important;
+        font-size: 0.9rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .header-auth-buttons {
+        margin-right: auto !important;
+        margin-left: 0 !important;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. Tablet Breakpoint (Max-width: 991.98px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+    .header-search-container {
+        width: 100% !important;
+        order: 3;
+        margin-top: 0.5rem;
+    }
+
+    .navbar-toggler {
+        padding: 0.35rem 0.6rem;
+        font-size: 1.1rem;
+    }
+
+    #mobileNavbar {
+        padding: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .banner-img-fit {
+        max-height: 320px;
+        aspect-ratio: 16 / 6;
+    }
+
+    .sidebar-filter-box .d-flex.flex-column {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 0.5rem !important;
+    }
+
+    .sidebar-link-item .bi-chevron-left {
+        display: none;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   3. Mobile Phones (Max-width: 767.98px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+    h1, .display-6 { font-size: 1.4rem !important; }
+    h2 { font-size: 1.25rem !important; }
+    h3 { font-size: 1.1rem !important; }
+
+    .py-5 { padding-top: 2rem !important; padding-bottom: 2rem !important; }
+    .my-5 { margin-top: 2rem !important; margin-bottom: 2rem !important; }
+
+    .banner-img-fit {
+        max-height: 220px;
+        aspect-ratio: 16 / 7;
+        border-radius: 16px !important;
+    }
+
+    .card-img-container {
+        height: 130px !important;
+    }
+
+    footer .row > div {
+        text-align: center;
+    }
+
+    footer .d-flex.align-items-center,
+    footer .social-icon-glow {
+        justify-content: center;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   4. Small Screens (Max-width: 480px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 480px) {
+    .banner-img-fit {
+        max-height: 180px;
+        aspect-ratio: 16 / 8;
+    }
+
+    .dashed-coupon-card {
+        flex-direction: column;
+        align-items: stretch !important;
+        text-align: center;
+    }
+}

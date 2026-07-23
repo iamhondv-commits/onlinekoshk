@@ -1,0 +1,16 @@
+/* Responsive Adapters for Product Page */
+@media (max-width: 767.98px) {
+    .main-image-zoom-box {
+        height: 260px !important;
+    }
+
+    .product-thumb-img {
+        width: 55px !important;
+        height: 55px !important;
+    }
+
+    #buyNowBtn {
+        font-size: 0.85rem !important;
+        padding: 12px !important;
+    }
+}

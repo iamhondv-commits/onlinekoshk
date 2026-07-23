@@ -1,0 +1,212 @@
+/* ==========================================================================
+   أونلاين كشك - Dashboard UI (Inspired by Modern Dashboard Design)
+   Full RTL Integration with Koshk Purple Palette & Glassmorphism Highlights
+   ========================================================================== */
+
+:root {
+    --purple-main: #6f42c1;
+    --purple-dark: #1e1b4b;
+    --purple-navy: #0f172a;
+    --purple-hover: #593196;
+    --purple-soft: #f3ebff;
+    --purple-border: #e2d1f9;
+    --purple-glow: rgba(111, 66, 193, 0.28);
+    --text-dark: #0f172a;
+    --text-muted: #64748b;
+    --bg-light: #f8fafc;
+    --sidebar-width: 90px;
+    --sidebar-expanded-width: 240px;
+    --right-widget-width: 280px;
+}
+
+body.admin-body {
+    font-family: 'Cairo', sans-serif !important;
+    background: #f1f5f9 !important;
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+    direction: rtl;
+}
+
+.admin-wrapper {
+    min-height: 100vh;
+    display: flex;
+}
+
+/* ==========================================================================
+   1. السايدبار الجانبي الداكن (Slim Icon Sidebar like Screenshot)
+   ========================================================================== */
+.admin-sidebar {
+    width: var(--sidebar-expanded-width);
+    min-width: var(--sidebar-expanded-width);
+    background: linear-gradient(180deg, #1e1b4b 0%, #0f172a 100%) !important;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    z-index: 1040;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 0 25px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-brand-logo {
+    width: 42px;
+    height: 42px;
+    background: linear-gradient(135deg, #9333ea, #6f42c1);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(147, 51, 234, 0.4);
+}
+
+.admin-sidebar .nav-link {
+    color: #94a3b8;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-size: 0.825rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    transition: all 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.admin-sidebar .nav-link:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(-4px);
+}
+
+.admin-sidebar .nav-link.active {
+    background: linear-gradient(135deg, #9333ea 0%, #6f42c1 100%) !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 18px rgba(147, 51, 234, 0.45);
+}
+
+.admin-sidebar .nav-link i {
+    font-size: 1.15rem;
+}
+
+/* ==========================================================================
+   2. منطقة المحتوى الوسطى واللوحة الجانبية اليمنى (Widgets)
+   ========================================================================== */
+.admin-main-content {
+    background: #f8fafc;
+    flex-grow: 1;
+    min-width: 0;
+}
+
+/* كروت الإحصائيات بألوان ناعمة وسلسة (Soft Stat Badges like Screenshot) */
+.stat-card-soft {
+    border-radius: 18px;
+    padding: 18px;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.stat-card-orange { background: #fff5ed; color: #ea580c; }
+.stat-card-blue { background: #eff6ff; color: #2563eb; }
+.stat-card-purple { background: #faf5ff; color: #9333ea; }
+.stat-card-green { background: #f0fdf4; color: #16a34a; }
+
+.stat-card-soft:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+}
+
+/* اللوحة الجانبية الإضافية للمهمات والتقويم (Right Sidebar Panel) */
+.admin-right-widget {
+    width: var(--right-widget-width);
+    min-width: var(--right-widget-width);
+    background: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+}
+
+/* ==========================================================================
+   3. المودال والمعاينة الفورية الحية المتقدمة (Live Virtual Preview Editor)
+   ========================================================================== */
+.modal-content {
+    background: #ffffff;
+    border-radius: 24px !important;
+    border: 1px solid var(--purple-border) !important;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.18) !important;
+}
+
+.modal-header.bg-purple-soft {
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%) !important;
+}
+
+/* كادر معاينة صفحة المنتج بالكامل بداخل المودال */
+.full-page-preview-container {
+    background: #f8fafc;
+    border: 2px dashed #c084fc;
+    border-radius: 20px;
+    padding: 15px;
+    max-height: 78vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.full-page-preview-container::-webkit-scrollbar {
+    width: 5px;
+}
+.full-page-preview-container::-webkit-scrollbar-thumb {
+    background: #c084fc;
+    border-radius: 10px;
+}
+
+/* ==========================================================================
+   4. الأزرار والهوير والتنسيقات العامة
+   ========================================================================== */
+.text-purple { color: var(--purple-main) !important; }
+.bg-purple-soft { background-color: var(--purple-soft) !important; }
+.border-purple-subtle { border-color: var(--purple-border) !important; }
+
+.btn-purple-pill {
+    background: linear-gradient(135deg, #9333ea 0%, #6f42c1 100%);
+    color: #ffffff;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 22px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.btn-purple-pill:hover {
+    background: linear-gradient(135deg, #7e22ce 0%, #593196 100%);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px var(--purple-glow);
+}
+
+.btn-purple-soft {
+    background-color: var(--purple-soft);
+    color: var(--purple-main);
+    border: 1px solid var(--purple-border);
+    border-radius: 50px;
+}
+
+.btn-purple-soft:hover {
+    background-color: var(--purple-main);
+    color: #ffffff;
+}
+
+.shadow-purple-glow {
+    box-shadow: 0 4px 14px 0 var(--purple-glow) !important;
+}
+
+.shadow-subtle-glow {
+    box-shadow: 0 10px 30px rgba(111, 66, 193, 0.05) !important;
+}
+
+.cursor-pointer { cursor: pointer; }
+.fs-7 { font-size: 0.9rem !important; }
+.fs-8 { font-size: 0.8rem !important; }
+.fs-9 { font-size: 0.725rem !important; }
+.fw-extrabold { font-weight: 800 !important; }

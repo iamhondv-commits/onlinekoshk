@@ -1,0 +1,149 @@
+/* ==========================================================================
+   Responsive Rules - Ultra Modern Admin Panel
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. شاشات التابلت والموبايل (أقل من 992px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 991.98px) {
+    .admin-sidebar {
+        position: fixed;
+        right: -100%;
+        top: 0;
+        bottom: 0;
+        z-index: 1060;
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.15) !important;
+        transition: right 0.3s ease-in-out;
+        width: 260px;
+    }
+
+    .admin-sidebar.show {
+        right: 0;
+    }
+
+    .admin-main-content {
+        width: 100% !important;
+        margin-right: 0 !important;
+        padding: 15px !important;
+    }
+
+    /* خلفية معتمة عند فتح السايدبار للموبايل */
+    .sidebar-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(15, 23, 42, 0.5);
+        backdrop-filter: blur(2px);
+        z-index: 1055;
+        display: none;
+    }
+
+    .sidebar-overlay.show {
+        display: block;
+    }
+
+    /* هيدر الموبايل العلوي */
+    .mobile-admin-header {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        background: #ffffff;
+        padding: 10px 15px;
+        border-bottom: 1px solid #e2e8f0;
+        margin-bottom: 15px;
+        border-radius: 12px;
+    }
+
+    /* أزرار التبويبات العلوية والتمرير الأفقي */
+    .admin-tabs-nav {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-tabs-nav .nav-link {
+        flex: 0 0 auto;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   2. شاشات الموبايل المتوسطة والصغيرة (أقل من 768px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 767.98px) {
+    /* ضبط كروت الإحصائيات */
+    .stat-card {
+        margin-bottom: 12px;
+    }
+
+    /* ضبط المودالات والنوافذ المنبثقة */
+    .modal-dialog {
+        margin: 10px;
+    }
+
+    .modal-content {
+        border-radius: 16px !important;
+    }
+
+    /* الفلاتر والبحث */
+    .admin-filters-bar {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .admin-filters-bar > * {
+        width: 100% !important;
+    }
+
+    /* محرر الفيرشوال والمعاينة الحية */
+    .virtual-editor-container {
+        flex-direction: column;
+    }
+
+    .virtual-iframe-wrapper {
+        height: 450px !important;
+    }
+}
+
+/* --------------------------------------------------------------------------
+   3. شاشات الموبايل الصغيرة جداً (أقل من 576px)
+   -------------------------------------------------------------------------- */
+@media (max-width: 575.98px) {
+    .admin-main-content {
+        padding: 12px !important;
+    }
+
+    .table td, .table th {
+        padding: 8px 6px !important;
+        font-size: 0.75rem !important;
+        white-space: nowrap;
+    }
+
+    .stat-icon-box {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 1rem !important;
+    }
+
+    /* تحسين خيارات الجدول والأزرار */
+    .table-responsive {
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+    }
+
+    .btn-sm {
+        padding: 4px 8px !important;
+        font-size: 0.7rem !important;
+    }
+
+    /* التوست والإشعارات */
+    .admin-toast-custom {
+        right: 10px !important;
+        left: 10px !important;
+        width: auto !important;
+        bottom: 10px !important;
+    }
+}
