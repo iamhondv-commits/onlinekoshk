@@ -27,18 +27,47 @@ document.addEventListener('DOMContentLoaded', async function () {
     // 🌟 تجميل شكل الـ URL وإخفاء امتداد .html برمجياً من شريط العنوان في المتصفح
     cleanUrlExtension();
 
-    // 1. إنشاء الفقاعات البنفسجية المتحركة خلف السلايدر
+    // 1. إنشاء الفقاعات البنفسجية المتحركة خلف السلايدر بدون تعطيل الرندر
+    setTimeout(initBubbles, 50);
+
+    // 2. تفعيل نسخ الكوبونات والمكونات التفاعلية
+    attachCopyEvent();
+    initSmartSearchEngine();
+    initNewsletterSubscriber();
+    initContactForm();
+    initAddStoreForm();
+
+    // 3. جلب البيانات الديناميكية من Supabase بالتوازي لمنع البطء
+    let client = window.supabaseClient;
+    if (!client && window.supabase && typeof SUPABASE_URL !== 'undefined' && typeof SUPABASE_ANON_KEY !== 'undefined') {
+        client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+
+    if (client) {
+        // 🚀 تسريع جوهري: جلب كافة البيانات الأساسية بالتوازي في وقت واحد (Promise.all)
+        await Promise.all([
+            loadDynamicNavbarCategories(client),
+            loadDynamicBanners(client),
+            loadDynamicProducts(client),
+            loadDynamicCoupons(client),
+            loadSavedVirtualBuilderContent(client)
+        ]);
+    }
+});
+
+function initBubbles() {
     const bubblesWrapper = document.getElementById('bubblesWrapper');
     if (bubblesWrapper) {
-        const bubbleCount = 12;
+        const fragment = document.createDocumentFragment();
+        const bubbleCount = 10;
         for (let i = 0; i < bubbleCount; i++) {
             const bubble = document.createElement('div');
             bubble.classList.add('bubble');
             
-            const size = Math.floor(Math.random() * 32) + 18;
-            const posX = Math.floor(Math.random() * 96);
+            const size = Math.floor(Math.random() * 25) + 15;
+            const posX = Math.floor(Math.random() * 95);
             const duration = Math.floor(Math.random() * 4) + 6;
-            const delay = Math.random() * 3.5;
+            const delay = Math.random() * 3;
 
             bubble.style.width = `${size}px`;
             bubble.style.height = `${size}px`;
@@ -46,41 +75,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             bubble.style.animationDuration = `${duration}s`;
             bubble.style.animationDelay = `${delay}s`;
 
-            bubblesWrapper.appendChild(bubble);
+            fragment.appendChild(bubble);
         }
+        bubblesWrapper.appendChild(fragment);
     }
-
-    // 2. تفعيل نسخ الكوبونات بضغطة واحدة
-    attachCopyEvent();
-
-    // 3. تفعيل محرك البحث الذكي والمؤمن ضد الـ XSS وحقن النصوص
-    initSmartSearchEngine();
-
-    // 4. تفعيل الاشتراك في النشرة البريدية
-    initNewsletterSubscriber();
-
-    // 5. تفعيل نموذج التواصل المباشر
-    initContactForm();
-
-    // 6. تفعيل نموذج إضافة متجر جديد
-    initAddStoreForm();
-
-    // 7. جلب البيانات الديناميكية من Supabase
-    let client = window.supabaseClient;
-    if (!client && window.supabase && typeof SUPABASE_URL !== 'undefined' && typeof SUPABASE_ANON_KEY !== 'undefined') {
-        client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    }
-
-    if (client) {
-        await loadDynamicNavbarCategories(client);
-        await loadDynamicBanners(client);
-        await loadDynamicProducts(client);
-        await loadDynamicCoupons(client);
-        
-        // 8. تحميل البيانات المحفوظة وتطبيقها للمستخدمين
-        await loadSavedVirtualBuilderContent(client);
-    }
-});
+}
 
 // دالة إخفاء امتداد .html من شريط العنوان بسلاسة دون أخطاء Live Server
 function cleanUrlExtension() {
@@ -98,18 +97,27 @@ function sanitizeSearchInput(str) {
     return str.replace(/[<>'"]/g, '').trim();
 }
 
-// 🌟 دالة جلب الأقسام وبناء القائمة العملاقة مفرودة بالعرض (Horizontal Mega Menu Grid)
+// 🌟 دالة جلب الأقسام الشجرية وبناء القائمة العملاقة المفرودة بالعرض (Horizontal Mega Menu Grid) مع الكاش
 async function loadDynamicNavbarCategories(client) {
     const dropdown = document.querySelector('#categoriesDropdown + .dropdown-menu');
     if (!dropdown) return;
 
     try {
-        const { data: categories, error } = await client
-            .from('categories')
-            .select('*')
-            .order('name', { ascending: true });
+        let categories = JSON.parse(sessionStorage.getItem('koshk_categories') || 'null');
 
-        if (error || !categories || categories.length === 0) return;
+        if (!categories) {
+            const { data, error } = await client
+                .from('categories')
+                .select('*')
+                .order('name', { ascending: true });
+
+            if (!error && data) {
+                categories = data;
+                sessionStorage.setItem('koshk_categories', JSON.stringify(data));
+            }
+        }
+
+        if (!categories || categories.length === 0) return;
 
         // تجميع الأقسام الفرعية تحت الأقسام الرئيسية التابعة لها
         const groupedCategories = {};
@@ -121,10 +129,9 @@ async function loadDynamicNavbarCategories(client) {
             groupedCategories[parent].push(cat);
         });
 
-        // تطبيق الفئات التابعة للميجا ميو المفرودة بالعرض
         dropdown.classList.add('mega-menu-dropdown', 'p-3', 'shadow-lg');
 
-        let megaMenuHtml = `<div class="row row-cols-2 row-cols-md-4 g-3 text-end">`;
+        let megaMenuHtml = `<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 text-end">`;
 
         Object.keys(groupedCategories).forEach(parentName => {
             const subs = groupedCategories[parentName];
@@ -225,7 +232,7 @@ function initSmartSearchEngine() {
 
         searchTimeout = setTimeout(async () => {
             await fetchSearchSuggestions(query, suggestionsBox);
-        }, 250);
+        }, 200);
     });
 
     document.addEventListener('click', function (e) {
@@ -247,17 +254,10 @@ async function fetchSearchSuggestions(query, box) {
 
         const cleanQuery = sanitizeSearchInput(query);
 
-        const { data: products } = await client
-            .from('products')
-            .select('id, title, store_name, category')
-            .or(`title.ilike.%${cleanQuery}%,store_name.ilike.%${cleanQuery}%,category.ilike.%${cleanQuery}%,keywords.ilike.%${cleanQuery}%`)
-            .limit(4);
-
-        const { data: coupons } = await client
-            .from('coupons')
-            .select('code, store_name')
-            .or(`code.ilike.%${cleanQuery}%,store_name.ilike.%${cleanQuery}%`)
-            .limit(2);
+        const [{ data: products }, { data: coupons }] = await Promise.all([
+            client.from('products').select('id, title, store_name, category').or(`title.ilike.%${cleanQuery}%,store_name.ilike.%${cleanQuery}%,category.ilike.%${cleanQuery}%,keywords.ilike.%${cleanQuery}%`).limit(4),
+            client.from('coupons').select('code, store_name').or(`code.ilike.%${cleanQuery}%,store_name.ilike.%${cleanQuery}%`).limit(2)
+        ]);
 
         let html = '';
 
@@ -456,15 +456,23 @@ function initAddStoreForm() {
     });
 }
 
-// 🌟 البانرات السلايدر
+// 🌟 البانرات السلايدر مع نظام الكاش
 async function loadDynamicBanners(client) {
     try {
-        const { data: banners, error } = await client
-            .from('banners')
-            .select('*')
-            .order('created_at', { ascending: false });
+        let banners = JSON.parse(sessionStorage.getItem('koshk_banners') || 'null');
+        if (!banners) {
+            const { data, error } = await client
+                .from('banners')
+                .select('*')
+                .order('created_at', { ascending: false });
 
-        if (error || !banners || banners.length === 0) return;
+            if (!error && data) {
+                banners = data;
+                sessionStorage.setItem('koshk_banners', JSON.stringify(data));
+            }
+        }
+
+        if (!banners || banners.length === 0) return;
 
         const carouselWrapper = document.getElementById('carouselBannersWrapper');
         if (carouselWrapper) {
@@ -482,7 +490,7 @@ async function loadDynamicBanners(client) {
     }
 }
 
-// 🌟 جلب المنتجات للرئيسية مع توجيه الكروت لصفحة تفاصيل المنتج الداخلي بالـ ID المباشر
+// 🌟 جلب المنتجات للرئيسية مع التوجيه المباشر
 async function loadDynamicProducts(client) {
     try {
         const { data: products, error } = await client
@@ -510,7 +518,7 @@ async function loadDynamicProducts(client) {
                         <span class="card-discount-badge">-${prod.discount_percentage || 0}%</span>
                         <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
                             <a href="${productDetailUrl}" class="d-block w-100 h-100">
-                                <img src="${prod.image_url}" alt="${prod.title}" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300'">
+                                <img src="${prod.image_url}" alt="${prod.title}" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300'">
                             </a>
                         </div>
                         <div class="text-start">
