@@ -33,27 +33,31 @@ document.addEventListener('DOMContentLoaded', async function () {
     cleanUrlExtension();
 
     // 1. إنشاء الفقاعات البنفسجية المتحركة خلف السلايدر
-    const bubblesWrapper = document.getElementById('bubblesWrapper');
-    if (bubblesWrapper) {
-        const bubbleCount = 12;
-        for (let i = 0; i < bubbleCount; i++) {
-            const bubble = document.createElement('div');
-            bubble.classList.add('bubble');
-            
-            const size = Math.floor(Math.random() * 32) + 18;
-            const posX = Math.floor(Math.random() * 96);
-            const duration = Math.floor(Math.random() * 4) + 6;
-            const delay = Math.random() * 3.5;
+    setTimeout(() => {
+        const bubblesWrapper = document.getElementById('bubblesWrapper');
+        if (bubblesWrapper) {
+            const fragment = document.createDocumentFragment();
+            const bubbleCount = 10;
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                const size = Math.floor(Math.random() * 25) + 15;
+                const posX = Math.floor(Math.random() * 95);
+                const duration = Math.floor(Math.random() * 4) + 6;
+                const delay = Math.random() * 3;
 
-            bubble.style.width = `${size}px`;
-            bubble.style.height = `${size}px`;
-            bubble.style.left = `${posX}%`;
-            bubble.style.animationDuration = `${duration}s`;
-            bubble.style.animationDelay = `${delay}s`;
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${posX}%`;
+                bubble.style.animationDuration = `${duration}s`;
+                bubble.style.animationDelay = `${delay}s`;
 
-            bubblesWrapper.appendChild(bubble);
+                fragment.appendChild(bubble);
+            }
+            bubblesWrapper.appendChild(fragment);
         }
-    }
+    }, 50);
 
     // 2. تفعيل نسخ الكوبونات بضغطة واحدة
     attachCopyEvent();
@@ -77,15 +81,16 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     if (client) {
-        await loadDynamicNavbarCategories(client);
-        await loadDynamicBanners(client);
-        await loadDynamicProducts(client);
-        await loadDynamicCoupons(client);
-        
-        // 8. تحميل البيانات المحفوظة وتطبيقها للمستخدمين
-        await loadSavedVirtualBuilderContent(client);
+        // 🚀 تسريع الجلب بالتوازي
+        Promise.all([
+            loadDynamicNavbarCategories(client),
+            loadDynamicBanners(client),
+            loadDynamicProducts(client),
+            loadDynamicCoupons(client),
+            loadSavedVirtualBuilderContent(client)
+        ]);
 
-        // 9. تشغيل محرك تفاصيل المنتج
+        // 9. تشغيل محرك تفاصيل المنتج الفوري
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
         if (productId) {
@@ -110,29 +115,74 @@ function sanitizeSearchInput(str) {
     return str.replace(/[<>'"]/g, '').trim();
 }
 
-// دالة جلب الأقسام ديناميكياً وتغذية الناف بار بجميع الصفحات بأسلوب نظيف
+// 🌟 دالة جلب الأقسام لبناء القائمة العملاقة المفرودة بالعرض (Mega Menu Grid) مع الكاش السريع
 async function loadDynamicNavbarCategories(client) {
     const dropdown = document.querySelector('#categoriesDropdown + .dropdown-menu');
     if (!dropdown) return;
 
     try {
-        const { data: categories, error } = await client
-            .from('categories')
-            .select('*')
-            .order('name', { ascending: true });
+        let categories = JSON.parse(sessionStorage.getItem('koshk_categories') || 'null');
 
-        if (error || !categories || categories.length === 0) return;
+        if (!categories) {
+            const { data, error } = await client
+                .from('categories')
+                .select('*')
+                .order('name', { ascending: true });
 
-        dropdown.innerHTML = categories.map(cat => {
-            const cleanCat = encodeURIComponent(cat.name);
-            return `
-                <li>
-                    <a class="dropdown-item rounded-3 py-2 fw-bold d-flex align-items-center gap-2" href="categories.html?cat=${cleanCat}">
-                        <i class="bi ${cat.icon || 'bi-grid-fill'} text-purple fs-6"></i> ${cat.name}
-                    </a>
-                </li>
+            if (!error && data) {
+                categories = data;
+                sessionStorage.setItem('koshk_categories', JSON.stringify(data));
+            }
+        }
+
+        if (!categories || categories.length === 0) return;
+
+        const groupedCategories = {};
+        categories.forEach(cat => {
+            const parent = cat.parent_category || 'الإلكترونيات';
+            if (!groupedCategories[parent]) {
+                groupedCategories[parent] = [];
+            }
+            groupedCategories[parent].push(cat);
+        });
+
+        dropdown.classList.add('mega-menu-dropdown', 'p-3', 'shadow-lg');
+
+        let megaMenuHtml = `<div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-3 text-end">`;
+
+        Object.keys(groupedCategories).forEach(parentName => {
+            const subs = groupedCategories[parentName];
+            const parentUrl = `categories.html?cat=${encodeURIComponent(parentName)}`;
+
+            megaMenuHtml += `
+                <div class="col mb-2">
+                    <div class="p-2 rounded-3 bg-light-subtle h-100 border border-purple-subtle">
+                        <a href="${parentUrl}" class="fw-extrabold text-purple fs-8 text-decoration-none d-block mb-2 border-bottom border-purple-subtle pb-1">
+                            <i class="bi bi-grid-3x3-gap-fill me-1"></i> ${parentName}
+                        </a>
+                        <ul class="list-unstyled p-0 m-0 fs-9 d-flex flex-column gap-1">
             `;
-        }).join('');
+
+            subs.forEach(sub => {
+                const cleanSub = encodeURIComponent(sub.name);
+                megaMenuHtml += `
+                    <li>
+                        <a class="dropdown-item rounded-2 py-1 px-2 fw-semibold d-flex align-items-center gap-2 text-dark" href="categories.html?cat=${cleanSub}">
+                            <i class="bi ${sub.icon || 'bi-tag'} text-purple"></i> ${sub.name}
+                        </a>
+                    </li>
+                `;
+            });
+
+            megaMenuHtml += `
+                        </ul>
+                    </div>
+                </div>
+            `;
+        });
+
+        megaMenuHtml += `</div>`;
+        dropdown.innerHTML = megaMenuHtml;
 
     } catch (err) {
         console.warn('تنبيه الناف بار الديناميكي:', err.message);
@@ -199,7 +249,7 @@ function initSmartSearchEngine() {
 
         searchTimeout = setTimeout(async () => {
             await fetchSearchSuggestions(query, suggestionsBox);
-        }, 250);
+        }, 200);
     });
 
     document.addEventListener('click', function (e) {
@@ -221,17 +271,10 @@ async function fetchSearchSuggestions(query, box) {
 
         const cleanQuery = sanitizeSearchInput(query);
 
-        const { data: products } = await client
-            .from('products')
-            .select('id, title, store_name, category')
-            .or(`title.ilike.%${cleanQuery}%,store_name.ilike.%${cleanQuery}%,category.ilike.%${cleanQuery}%,keywords.ilike.%${cleanQuery}%`)
-            .limit(4);
-
-        const { data: coupons } = await client
-            .from('coupons')
-            .select('code, store_name')
-            .or(`code.ilike.%${cleanQuery}%,store_name.ilike.%${cleanQuery}%`)
-            .limit(2);
+        const [{ data: products }, { data: coupons }] = await Promise.all([
+            client.from('products').select('id, title, store_name, category').or(`title.ilike.%${cleanQuery}%,store_name.ilike.%${cleanQuery}%,category.ilike.%${cleanQuery}%,keywords.ilike.%${cleanQuery}%`).limit(4),
+            client.from('coupons').select('code, store_name').or(`code.ilike.%${cleanQuery}%,store_name.ilike.%${cleanQuery}%`).limit(2)
+        ]);
 
         let html = '';
 
@@ -430,15 +473,23 @@ function initAddStoreForm() {
     });
 }
 
-// 🌟 البانرات السلايدر
+// 🌟 البانرات السلايدر مع نظام الكاش السريع
 async function loadDynamicBanners(client) {
     try {
-        const { data: banners, error } = await client
-            .from('banners')
-            .select('*')
-            .order('created_at', { ascending: false });
+        let banners = JSON.parse(sessionStorage.getItem('koshk_banners') || 'null');
+        if (!banners) {
+            const { data, error } = await client
+                .from('banners')
+                .select('*')
+                .order('created_at', { ascending: false });
 
-        if (error || !banners || banners.length === 0) return;
+            if (!error && data) {
+                banners = data;
+                sessionStorage.setItem('koshk_banners', JSON.stringify(data));
+            }
+        }
+
+        if (!banners || banners.length === 0) return;
 
         const carouselWrapper = document.getElementById('carouselBannersWrapper');
         if (carouselWrapper) {
@@ -484,7 +535,7 @@ async function loadDynamicProducts(client) {
                         <span class="card-discount-badge">-${prod.discount_percentage || 0}%</span>
                         <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 160px;">
                             <a href="${productDetailUrl}" class="d-block w-100 h-100">
-                                <img src="${prod.image_url}" alt="${prod.title}" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300'">
+                                <img src="${prod.image_url}" alt="${prod.title}" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300'">
                             </a>
                         </div>
                         <div class="text-start">
@@ -707,7 +758,7 @@ async function loadSavedVirtualBuilderContent(client) {
 }
 
 /* ==========================================================================
-   📦 Product Details Dynamic Page Engine (مُدمج بالكامل)
+   📦 Product Details Dynamic Page Engine (مُدمج بفرع السرعة الفائقة - Ultra Fast)
    ========================================================================== */
 
 async function loadProductDetailsEngine(id, client) {
@@ -715,6 +766,7 @@ async function loadProductDetailsEngine(id, client) {
     const content = document.getElementById('productContentWrapper');
 
     try {
+        // 🚀 Step 1: جلب المنتج الأساسي أولاً وعرضه فوراً
         const { data: prod, error } = await client
             .from('products')
             .select('*')
@@ -725,21 +777,8 @@ async function loadProductDetailsEngine(id, client) {
 
         currentProduct = prod;
 
-        let parentCategory = 'الأقسام';
-        if (prod.category) {
-            const { data: catData } = await client
-                .from('categories')
-                .select('parent_category')
-                .eq('name', prod.category)
-                .maybeSingle();
-
-            if (catData && catData.parent_category) {
-                parentCategory = catData.parent_category;
-            }
-        }
-
-        // 1. تحديث عناصر الواجهة والمسار الشجري (Breadcrumb)
-        updateProductUIEngine(prod, parentCategory);
+        // 1. تحديث عناصر الواجهة الفورية
+        updateProductUIEngine(prod);
 
         // 2. تفعيل المعرض العمودي للصور والتكبير
         setupProductGalleryEngine(prod);
@@ -750,12 +789,15 @@ async function loadProductDetailsEngine(id, client) {
         if (spinner) spinner.classList.add('d-none');
         if (content) content.classList.remove('d-none');
 
+        // 🚀 Step 2: جلب البيانات الثانوية (المسار الشجري + المنتجات المشابهة والرائجة) بالتوازي في الخلفية
+        loadSecondaryProductsDataInParallel(client, prod);
+
     } catch (err) {
         console.warn("Product Engine Notice:", err.message);
     }
 }
 
-function updateProductUIEngine(prod, parentCategory) {
+function updateProductUIEngine(prod) {
     document.title = `${prod.title || 'عرض خاص'} - أونلاين كشك`;
 
     const setElText = (id, txt) => {
@@ -772,13 +814,6 @@ function updateProductUIEngine(prod, parentCategory) {
     setElText('productDiscountBadge', `-${prod.discount_percentage || 0}%`);
     setElText('productCashback', `${prod.commission_amount || 0} ج.م`);
     setElText('productTitleBreadcrumb', prod.title);
-
-    // المسار الشجري الكامل (Breadcrumb)
-    const parentBread = document.getElementById('productParentCategoryBreadcrumb');
-    if (parentBread) {
-        parentBread.innerText = parentCategory;
-        parentBread.href = `categories.html?cat=${encodeURIComponent(parentCategory)}`;
-    }
 
     const catBread = document.getElementById('productCategoryBreadcrumb');
     if (catBread) {
@@ -896,4 +931,68 @@ function setupBuyButtonEngine(prod, client) {
             alert('لم يتم تحديد رابط الشراء والأفلييت لهذا المنتج.');
         }
     };
+}
+
+// 🚀 جلب البيانات الثانوية بالتوازي لتجاوز مشكلة البطء والتعليق
+async function loadSecondaryProductsDataInParallel(client, prod) {
+    const parentBread = document.getElementById('productParentCategoryBreadcrumb');
+    const relatedGrid = document.getElementById('relatedProductsGrid');
+    const trendingGrid = document.getElementById('trendingProductsGrid');
+
+    try {
+        const [catRes, relatedRes, trendingRes] = await Promise.all([
+            prod.category ? client.from('categories').select('parent_category').eq('name', prod.category).maybeSingle() : Promise.resolve({ data: null }),
+            client.from('products').select('*').neq('id', prod.id).ilike('category', `%${prod.category || ''}%`).limit(4),
+            client.from('products').select('*').neq('id', prod.id).order('created_at', { ascending: false }).limit(4)
+        ]);
+
+        if (parentBread && catRes.data && catRes.data.parent_category) {
+            parentBread.innerText = catRes.data.parent_category;
+            parentBread.href = `categories.html?cat=${encodeURIComponent(catRes.data.parent_category)}`;
+        }
+
+        if (relatedGrid) {
+            relatedGrid.innerHTML = (relatedRes.data && relatedRes.data.length > 0)
+                ? renderProductCardsHtml(relatedRes.data)
+                : `<div class="col-12 text-center text-muted fs-8 py-3">لا توجد منتجات مشابهة حالياً.</div>`;
+        }
+
+        if (trendingGrid) {
+            trendingGrid.innerHTML = (trendingRes.data && trendingRes.data.length > 0)
+                ? renderProductCardsHtml(trendingRes.data)
+                : `<div class="col-12 text-center text-muted fs-8 py-3">لا توجد عروض رائجة حالياً.</div>`;
+        }
+
+    } catch (e) {
+        console.warn('تنبيه جلب البيانات الثانوية:', e.message);
+    }
+}
+
+function renderProductCardsHtml(products) {
+    return products.map(p => `
+        <div class="col">
+            <div class="new-light-card p-2 rounded-4 text-center border-0 h-100 d-flex flex-column justify-content-between shadow-sm">
+                <span class="card-discount-badge">-${p.discount_percentage || 10}%</span>
+                <div class="card-img-container mb-2 overflow-hidden rounded-3 bg-white" style="height: 140px;">
+                    <a href="product.html?id=${p.id}" class="d-block w-100 h-100">
+                        <img src="${p.image_url}" alt="${p.title}" class="card-uniform-img w-100 h-100 object-fit-contain rounded-3" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300'">
+                    </a>
+                </div>
+                <div class="text-start">
+                    <h6 class="fw-bold fs-8 text-dark mb-1 text-truncate">
+                        <a href="product.html?id=${p.id}" class="text-dark text-decoration-none">${p.title}</a>
+                    </h6>
+                    <small class="text-muted fs-9 d-block mb-1">${p.category || 'عام'}</small>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="fw-extrabold text-purple fs-8">${p.discount_price || 0} ج.م</span>
+                        <span class="text-muted text-decoration-line-through fs-9">${p.original_price || 0} ج.م</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center border-top border-purple-subtle pt-2">
+                        <span class="fw-bold fs-9 text-dark">${p.store_name || ''}</span>
+                        <a href="product.html?id=${p.id}" class="card-arrow-btn"><i class="bi bi-arrow-left-short fs-6"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('');
 }
